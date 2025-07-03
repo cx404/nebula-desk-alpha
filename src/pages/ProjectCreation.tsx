@@ -4,14 +4,28 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { UserMenu } from "@/components/UserMenu";
 
 const ProjectCreation = () => {
   const navigate = useNavigate();
   const [selectedMethod, setSelectedMethod] = useState<string>("");
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
+
+  const templates = [
+    { id: "react", name: "React + TypeScript", description: "现代前端开发框架" },
+    { id: "python", name: "Python + Jupyter", description: "数据科学和机器学习" },
+    { id: "nodejs", name: "Node.js + Express", description: "后端API开发" },
+    { id: "pytorch", name: "PyTorch + CUDA", description: "深度学习训练环境" },
+    { id: "tensorflow", name: "TensorFlow + GPU", description: "AI模型开发" },
+  ];
 
   const creationMethods = [
     {
@@ -30,11 +44,11 @@ const ProjectCreation = () => {
       features: ["完全自定义", "灵活配置", "高级选项"]
     },
     {
-      id: "import",
-      title: "导入项目",
-      description: "导入现有代码仓库或项目",
-      icon: "📁",
-      features: ["Git导入", "文件上传", "迁移工具"]
+      id: "blank",
+      title: "空白创建",
+      description: "从零开始创建全新项目",
+      icon: "📄",
+      features: ["完全空白", "自由搭建", "无限可能"]
     }
   ];
 
@@ -54,15 +68,7 @@ const ProjectCreation = () => {
             <span className="text-xl font-semibold">算力云桌面</span>
           </div>
           
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <p className="text-sm font-medium">张三</p>
-              <p className="text-xs text-muted-foreground">Premium 用户</p>
-            </div>
-            <Avatar className="w-10 h-10 ring-2 ring-primary/20">
-              <AvatarFallback className="bg-primary/10 text-primary">张</AvatarFallback>
-            </Avatar>
-          </div>
+          <UserMenu />
         </div>
       </header>
 
@@ -92,11 +98,32 @@ const ProjectCreation = () => {
                     <div className="text-3xl flex-shrink-0">{method.icon}</div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-xl font-semibold">{method.title}</h3>
-                        {method.recommended && (
-                          <Badge variant="secondary" className="bg-primary/10 text-primary">
-                            推荐
-                          </Badge>
+                        <div className="flex items-center gap-2">
+                          <h3 className="text-xl font-semibold">{method.title}</h3>
+                          {method.recommended && (
+                            <Badge variant="secondary" className="bg-primary/10 text-primary">
+                              推荐
+                            </Badge>
+                          )}
+                        </div>
+                        {method.id === "template" && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="outline" size="sm" className="ml-auto">
+                                选择模板 ▼
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-lg border-border/50">
+                              {templates.map((template) => (
+                                <DropdownMenuItem key={template.id}>
+                                  <div>
+                                    <div className="font-medium">{template.name}</div>
+                                    <div className="text-xs text-muted-foreground">{template.description}</div>
+                                  </div>
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
                         )}
                       </div>
                       <p className="text-muted-foreground mb-4">{method.description}</p>
