@@ -11,6 +11,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { UserMenu } from "@/components/UserMenu";
 import { useToast } from "@/hooks/use-toast";
 
@@ -22,6 +31,7 @@ const ProjectCreation = () => {
   const [projectDescription, setProjectDescription] = useState("");
   const [customRequirements, setCustomRequirements] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const templates = [
     { id: "react", name: "React + TypeScript", description: "现代前端开发框架" },
@@ -55,6 +65,35 @@ const ProjectCreation = () => {
       features: ["完全空白", "自由搭建", "无限可能"]
     }
   ];
+
+  const handleCustomCreation = async () => {
+    if (!customRequirements.trim()) {
+      toast({
+        title: "请输入您的需求",
+        description: "请描述您想要创建的项目需求",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    // 模拟AI生成过程
+    setIsGenerating(true);
+    setIsDialogOpen(false);
+    toast({
+      title: "AI正在生成项目...",
+      description: "请稍候，正在根据您的需求生成项目配置",
+    });
+    
+    // 模拟生成时间
+    setTimeout(() => {
+      setIsGenerating(false);
+      toast({
+        title: "项目生成完成！",
+        description: "正在跳转到工作空间...",
+      });
+      navigate("/workspace");
+    }, 3000);
+  };
 
   const handleCreateProject = async () => {
     if (selectedMethod === "blank") {
@@ -172,6 +211,50 @@ const ProjectCreation = () => {
                               ))}
                             </DropdownMenuContent>
                           </DropdownMenu>
+                        )}
+                        {method.id === "custom" && (
+                          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                            <DialogTrigger asChild>
+                              <Button variant="outline" size="sm" className="ml-auto" onClick={(e) => {
+                                e.stopPropagation();
+                                setIsDialogOpen(true);
+                              }}>
+                                开始对话 💬
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px] bg-card/95 backdrop-blur-lg border-border/50">
+                              <DialogHeader>
+                                <DialogTitle>自定义创建</DialogTitle>
+                                <DialogDescription>
+                                  请详细描述您的项目需求，AI将为您自动生成项目配置
+                                </DialogDescription>
+                              </DialogHeader>
+                              <div className="grid gap-4 py-4">
+                                <div className="space-y-2">
+                                  <label htmlFor="requirements" className="text-sm font-medium">
+                                    项目需求
+                                  </label>
+                                  <Textarea
+                                    id="requirements"
+                                    placeholder="例如：我想创建一个电商网站，需要商品展示、购物车、用户登录等功能..."
+                                    value={customRequirements}
+                                    onChange={(e) => setCustomRequirements(e.target.value)}
+                                    className="min-h-32"
+                                  />
+                                </div>
+                              </div>
+                              <DialogFooter>
+                                <Button 
+                                  type="submit" 
+                                  onClick={handleCustomCreation}
+                                  disabled={!customRequirements.trim() || isGenerating}
+                                  className="btn-premium"
+                                >
+                                  {isGenerating ? "AI生成中..." : "开始生成"}
+                                </Button>
+                              </DialogFooter>
+                            </DialogContent>
+                          </Dialog>
                         )}
                       </div>
                       <p className="text-muted-foreground mb-4">{method.description}</p>
