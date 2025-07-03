@@ -133,7 +133,14 @@ const ProjectCreation = () => {
                       : 'hover:ring-1 hover:ring-primary/50'
                   }`}
                   style={{ animationDelay: `${index * 0.1}s` }}
-                  onClick={() => setSelectedMethod(method.id)}
+                  onClick={() => {
+                    if (method.id === "blank") {
+                      // 空白创建直接跳转到工作空间
+                      navigate("/workspace");
+                    } else {
+                      setSelectedMethod(method.id);
+                    }
+                  }}
                 >
                   <div className="flex items-start gap-4">
                     <div className="text-3xl flex-shrink-0">{method.icon}</div>
