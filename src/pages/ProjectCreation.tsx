@@ -12,12 +12,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserMenu } from "@/components/UserMenu";
+import { useToast } from "@/hooks/use-toast";
 
 const ProjectCreation = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [selectedMethod, setSelectedMethod] = useState<string>("");
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
+  const [customRequirements, setCustomRequirements] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const templates = [
     { id: "react", name: "React + TypeScript", description: "现代前端开发框架" },
@@ -52,7 +56,44 @@ const ProjectCreation = () => {
     }
   ];
 
-  const handleCreateProject = () => {
+  const handleCreateProject = async () => {
+    if (selectedMethod === "blank") {
+      // 空白创建直接跳转
+      navigate("/workspace");
+      return;
+    }
+
+    if (selectedMethod === "custom") {
+      // 自定义创建需要用户输入需求
+      if (!customRequirements.trim()) {
+        toast({
+          title: "请输入您的需求",
+          description: "自定义创建需要您描述项目需求",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // 模拟AI生成过程
+      setIsGenerating(true);
+      toast({
+        title: "AI正在生成项目...",
+        description: "请稍候，正在根据您的需求生成项目配置",
+      });
+      
+      // 模拟生成时间
+      setTimeout(() => {
+        setIsGenerating(false);
+        toast({
+          title: "项目生成完成！",
+          description: "正在跳转到工作空间...",
+        });
+        navigate("/workspace");
+      }, 3000);
+      return;
+    }
+
+    // 模板创建
     navigate("/workspace");
   };
 
@@ -164,6 +205,17 @@ const ProjectCreation = () => {
                     className="mt-1 min-h-20"
                   />
                 </div>
+                {selectedMethod === "custom" && (
+                  <div>
+                    <label className="text-sm font-medium text-muted-foreground">需求描述</label>
+                    <Textarea
+                      placeholder="请详细描述您的项目需求，AI将根据您的描述自动生成项目配置..."
+                      value={customRequirements}
+                      onChange={(e) => setCustomRequirements(e.target.value)}
+                      className="mt-1 min-h-32"
+                    />
+                  </div>
+                )}
               </div>
             </Card>
 
@@ -195,9 +247,9 @@ const ProjectCreation = () => {
               onClick={handleCreateProject}
               className="w-full btn-premium"
               size="lg"
-              disabled={!selectedMethod || !projectName}
+              disabled={!selectedMethod || !projectName || isGenerating}
             >
-              创建项目
+              {isGenerating ? "AI生成中..." : "创建项目"}
             </Button>
           </div>
         </div>
