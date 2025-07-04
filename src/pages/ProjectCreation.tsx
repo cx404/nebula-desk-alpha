@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { UserMenu } from "@/components/UserMenu";
 import { useToast } from "@/hooks/use-toast";
+import { Rocket, Settings, FileText } from "lucide-react";
 const ProjectCreation = () => {
   const navigate = useNavigate();
   const {
@@ -45,20 +46,20 @@ const ProjectCreation = () => {
     id: "template",
     title: "模板创建",
     description: "从预设模板快速创建项目",
-    icon: "🚀",
+    icon: Rocket,
     features: ["快速部署", "预配置环境", "最佳实践"],
     recommended: true
   }, {
     id: "custom",
     title: "自定义创建",
     description: "根据需求自定义配置项目",
-    icon: "⚙️",
+    icon: Settings,
     features: ["完全自定义", "灵活配置", "高级选项"]
   }, {
     id: "blank",
     title: "空白创建",
     description: "从零开始创建全新项目",
-    icon: "📄",
+    icon: FileText,
     features: ["完全空白", "自由搭建", "无限可能"]
   }];
   const handleCustomCreation = async () => {
@@ -150,11 +151,10 @@ const ProjectCreation = () => {
           <p className="text-muted-foreground">选择创建方式，开始您的云端开发之旅</p>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Creation methods */}
-          <div className="lg:col-span-2">
+        <div className="flex justify-center">
+          <div className="max-w-4xl w-full">
             <div className="grid gap-6">
-              {creationMethods.map((method, index) => <Card key={method.id} className={`glass-card p-6 cursor-pointer transition-all duration-300 hover:scale-[1.02] animate-slide-in ${selectedMethod === method.id ? 'ring-2 ring-primary bg-primary/5' : 'hover:ring-1 hover:ring-primary/50'}`} style={{
+              {creationMethods.map((method, index) => <Card key={method.id} className={`p-6 cursor-pointer transition-all duration-300 hover:scale-[1.02] animate-slide-in bg-blue-500/10 backdrop-blur-xl border border-blue-500/20 hover:border-blue-400/40 ${selectedMethod === method.id ? 'ring-2 ring-blue-400 bg-blue-500/20' : 'hover:ring-1 hover:ring-blue-400/50'}`} style={{
               animationDelay: `${index * 0.1}s`
             }} onClick={() => {
               if (method.id === "blank") {
@@ -165,7 +165,9 @@ const ProjectCreation = () => {
               }
             }}>
                   <div className="flex items-start gap-4">
-                    <div className="text-3xl flex-shrink-0">{method.icon}</div>
+                    <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <method.icon className="w-6 h-6 text-blue-400" />
+                    </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         <div className="flex items-center gap-2">
