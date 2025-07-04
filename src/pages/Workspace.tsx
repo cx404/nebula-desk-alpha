@@ -16,9 +16,11 @@ import { AIAgent } from "@/components/workspace/AIAgent";
 import { ComponentMarketplace } from "@/components/marketplace/ComponentMarketplace";
 import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace";
 import { mockDataService } from "@/services/mockDataService";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard } from "lucide-react";
 
 const Workspace = () => {
   const [selectedNav, setSelectedNav] = useState("dashboard");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [chatMessages, setChatMessages] = useState([
     { id: 1, type: "assistant", content: "您好！我是Alaya AI助手，可以帮您管理工作空间、部署模型、执行AI任务。试试说'帮我部署一个模型'或'调整画布布局'？" },
   ]);
@@ -74,25 +76,25 @@ const Workspace = () => {
     {
       title: "主菜单",
       items: [
-        { id: "dashboard", name: "仪表盘", icon: "📊" },
-        { id: "compute", name: "算力管理", icon: "⚡" },
+        { id: "dashboard", name: "仪表盘", icon: BarChart3, fullName: "仪表盘" },
+        { id: "compute", name: "算力管理", icon: Zap, fullName: "算力管理" },
       ]
     },
     {
       title: "资源",
       items: [
-        { id: "marketplace", name: "组件市场", icon: "🛍️" },
-        { id: "workspace", name: "组件工作空间", icon: "🔧" },
-        { id: "community", name: "社区", icon: "👥" },
-        { id: "docs", name: "文档", icon: "📖" },
+        { id: "marketplace", name: "组件市场", icon: ShoppingBag, fullName: "组件市场" },
+        { id: "workspace", name: "组件工作空间", icon: Wrench, fullName: "组件工作空间" },
+        { id: "community", name: "社区", icon: Users, fullName: "社区" },
+        { id: "docs", name: "文档", icon: FileText, fullName: "文档" },
       ]
     },
     {
       title: "设置",
       items: [
-        { id: "personal", name: "个人设置", icon: "👤" },
-        { id: "platform", name: "平台设置", icon: "⚙️" },
-        { id: "billing", name: "计费中心", icon: "💳" },
+        { id: "personal", name: "个人设置", icon: User, fullName: "个人设置" },
+        { id: "platform", name: "平台设置", icon: Settings, fullName: "平台设置" },
+        { id: "billing", name: "计费中心", icon: CreditCard, fullName: "计费中心" },
       ]
     }
   ];
@@ -642,40 +644,57 @@ const Workspace = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900 flex">
+    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 flex">
       {/* Left Navigation */}
-      <div className="w-64 bg-white/5 backdrop-blur-xl border-r border-white/10 flex flex-col">
-        <div className="p-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
-              <div className="w-6 h-6 bg-white rounded"></div>
+      <div className={`${sidebarCollapsed ? 'w-16' : 'w-56'} bg-purple-950/20 backdrop-blur-xl border-r border-purple-500/20 flex flex-col transition-all duration-300`}>
+        <div className={`${sidebarCollapsed ? 'p-3' : 'p-4'} border-b border-purple-500/20 flex items-center justify-between`}>
+          {!sidebarCollapsed && (
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                <div className="w-4 h-4 bg-white rounded-sm"></div>
+              </div>
+              <span className="text-sm font-semibold text-purple-100">Alaya NeW算力云工作空间</span>
             </div>
-            <span className="text-lg font-semibold text-white">算力云桌面</span>
-          </div>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="text-purple-300 hover:text-white hover:bg-purple-500/20 p-1"
+          >
+            {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          </Button>
         </div>
         
-        <nav className="flex-1 p-4 space-y-6">
+        <nav className={`flex-1 ${sidebarCollapsed ? 'p-2' : 'p-3'} space-y-4`}>
           {navGroups.map((group) => (
-            <div key={group.title} className="space-y-2">
-              <h3 className="text-xs uppercase tracking-wider text-gray-400 font-medium px-2">
-                {group.title}
-              </h3>
+            <div key={group.title} className="space-y-1">
+              {!sidebarCollapsed && (
+                <h3 className="text-xs uppercase tracking-wider text-purple-400 font-medium px-2 mb-2">
+                  {group.title}
+                </h3>
+              )}
               <div className="space-y-1">
-                {group.items.map((item) => (
-                  <Button
-                    key={item.id}
-                    variant="ghost"
-                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-left justify-start ${
-                      selectedNav === item.id
-                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg hover:from-blue-600 hover:to-purple-700'
-                        : 'text-gray-300 hover:text-white hover:bg-white/5'
-                    }`}
-                    onClick={() => setSelectedNav(item.id)}
-                  >
-                    <span className="text-lg">{item.icon}</span>
-                    {item.name}
-                  </Button>
-                ))}
+                {group.items.map((item) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <Button
+                      key={item.id}
+                      variant="ghost"
+                      size={sidebarCollapsed ? "sm" : "default"}
+                      className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2 rounded-lg transition-all duration-200 text-left justify-start ${
+                        selectedNav === item.id
+                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg'
+                          : 'text-purple-300 hover:text-white hover:bg-purple-500/10'
+                      }`}
+                      onClick={() => setSelectedNav(item.id)}
+                      title={sidebarCollapsed ? item.fullName : undefined}
+                    >
+                      <IconComponent className="h-4 w-4" />
+                      {!sidebarCollapsed && <span className="text-sm">{item.name}</span>}
+                    </Button>
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -685,18 +704,20 @@ const Workspace = () => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 p-6">
+        <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-white">工作空间</h1>
-              <p className="text-gray-400 mt-1">自定义您的云桌面环境</p>
+            <div className="flex items-center gap-4">
+              <UserMenu />
+              <div>
+                <h1 className="text-xl font-bold text-purple-100">Alaya NeW算力云工作空间</h1>
+                <p className="text-purple-400 text-sm mt-0.5">自定义您的云桌面环境</p>
+              </div>
             </div>
             <div className="flex items-center gap-4">
-              <Badge className="bg-green-500/10 text-green-400 border-green-500/20">
-                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+              <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
+                <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
                 运行中
               </Badge>
-              <UserMenu />
             </div>
           </div>
         </div>
@@ -709,20 +730,20 @@ const Workspace = () => {
         </div>
       </div>
 
-      {/* Right AI Chat */}
-      <div className="w-80 bg-white/5 backdrop-blur-xl border-l border-white/10 flex flex-col">
-        <div className="p-6 border-b border-white/10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-              <span className="text-xl">🤖</span>
+      {/* Right AI Chat - Reduced size */}
+      <div className="w-64 bg-purple-950/20 backdrop-blur-xl border-l border-purple-500/20 flex flex-col">
+        <div className="p-4 border-b border-purple-500/20">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
+              <span className="text-sm">🤖</span>
             </div>
-            <span className="text-lg font-semibold text-white">Alaya AI助手</span>
+            <span className="text-sm font-semibold text-purple-100">Alaya AI助手</span>
           </div>
-          <p className="text-xs text-gray-400 mt-2">支持工作空间管理、模型部署、Agent自动执行</p>
+          <p className="text-xs text-purple-400 mt-1">工作空间管理、模型部署</p>
         </div>
         
         {/* AI Agent面板 */}
-        <div className="p-4 border-b border-white/10">
+        <div className="p-3 border-b border-purple-500/20">
           <AIAgent 
             onExecuteCommand={handleExecuteCommand}
             onUpdateCanvas={handleUpdateCanvas}
@@ -730,39 +751,40 @@ const Workspace = () => {
         </div>
         
         {/* 对话区域 */}
-        <ScrollArea className="flex-1 p-4">
-          <div className="space-y-4">
+        <ScrollArea className="flex-1 p-3">
+          <div className="space-y-3">
             {chatMessages.map((message) => (
               <div
                 key={message.id}
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-xs p-3 rounded-2xl ${
+                  className={`max-w-[180px] p-2 rounded-lg text-xs ${
                     message.type === 'user'
-                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
-                      : 'bg-white/10 text-gray-200 border border-white/20'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'
+                      : 'bg-purple-500/10 text-purple-200 border border-purple-500/20'
                   }`}
                 >
-                  <p className="text-sm">{message.content}</p>
+                  <p>{message.content}</p>
                 </div>
               </div>
             ))}
           </div>
         </ScrollArea>
         
-        <div className="p-4 border-t border-white/10">
+        <div className="p-3 border-t border-purple-500/20">
           <div className="flex gap-2">
             <Input
               placeholder="输入消息..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              className="flex-1 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+              className="flex-1 bg-purple-500/5 border border-purple-500/20 rounded-lg text-purple-100 placeholder-purple-400 focus:border-purple-500 text-sm h-8"
             />
             <Button 
               onClick={handleSendMessage} 
-              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl"
+              size="sm"
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg h-8 px-3"
             >
               发送
             </Button>
