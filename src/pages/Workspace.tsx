@@ -17,12 +17,11 @@ const Workspace = () => {
   const navItems = [
     { id: "dashboard", name: "仪表盘", icon: "📊" },
     { id: "compute", name: "算力管理", icon: "⚡" },
-    { id: "market", name: "项目市场", icon: "🏪" },
-    { id: "redteam", name: "红队", icon: "🛡️" },
-    { id: "docs", name: "文档", icon: "📚" },
-    { id: "personal", name: "个人设置", icon: "👤" },
-    { id: "platform", name: "平台设置", icon: "⚙️" },
-    { id: "community", name: "社群中心", icon: "👥" },
+    { id: "environment", name: "开发环境", icon: "💻" },
+    { id: "dataset", name: "数据集", icon: "📁" },
+    { id: "tasks", name: "任务管理", icon: "📋" },
+    { id: "model", name: "模型部署", icon: "🚀" },
+    { id: "inference", name: "推理服务", icon: "🔮" },
   ];
 
   const workspaceItems = [
@@ -58,119 +57,39 @@ const Workspace = () => {
               <h2 className="text-2xl font-bold mb-2 text-white">仪表盘</h2>
               <p className="text-gray-400">项目总览和系统状态</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">💼</span>
+                  </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">CPU利用率</p>
-                    <p className="text-2xl font-bold text-foreground">78%</p>
-                    <p className="text-xs text-green-500">▲ 当前增长 +2.3%</p>
+                    <h3 className="font-semibold text-white">活跃项目</h3>
+                    <p className="text-3xl font-bold text-blue-400">3</p>
                   </div>
                 </div>
-              </Card>
-              <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 bg-teal-500 rounded-full"></div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">⚡</span>
+                  </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">支付总金额</p>
-                    <p className="text-2xl font-bold text-foreground">12</p>
-                    <p className="text-xs text-red-500">▼ 当前下降 -1</p>
+                    <h3 className="font-semibold text-white">算力使用</h3>
+                    <p className="text-3xl font-bold text-green-400">78%</p>
                   </div>
                 </div>
-              </Card>
-              <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 bg-purple-500 rounded-full"></div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">💰</span>
+                  </div>
                   <div>
-                    <p className="text-sm text-muted-foreground">存储使用</p>
-                    <p className="text-2xl font-bold text-foreground">258GB</p>
-                    <p className="text-xs text-green-500">▲ 共20GB</p>
+                    <h3 className="font-semibold text-white">今日费用</h3>
+                    <p className="text-3xl font-bold text-purple-400">¥126</p>
                   </div>
                 </div>
-              </Card>
-              <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200">
-                <div className="flex items-center gap-3">
-                  <div className="w-4 h-4 bg-blue-400 rounded-full"></div>
-                  <div>
-                    <p className="text-sm text-muted-foreground">作业数量</p>
-                    <p className="text-2xl font-bold text-foreground">12.5K</p>
-                    <p className="text-xs text-green-500">▲ 当前增长 +1.5K</p>
-                  </div>
-                </div>
-              </Card>
-            </div>
-
-            {/* 开发工具区域 */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-foreground">开发工具</h3>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200 cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
-                      <span className="text-orange-600">📊</span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">Jupyter</p>
-                      <p className="text-xs text-muted-foreground">交互式编程环境</p>
-                    </div>
-                  </div>
-                </Card>
-                <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200 cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                      <span className="text-purple-600">🔗</span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">LlamaFactory Online</p>
-                      <p className="text-xs text-muted-foreground">大模型微调工具</p>
-                    </div>
-                  </div>
-                </Card>
-                <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200 cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                      <span className="text-green-600">⚡</span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">Terminal</p>
-                      <p className="text-xs text-muted-foreground">命令行工具</p>
-                    </div>
-                  </div>
-                </Card>
-                <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200 cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
-                      <span className="text-red-600">📈</span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">TensorBoard</p>
-                      <p className="text-xs text-muted-foreground">可视化分析工具</p>
-                    </div>
-                  </div>
-                </Card>
-                <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200 cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <span className="text-blue-600">📝</span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">代码编辑器</p>
-                      <p className="text-xs text-muted-foreground">在线代码编辑</p>
-                    </div>
-                  </div>
-                </Card>
-                <Card className="p-4 border border-border hover:shadow-sm transition-all duration-200 cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
-                      <span className="text-emerald-600">🎯</span>
-                    </div>
-                    <div>
-                      <p className="font-medium text-foreground">模型部署</p>
-                      <p className="text-xs text-muted-foreground">一键模型部署</p>
-                    </div>
-                  </div>
-                </Card>
               </div>
             </div>
           </div>
@@ -415,31 +334,31 @@ const Workspace = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900 flex">
       {/* Left Navigation */}
-      <div className="w-64 bg-card border-r border-border flex flex-col">
-        <div className="p-6 border-b border-border">
+      <div className="w-64 bg-white/5 backdrop-blur-xl border-r border-white/10 flex flex-col">
+        <div className="p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">A</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-6 h-6 bg-white rounded"></div>
             </div>
-            <span className="text-lg font-semibold text-foreground">Alaya NeW</span>
+            <span className="text-lg font-semibold text-white">算力云桌面</span>
           </div>
         </div>
         
-        <nav className="flex-1 p-4 space-y-1">
+        <nav className="flex-1 p-4 space-y-2">
           {navItems.map((item) => (
             <Button
               key={item.id}
               variant="ghost"
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 text-left justify-start text-sm ${
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-left justify-start ${
                 selectedNav === item.id
-                  ? 'bg-blue-50 text-blue-600 font-medium'
-                  : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg hover:from-blue-600 hover:to-purple-700'
+                  : 'text-gray-300 hover:text-white hover:bg-white/5'
               }`}
               onClick={() => setSelectedNav(item.id)}
             >
-              <span className="text-base">{item.icon}</span>
+              <span className="text-lg">{item.icon}</span>
               {item.name}
             </Button>
           ))}
@@ -449,19 +368,17 @@ const Workspace = () => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="bg-card border-b border-border p-6">
+        <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">项目仪表盘</h1>
-              <p className="text-muted-foreground mt-1">大数据云配置运行环境</p>
+              <h1 className="text-2xl font-bold text-white">工作空间</h1>
+              <p className="text-gray-400 mt-1">自定义您的云桌面环境</p>
             </div>
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" className="text-muted-foreground">
-                整理开发
-              </Button>
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
-                启动
-              </Button>
+              <Badge className="bg-green-500/10 text-green-400 border-green-500/20">
+                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                运行中
+              </Badge>
               <UserMenu />
             </div>
           </div>
@@ -476,13 +393,13 @@ const Workspace = () => {
       </div>
 
       {/* Right AI Chat */}
-      <div className="w-80 bg-card border-l border-border flex flex-col">
-        <div className="p-4 border-b border-border">
+      <div className="w-80 bg-white/5 backdrop-blur-xl border-l border-white/10 flex flex-col">
+        <div className="p-6 border-b border-white/10">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white text-sm">🤖</span>
+            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+              <span className="text-xl">🤖</span>
             </div>
-            <span className="text-lg font-semibold text-foreground">Alaya AI助手</span>
+            <span className="text-lg font-semibold text-white">AI助手</span>
           </div>
         </div>
         
@@ -494,10 +411,10 @@ const Workspace = () => {
                 className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-xs p-3 rounded-lg ${
+                  className={`max-w-xs p-3 rounded-2xl ${
                     message.type === 'user'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-blue-50 text-foreground border border-border'
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                      : 'bg-white/10 text-gray-200 border border-white/20'
                   }`}
                 >
                   <p className="text-sm">{message.content}</p>
@@ -507,20 +424,20 @@ const Workspace = () => {
           </div>
         </ScrollArea>
         
-        <div className="p-4 border-t border-border">
+        <div className="p-4 border-t border-white/10">
           <div className="flex gap-2">
             <Input
               placeholder="输入消息..."
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-              className="flex-1 bg-background border border-border rounded-lg text-foreground placeholder-muted-foreground focus:border-blue-500"
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
             />
             <Button 
               onClick={handleSendMessage} 
-              className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl"
             >
-              ➤
+              发送
             </Button>
           </div>
         </div>
