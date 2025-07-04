@@ -666,6 +666,11 @@ const Workspace = () => {
           </Button>
         </div>
         
+        {/* User Menu */}
+        <div className={`${sidebarCollapsed ? 'p-2' : 'p-3'} border-b border-purple-500/20`}>
+          <UserMenu />
+        </div>
+        
         <nav className={`flex-1 ${sidebarCollapsed ? 'p-2' : 'p-3'} space-y-4`}>
           {navGroups.map((group) => (
             <div key={group.title} className="space-y-1">
@@ -704,14 +709,11 @@ const Workspace = () => {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col">
         {/* Header */}
-        <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-6 py-4">
+        <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-3 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <UserMenu />
-              <div>
-                <h1 className="text-xl font-bold text-purple-100">Alaya NeW算力云工作空间</h1>
-                <p className="text-purple-400 text-sm mt-0.5">自定义您的云桌面环境</p>
-              </div>
+            <div>
+              <h1 className="text-lg font-semibold text-purple-100">Alaya NeW算力云工作空间</h1>
+              <p className="text-purple-400 text-xs">自定义您的云桌面环境</p>
             </div>
             <div className="flex items-center gap-4">
               <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
