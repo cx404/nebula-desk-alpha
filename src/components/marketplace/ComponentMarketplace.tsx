@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Terminal, FileText, Settings, Rocket } from "lucide-react";
+import { Terminal, FileText, Settings, Rocket, Folder, Edit3 } from "lucide-react";
 
 interface Component {
   id: string;
@@ -22,6 +22,17 @@ interface Component {
   rating: number;
   tags: string[];
   isInstalled: boolean;
+  position?: { x: number; y: number };
+  isDragging?: boolean;
+  groupId?: string;
+}
+
+interface ComponentGroup {
+  id: string;
+  name: string;
+  components: Component[];
+  position: { x: number; y: number };
+  isExpanded: boolean;
 }
 
 const officialComponents: Component[] = [
@@ -111,6 +122,13 @@ export const ComponentMarketplace = () => {
     ...officialComponents,
     ...communityComponents
   ]);
+  const [componentGroups, setComponentGroups] = useState<ComponentGroup[]>([]);
+  const [draggedComponent, setDraggedComponent] = useState<Component | null>(null);
+  const [dragOverPosition, setDragOverPosition] = useState<{ x: number; y: number } | null>(null);
+  const [isNameGroupDialogOpen, setIsNameGroupDialogOpen] = useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [pendingGroup, setPendingGroup] = useState<ComponentGroup | null>(null);
+  const dragCanvasRef = useRef<HTMLDivElement>(null);
 
   const categories = ["all", "开发工具", "AI工具", "数据处理", "可视化"];
 
@@ -191,8 +209,165 @@ export const ComponentMarketplace = () => {
     toast.success("AI组件生成成功！");
   };
 
+  // 拖拽相关方法
+  const handleDragStart = (e: React.DragEvent, component: Component) => {
+    setDraggedComponent(component);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", component.id);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    
+    const rect = dragCanvasRef.current?.getBoundingClientRect();
+    if (rect) {
+      setDragOverPosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      });
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent, targetComponent?: Component) => {
+    e.preventDefault();
+    
+    if (!draggedComponent) return;
+    
+    if (targetComponent && targetComponent.id !== draggedComponent.id) {
+      // 创建应用组
+      const newGroup: ComponentGroup = {
+        id: `group-${Date.now()}`,
+        name: `${draggedComponent.name} & ${targetComponent.name}`,
+        components: [draggedComponent, targetComponent],
+        position: dragOverPosition || { x: 200, y: 200 },
+        isExpanded: false
+      };
+      
+      setPendingGroup(newGroup);
+      setIsNameGroupDialogOpen(true);
+    }
+    
+    setDraggedComponent(null);
+    setDragOverPosition(null);
+  };
+
+  const handleCreateGroup = () => {
+    if (!pendingGroup || !groupName.trim()) {
+      toast.error("请输入应用组名称");
+      return;
+    }
+
+    const finalGroup = { ...pendingGroup, name: groupName };
+    setComponentGroups(prev => [...prev, finalGroup]);
+    
+    // 将组件标记为已分组
+    setComponents(prev => prev.map(comp => 
+      finalGroup.components.some(gc => gc.id === comp.id) 
+        ? { ...comp, groupId: finalGroup.id }
+        : comp
+    ));
+    
+    setGroupName("");
+    setPendingGroup(null);
+    setIsNameGroupDialogOpen(false);
+    toast.success(`应用组"${finalGroup.name}"创建成功！`);
+  };
+
+  const handleExpandGroup = (groupId: string) => {
+    setComponentGroups(prev => prev.map(group => 
+      group.id === groupId ? { ...group, isExpanded: !group.isExpanded } : group
+    ));
+  };
+
+  const handleRemoveFromGroup = (componentId: string, groupId: string) => {
+    // 从组中移除组件
+    setComponentGroups(prev => prev.map(group => {
+      if (group.id === groupId) {
+        const newComponents = group.components.filter(c => c.id !== componentId);
+        if (newComponents.length < 2) {
+          // 如果组中只剩一个组件，解散该组
+          return null;
+        }
+        return { ...group, components: newComponents };
+      }
+      return group;
+    }).filter(Boolean) as ComponentGroup[]);
+    
+    // 更新组件状态
+    setComponents(prev => prev.map(comp => 
+      comp.id === componentId ? { ...comp, groupId: undefined } : comp
+    ));
+    
+    toast.success("组件已从应用组中移除");
+  };
+
+  const getUngroupedComponents = () => {
+    return filteredComponents.filter(comp => !comp.groupId);
+  };
+
+  // 渲染应用组
+  const renderComponentGroup = (group: ComponentGroup) => (
+    <div key={group.id} className="relative">
+      <Card 
+        className="p-4 bg-purple-500/10 backdrop-blur-xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 cursor-pointer"
+        onClick={() => handleExpandGroup(group.id)}
+      >
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+            <Folder className="w-6 h-6 text-purple-400" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-medium text-white">{group.name}</h3>
+            <p className="text-sm text-purple-400">{group.components.length} 个组件</p>
+          </div>
+          <Button
+            size="sm"
+            variant="ghost"
+            className="text-purple-400 hover:text-purple-300"
+          >
+            {group.isExpanded ? "收起" : "展开"}
+          </Button>
+        </div>
+        
+        {group.isExpanded && (
+          <div className="space-y-2 mt-4 border-t border-purple-500/20 pt-4">
+            {group.components.map(component => (
+              <div key={component.id} className="flex items-center justify-between p-2 bg-white/5 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-blue-500/20 rounded flex items-center justify-center">
+                    {component.icon}
+                  </div>
+                  <span className="text-sm text-white">{component.name}</span>
+                </div>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveFromGroup(component.id, group.id);
+                  }}
+                  className="text-red-400 hover:text-red-300 h-6 w-6 p-0"
+                >
+                  ×
+                </Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
+    </div>
+  );
+
   const renderComponentCard = (component: Component) => (
-    <Card key={component.id} className="p-4 bg-white/5 backdrop-blur-xl border border-white/10 hover:border-blue-400/40 transition-all duration-300">
+    <Card 
+      key={component.id} 
+      className="p-4 bg-white/5 backdrop-blur-xl border border-white/10 hover:border-blue-400/40 transition-all duration-300 cursor-move"
+      draggable
+      onDragStart={(e) => handleDragStart(e, component)}
+      onDragOver={handleDragOver}
+      onDrop={(e) => handleDrop(e, component)}
+    >
       <div className="flex items-start gap-3 mb-3">
         <div className="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
           {component.icon}
@@ -394,27 +569,40 @@ export const ComponentMarketplace = () => {
           <TabsTrigger value="installed" className="data-[state=active]:bg-blue-500/20 text-white">已安装</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all" className="mt-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredComponents.map(renderComponentCard)}
+        <TabsContent value="all" className="mt-6" ref={dragCanvasRef}>
+          <div className="space-y-4">
+            {/* 应用组 */}
+            {componentGroups.length > 0 && (
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-4">自定义应用组</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                  {componentGroups.map(renderComponentGroup)}
+                </div>
+              </div>
+            )}
+            
+            {/* 未分组的组件 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {getUngroupedComponents().map(renderComponentCard)}
+            </div>
           </div>
         </TabsContent>
 
         <TabsContent value="official" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredComponents.filter(c => c.type === "official").map(renderComponentCard)}
+            {getUngroupedComponents().filter(c => c.type === "official").map(renderComponentCard)}
           </div>
         </TabsContent>
 
         <TabsContent value="community" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredComponents.filter(c => c.type === "community" || c.type === "custom").map(renderComponentCard)}
+            {getUngroupedComponents().filter(c => c.type === "community" || c.type === "custom").map(renderComponentCard)}
           </div>
         </TabsContent>
 
         <TabsContent value="installed" className="mt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredComponents.filter(c => c.isInstalled).map(renderComponentCard)}
+            {getUngroupedComponents().filter(c => c.isInstalled).map(renderComponentCard)}
           </div>
         </TabsContent>
       </Tabs>
@@ -424,6 +612,55 @@ export const ComponentMarketplace = () => {
           <p className="text-gray-400">没有找到匹配的组件</p>
         </div>
       )}
+
+      {/* 应用组命名对话框 */}
+      <Dialog open={isNameGroupDialogOpen} onOpenChange={setIsNameGroupDialogOpen}>
+        <DialogContent className="bg-gray-900/90 backdrop-blur-xl border border-white/10">
+          <DialogHeader>
+            <DialogTitle className="text-white flex items-center gap-2">
+              <Folder className="w-5 h-5 text-purple-400" />
+              创建应用组
+            </DialogTitle>
+            <DialogDescription className="text-gray-400">
+              为您的应用组命名，方便管理和使用
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            {pendingGroup && (
+              <div className="bg-white/5 rounded-lg p-3">
+                <p className="text-sm text-gray-300 mb-2">将要组合的组件：</p>
+                <div className="flex gap-2">
+                  {pendingGroup.components.map(comp => (
+                    <div key={comp.id} className="flex items-center gap-2 bg-white/10 rounded px-2 py-1">
+                      <div className="w-4 h-4">{comp.icon}</div>
+                      <span className="text-xs text-white">{comp.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            <Input
+              placeholder="输入应用组名称..."
+              value={groupName}
+              onChange={(e) => setGroupName(e.target.value)}
+              className="bg-white/5 border-white/10 text-white"
+              autoFocus
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsNameGroupDialogOpen(false)}>
+              取消
+            </Button>
+            <Button 
+              onClick={handleCreateGroup} 
+              className="bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30"
+            >
+              <Folder className="w-4 h-4 mr-2" />
+              创建应用组
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
