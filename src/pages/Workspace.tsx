@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -6,13 +6,37 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserMenu } from "@/components/UserMenu";
+import { ResourceMonitorChart } from "@/components/charts/ResourceMonitorChart";
+import { BillingChart } from "@/components/charts/BillingChart";
+import { APIUsageChart } from "@/components/charts/APIUsageChart";
+import { Canvas } from "@/components/workspace/Canvas";
+import { mockDataService } from "@/services/mockDataService";
 
 const Workspace = () => {
   const [selectedNav, setSelectedNav] = useState("dashboard");
   const [chatMessages, setChatMessages] = useState([
-    { id: 1, type: "assistant", content: "您好！我是您的AI助手，有什么可以帮助您的吗？" },
+    { id: 1, type: "assistant", content: "您好！我是Alaya AI助手，可以帮您管理工作空间、部署模型、执行AI任务。试试说'帮我部署一个模型'或'调整画布布局'？" },
   ]);
   const [newMessage, setNewMessage] = useState("");
+  
+  // 图表数据状态
+  const [resourceData, setResourceData] = useState([]);
+  const [billingData, setBillingData] = useState([]);
+  const [apiUsageData, setApiUsageData] = useState([]);
+  
+  // 初始化和更新数据
+  useEffect(() => {
+    const updateData = () => {
+      setResourceData(mockDataService.generateResourceData());
+      setBillingData(mockDataService.generateBillingData());
+      setApiUsageData(mockDataService.generateAPIUsageData());
+    };
+    
+    updateData();
+    const interval = setInterval(updateData, 30000); // 每30秒更新一次
+    
+    return () => clearInterval(interval);
+  }, []);
 
   const navGroups = [
     {
@@ -56,9 +80,22 @@ const Workspace = () => {
     setChatMessages(prev => [...prev, userMessage]);
     setNewMessage("");
     
-    // 模拟AI回复
+    // 增强的AI回复逻辑
     setTimeout(() => {
-      const aiResponse = { id: Date.now() + 1, type: "assistant", content: "我已经收到您的消息，正在为您处理..." };
+      let response = "我已经收到您的消息，正在为您处理...";
+      
+      const message = newMessage.toLowerCase();
+      if (message.includes("部署") && message.includes("模型")) {
+        response = "我可以帮您部署模型！请告诉我模型类型和配置要求，我将为您自动配置GPU资源并启动部署流程。";
+      } else if (message.includes("画布") || message.includes("布局")) {
+        response = "我可以帮您调整工作空间布局！您可以说'添加Terminal组件'或'重新排列组件'，我会自动操作画布。";
+      } else if (message.includes("监控") || message.includes("资源")) {
+        response = "让我为您查看当前资源使用情况... 当前GPU使用率78%，建议优化算力分配以提升效率。";
+      } else if (message.includes("费用") || message.includes("账单")) {
+        response = "根据当前使用情况，本月预计费用¥1,234，比上月增长12%。我建议启用自动资源调度来优化成本。";
+      }
+      
+      const aiResponse = { id: Date.now() + 1, type: "assistant", content: response };
       setChatMessages(prev => [...prev, aiResponse]);
     }, 1000);
   };
@@ -73,7 +110,9 @@ const Workspace = () => {
               <h2 className="text-2xl font-bold mb-2 text-white">仪表盘</h2>
               <p className="text-gray-400">项目总览和系统状态</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* 概览卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
@@ -108,6 +147,12 @@ const Workspace = () => {
                 </div>
               </div>
             </div>
+
+            {/* 图表区域 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ResourceMonitorChart data={resourceData} />
+              <APIUsageChart data={apiUsageData} />
+            </div>
           </div>
         );
       
@@ -118,64 +163,39 @@ const Workspace = () => {
               <h2 className="text-2xl font-bold mb-2 text-white">算力管理</h2>
               <p className="text-gray-400">管理和监控计算资源</p>
             </div>
-            <Card className="glass-card p-6">
-              <h3 className="text-lg font-semibold mb-4">GPU 实例</h3>
+            
+            {/* GPU实例列表 */}
+            <Card className="glass-card p-6 mb-6">
+              <h3 className="text-lg font-semibold mb-4 text-white">GPU 实例</h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-card/50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div>
-                    <p className="font-medium">NVIDIA A100</p>
-                    <p className="text-sm text-muted-foreground">80GB 显存</p>
+                    <p className="font-medium text-white">NVIDIA A100</p>
+                    <p className="text-sm text-gray-400">80GB 显存</p>
                   </div>
-                  <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20">
+                  <Badge className="bg-green-500/10 text-green-400 border-green-500/20">
                     运行中
                   </Badge>
                 </div>
-                <div className="flex justify-between items-center p-4 bg-card/50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div>
-                    <p className="font-medium">NVIDIA V100</p>
-                    <p className="text-sm text-muted-foreground">32GB 显存</p>
+                    <p className="font-medium text-white">NVIDIA V100</p>
+                    <p className="text-sm text-gray-400">32GB 显存</p>
                   </div>
-                  <Badge variant="outline" className="bg-gray-500/10 text-gray-400 border-gray-500/20">
+                  <Badge className="bg-gray-500/10 text-gray-400 border-gray-500/20">
                     已停止
                   </Badge>
                 </div>
               </div>
             </Card>
+
+            {/* 资源监控图表 */}
+            <ResourceMonitorChart data={resourceData} />
           </div>
         );
       
       case "environment":
-        return (
-          <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">开发环境</h2>
-              <p className="text-gray-400">管理您的开发环境配置</p>
-            </div>
-            <div className="relative h-[500px] bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xl overflow-hidden">
-              <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
-              <div className="relative p-6 h-full">
-                <div className="grid grid-cols-4 gap-6 h-full">
-                  {workspaceItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="group cursor-pointer transform hover:scale-105 transition-all duration-200"
-                    >
-                      <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300 h-full flex flex-col items-center justify-center">
-                        <div className="text-4xl mb-4">{item.icon}</div>
-                        <h3 className="text-white font-medium text-center">{item.name}</h3>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="absolute bottom-4 right-4">
-                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
-                    ➕ 添加组件
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+        return <Canvas />;
       
       case "dataset":
         return (
@@ -528,6 +548,8 @@ const Workspace = () => {
               <h2 className="text-2xl font-bold mb-2 text-white">计费中心</h2>
               <p className="text-gray-400">管理账单、费用和支付方式</p>
             </div>
+            
+            {/* 费用概览 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
                 <div className="text-center">
@@ -551,6 +573,11 @@ const Workspace = () => {
                 </div>
               </div>
             </div>
+
+            {/* 费用趋势图表 */}
+            <BillingChart data={billingData} />
+
+            {/* 账单列表 */}
             <Card className="glass-card p-6">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-semibold text-white">最近账单</h3>
@@ -690,8 +717,9 @@ const Workspace = () => {
             <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
               <span className="text-xl">🤖</span>
             </div>
-            <span className="text-lg font-semibold text-white">AI助手</span>
+            <span className="text-lg font-semibold text-white">Alaya AI助手</span>
           </div>
+          <p className="text-xs text-gray-400 mt-2">支持工作空间管理、模型部署、Agent自动执行</p>
         </div>
         
         <ScrollArea className="flex-1 p-4">
