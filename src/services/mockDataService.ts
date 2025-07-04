@@ -59,7 +59,7 @@ export const mockDataService = {
   // 生成性能数据
   generatePerformanceData: () => {
     const data = [];
-    const models = ['GPT-4', 'Claude-3', 'LLaMA-2', 'PaLM-2'];
+    const models = ['GPT-4', 'Claude-3', 'DeepSeek-R1', 'LLaMA-2'];
     
     models.forEach(model => {
       data.push({
@@ -71,5 +71,25 @@ export const mockDataService = {
     });
     
     return data;
+  },
+
+  // 生成工作空间布局数据
+  generateLayoutData: (components: any[]) => {
+    const layouts = [
+      { name: "开发环境", components: ["notebook", "vscode", "terminal", "git"] },
+      { name: "AI训练", components: ["notebook", "tensorboard", "gpu-monitor", "data-loader"] },
+      { name: "部署环境", components: ["docker", "kubernetes", "monitor", "api-gateway"] },
+    ];
+    
+    return layouts;
+  },
+
+  // 生成模型部署状态
+  generateDeploymentStatus: () => {
+    return [
+      { name: "DeepSeek-R1", status: "running", replicas: 3, requests: 1250 },
+      { name: "GPT-4-Mini", status: "scaling", replicas: 2, requests: 890 },
+      { name: "Claude-3", status: "stopped", replicas: 0, requests: 0 },
+    ];
   },
 };

@@ -9,7 +9,10 @@ import { UserMenu } from "@/components/UserMenu";
 import { ResourceMonitorChart } from "@/components/charts/ResourceMonitorChart";
 import { BillingChart } from "@/components/charts/BillingChart";
 import { APIUsageChart } from "@/components/charts/APIUsageChart";
+import { PerformanceChart } from "@/components/charts/PerformanceChart";
 import { Canvas } from "@/components/workspace/Canvas";
+import { ModelDeployment } from "@/components/workspace/ModelDeployment";
+import { AIAgent } from "@/components/workspace/AIAgent";
 import { mockDataService } from "@/services/mockDataService";
 
 const Workspace = () => {
@@ -23,6 +26,10 @@ const Workspace = () => {
   const [resourceData, setResourceData] = useState([]);
   const [billingData, setBillingData] = useState([]);
   const [apiUsageData, setApiUsageData] = useState([]);
+  const [performanceData, setPerformanceData] = useState([]);
+  
+  // AI Agent状态
+  const [agentTasks, setAgentTasks] = useState([]);
   
   // 初始化和更新数据
   useEffect(() => {
@@ -30,6 +37,7 @@ const Workspace = () => {
       setResourceData(mockDataService.generateResourceData());
       setBillingData(mockDataService.generateBillingData());
       setApiUsageData(mockDataService.generateAPIUsageData());
+      setPerformanceData(mockDataService.generatePerformanceData());
     };
     
     updateData();
@@ -37,6 +45,28 @@ const Workspace = () => {
     
     return () => clearInterval(interval);
   }, []);
+
+  // AI Agent执行指令
+  const handleExecuteCommand = async (command: string): Promise<string> => {
+    // 这里可以集成真实的AI模型API
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(`已执行指令: ${command}`);
+      }, 1000);
+    });
+  };
+
+  // AI Agent更新画布
+  const handleUpdateCanvas = (action: string, params: any) => {
+    console.log('Canvas update:', action, params);
+    // 这里可以实现实际的画布更新逻辑
+  };
+
+  // 模型部署处理
+  const handleModelDeploy = (config: any) => {
+    console.log('Model deployment:', config);
+    // 实际的模型部署逻辑
+  };
 
   const navGroups = [
     {
@@ -190,12 +220,26 @@ const Workspace = () => {
             </Card>
 
             {/* 资源监控图表 */}
-            <ResourceMonitorChart data={resourceData} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ResourceMonitorChart data={resourceData} />
+              <PerformanceChart data={performanceData} />
+            </div>
           </div>
         );
       
       case "environment":
         return <Canvas />;
+      
+      case "model":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">模型部署</h2>
+              <p className="text-gray-400">部署和管理AI模型</p>
+            </div>
+            <ModelDeployment onDeploy={handleModelDeploy} />
+          </div>
+        );
       
       case "dataset":
         return (
@@ -722,6 +766,15 @@ const Workspace = () => {
           <p className="text-xs text-gray-400 mt-2">支持工作空间管理、模型部署、Agent自动执行</p>
         </div>
         
+        {/* AI Agent面板 */}
+        <div className="p-4 border-b border-white/10">
+          <AIAgent 
+            onExecuteCommand={handleExecuteCommand}
+            onUpdateCanvas={handleUpdateCanvas}
+          />
+        </div>
+        
+        {/* 对话区域 */}
         <ScrollArea className="flex-1 p-4">
           <div className="space-y-4">
             {chatMessages.map((message) => (

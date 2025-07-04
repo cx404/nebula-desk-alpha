@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { DraggableComponent } from "./DraggableComponent";
+import { ConnectionLine } from "./ComponentConnection";
+import { toast } from "sonner";
 
 interface CanvasComponent {
   id: string;
@@ -8,6 +10,20 @@ interface CanvasComponent {
   icon: string;
   x: number;
   y: number;
+  connections?: Array<{
+    targetId: string;
+    type: "data" | "control" | "error";
+  }>;
+}
+
+interface SavedLayout {
+  name: string;
+  components: CanvasComponent[];
+  connections: Array<{
+    sourceId: string;
+    targetId: string;
+    type: "data" | "control" | "error";
+  }>;
 }
 
 const initialComponents: CanvasComponent[] = [
@@ -24,11 +40,26 @@ const availableComponents = [
   { name: "Database", icon: "🗄️" },
   { name: "API Client", icon: "🔌" },
   { name: "Monitor", icon: "📊" },
+  { name: "TensorBoard", icon: "📈" },
+  { name: "GPU Monitor", icon: "⚡" },
+  { name: "Data Loader", icon: "📁" },
+  { name: "Kubernetes", icon: "⚙️" },
+  { name: "API Gateway", icon: "🚪" },
+  { name: "Model Server", icon: "🤖" },
 ];
 
 export const Canvas = () => {
   const [components, setComponents] = useState<CanvasComponent[]>(initialComponents);
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
+  const [connections, setConnections] = useState<Array<{
+    sourceId: string;
+    targetId: string;
+    type: "data" | "control" | "error";
+  }>>([]);
+  const [savedLayouts, setSavedLayouts] = useState<SavedLayout[]>([]);
+  const [isConnecting, setIsConnecting] = useState(false);
+  const [connectionSource, setConnectionSource] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   const handlePositionChange = (id: string, x: number, y: number) => {
     setComponents(prev => 
@@ -49,15 +80,61 @@ export const Canvas = () => {
       icon: component.icon,
       x: Math.random() * 400 + 100,
       y: Math.random() * 200 + 100,
+      connections: [],
     };
     setComponents(prev => [...prev, newComponent]);
+    toast.success(`${component.name} 组件已添加`);
   };
 
   const deleteSelectedComponent = () => {
     if (selectedComponent) {
       setComponents(prev => prev.filter(comp => comp.id !== selectedComponent));
+      // 删除相关连接
+      setConnections(prev => prev.filter(
+        conn => conn.sourceId !== selectedComponent && conn.targetId !== selectedComponent
+      ));
       setSelectedComponent(null);
+      toast.success("组件已删除");
     }
+  };
+
+  const saveCurrentLayout = () => {
+    const layoutName = `布局_${new Date().toLocaleTimeString('zh-CN', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })}`;
+    
+    const newLayout: SavedLayout = {
+      name: layoutName,
+      components: [...components],
+      connections: [...connections],
+    };
+    
+    setSavedLayouts(prev => [...prev, newLayout]);
+    toast.success(`布局"${layoutName}"已保存`);
+  };
+
+  const loadLayout = (layout: SavedLayout) => {
+    setComponents(layout.components);
+    setConnections(layout.connections);
+    setSelectedComponent(null);
+    toast.success(`布局"${layout.name}"已加载`);
+  };
+
+  const autoArrangeComponents = () => {
+    const gridSize = 140;
+    const startX = 50;
+    const startY = 50;
+    const cols = 4;
+    
+    setComponents(prev => 
+      prev.map((comp, index) => ({
+        ...comp,
+        x: startX + (index % cols) * gridSize,
+        y: startY + Math.floor(index / cols) * gridSize,
+      }))
+    );
+    toast.success("组件已自动排列");
   };
 
   return (
@@ -67,20 +144,58 @@ export const Canvas = () => {
         <p className="text-gray-400">拖拽组件创建您的专属工作环境</p>
       </div>
 
-      {/* 组件库 */}
-      <div className="mb-4">
-        <h3 className="text-lg font-semibold text-white mb-3">组件库</h3>
-        <div className="flex gap-3 flex-wrap">
-          {availableComponents.map((comp, index) => (
+      {/* 组件库和布局管理 */}
+      <div className="flex justify-between items-start mb-4">
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold text-white mb-3">组件库</h3>
+          <div className="flex gap-2 flex-wrap">
+            {availableComponents.map((comp, index) => (
+              <Button
+                key={index}
+                onClick={() => addComponent(comp)}
+                size="sm"
+                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 flex items-center gap-2"
+              >
+                <span>{comp.icon}</span>
+                {comp.name}
+              </Button>
+            ))}
+          </div>
+        </div>
+        
+        <div className="ml-6">
+          <h3 className="text-lg font-semibold text-white mb-3">布局管理</h3>
+          <div className="flex gap-2">
             <Button
-              key={index}
-              onClick={() => addComponent(comp)}
-              className="bg-white/10 hover:bg-white/20 text-white border border-white/20 flex items-center gap-2"
+              onClick={autoArrangeComponents}
+              size="sm"
+              className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/30"
             >
-              <span>{comp.icon}</span>
-              {comp.name}
+              🔄 自动排列
             </Button>
-          ))}
+            <Button
+              onClick={saveCurrentLayout}
+              size="sm"
+              className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30"
+            >
+              💾 保存布局
+            </Button>
+          </div>
+          {savedLayouts.length > 0 && (
+            <div className="mt-2 space-y-1">
+              {savedLayouts.slice(-3).map((layout, index) => (
+                <Button
+                  key={index}
+                  onClick={() => loadLayout(layout)}
+                  size="sm"
+                  variant="outline"
+                  className="w-full text-xs bg-white/5 border-white/20 text-white hover:bg-white/10"
+                >
+                  📋 {layout.name}
+                </Button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
@@ -101,7 +216,29 @@ export const Canvas = () => {
         </div>
 
         {/* 拖拽组件 */}
-        <div className="relative h-full p-6">
+        <div 
+          ref={canvasRef}
+          className="relative h-full p-6"
+        >
+          {/* 连接线 */}
+          {connections.map((connection, index) => {
+            const sourceComp = components.find(c => c.id === connection.sourceId);
+            const targetComp = components.find(c => c.id === connection.targetId);
+            
+            if (!sourceComp || !targetComp) return null;
+            
+            return (
+              <ConnectionLine
+                key={index}
+                startX={sourceComp.x + 56} // 组件中心
+                startY={sourceComp.y + 56}
+                endX={targetComp.x + 56}
+                endY={targetComp.y + 56}
+                type={connection.type}
+              />
+            );
+          })}
+          
           {components.map((component) => (
             <DraggableComponent
               key={component.id}
@@ -122,13 +259,18 @@ export const Canvas = () => {
           {selectedComponent && (
             <Button
               onClick={deleteSelectedComponent}
+              size="sm"
               className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30"
             >
               🗑️ 删除
             </Button>
           )}
-          <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
-            💾 保存布局
+          <Button 
+            onClick={saveCurrentLayout}
+            size="sm" 
+            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
+          >
+            💾 保存当前布局
           </Button>
         </div>
       </div>
