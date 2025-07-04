@@ -14,14 +14,30 @@ const Workspace = () => {
   ]);
   const [newMessage, setNewMessage] = useState("");
 
-  const navItems = [
-    { id: "dashboard", name: "仪表盘", icon: "📊" },
-    { id: "compute", name: "算力管理", icon: "⚡" },
-    { id: "environment", name: "开发环境", icon: "💻" },
-    { id: "dataset", name: "数据集", icon: "📁" },
-    { id: "tasks", name: "任务管理", icon: "📋" },
-    { id: "model", name: "模型部署", icon: "🚀" },
-    { id: "inference", name: "推理服务", icon: "🔮" },
+  const navGroups = [
+    {
+      title: "主菜单",
+      items: [
+        { id: "dashboard", name: "仪表盘", icon: "📊" },
+        { id: "compute", name: "算力管理", icon: "⚡" },
+      ]
+    },
+    {
+      title: "资源",
+      items: [
+        { id: "marketplace", name: "组件市场", icon: "🛍️" },
+        { id: "community", name: "社区", icon: "👥" },
+        { id: "docs", name: "文档", icon: "📖" },
+      ]
+    },
+    {
+      title: "设置",
+      items: [
+        { id: "personal", name: "个人设置", icon: "👤" },
+        { id: "platform", name: "平台设置", icon: "⚙️" },
+        { id: "billing", name: "计费中心", icon: "💳" },
+      ]
+    }
   ];
 
   const workspaceItems = [
@@ -263,38 +279,304 @@ const Workspace = () => {
           </div>
         );
       
-      case "inference":
+      case "marketplace":
         return (
           <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">推理服务</h2>
-              <p className="text-muted-foreground">API接口和推理性能监控</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">组件市场</h2>
+              <p className="text-gray-400">发现和安装各种开发组件</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                    <span className="text-xl">📊</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">数据可视化</h3>
+                    <p className="text-sm text-gray-400">Chart.js 组件包</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/30">
+                  安装
+                </Button>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                    <span className="text-xl">🤖</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">AI 模型</h3>
+                    <p className="text-sm text-gray-400">预训练模型库</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
+                  安装
+                </Button>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <span className="text-xl">🔧</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">开发工具</h3>
+                    <p className="text-sm text-gray-400">调试和测试工具</p>
+                  </div>
+                </div>
+                <Button className="w-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30">
+                  安装
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+
+      case "community":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">社区</h2>
+              <p className="text-gray-400">与开发者交流和分享经验</p>
             </div>
             <Card className="glass-card p-6">
-              <h3 className="text-lg font-semibold mb-4">API 端点</h3>
+              <h3 className="text-lg font-semibold mb-4 text-white">热门讨论</h3>
               <div className="space-y-4">
-                <div className="p-4 bg-card/50 rounded-lg">
-                  <div className="flex justify-between items-center mb-2">
-                    <code className="text-sm bg-muted px-2 py-1 rounded">
-                      https://api.example.com/v1/chat/completions
-                    </code>
-                    <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20">
-                      活跃
-                    </Badge>
+                <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
+                      <span className="text-sm">👤</span>
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-white">如何优化GPU使用率？</h4>
+                      <p className="text-sm text-gray-400 mt-1">在深度学习训练中，如何最大化GPU利用率...</p>
+                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                        <span>👍 23</span>
+                        <span>💬 12</span>
+                        <span>2小时前</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-3 gap-4 text-sm">
-                    <div>
-                      <p className="text-muted-foreground">今日调用</p>
-                      <p className="font-semibold">1,234</p>
+                </div>
+                <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                  <div className="flex items-start gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center">
+                      <span className="text-sm">👤</span>
                     </div>
-                    <div>
-                      <p className="text-muted-foreground">平均延迟</p>
-                      <p className="font-semibold">150ms</p>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-white">分享：自动化部署脚本</h4>
+                      <p className="text-sm text-gray-400 mt-1">分享一个可以自动部署模型到生产环境的脚本...</p>
+                      <div className="flex items-center gap-4 mt-2 text-xs text-gray-500">
+                        <span>👍 45</span>
+                        <span>💬 8</span>
+                        <span>5小时前</span>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-muted-foreground">成功率</p>
-                      <p className="font-semibold">99.9%</p>
-                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        );
+
+      case "docs":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">文档</h2>
+              <p className="text-gray-400">查看API文档和使用指南</p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="glass-card p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">快速开始</h3>
+                <div className="space-y-3">
+                  <div className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                    <h4 className="font-medium text-white">🚀 平台介绍</h4>
+                    <p className="text-sm text-gray-400">了解算力云桌面的基本功能</p>
+                  </div>
+                  <div className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                    <h4 className="font-medium text-white">⚡ 环境配置</h4>
+                    <p className="text-sm text-gray-400">设置开发环境和依赖</p>
+                  </div>
+                  <div className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                    <h4 className="font-medium text-white">🔧 工具使用</h4>
+                    <p className="text-sm text-gray-400">常用开发工具的使用方法</p>
+                  </div>
+                </div>
+              </Card>
+              <Card className="glass-card p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">API 参考</h3>
+                <div className="space-y-3">
+                  <div className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                    <h4 className="font-medium text-white">📡 REST API</h4>
+                    <p className="text-sm text-gray-400">完整的REST API文档</p>
+                  </div>
+                  <div className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                    <h4 className="font-medium text-white">🔌 SDK</h4>
+                    <p className="text-sm text-gray-400">各语言SDK使用指南</p>
+                  </div>
+                  <div className="p-3 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors cursor-pointer">
+                    <h4 className="font-medium text-white">📝 示例代码</h4>
+                    <p className="text-sm text-gray-400">常见场景的代码示例</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        );
+
+      case "personal":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">个人设置</h2>
+              <p className="text-gray-400">管理个人账户和偏好设置</p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="glass-card p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">账户信息</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm text-gray-400">用户名</label>
+                    <Input className="mt-1 bg-white/5 border-white/10 text-white" defaultValue="developer@example.com" />
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-400">显示名称</label>
+                    <Input className="mt-1 bg-white/5 border-white/10 text-white" defaultValue="开发者" />
+                  </div>
+                  <Button className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/30">
+                    更新信息
+                  </Button>
+                </div>
+              </Card>
+              <Card className="glass-card p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">偏好设置</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white">深色模式</span>
+                    <div className="w-10 h-6 bg-blue-500 rounded-full"></div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white">邮件通知</span>
+                    <div className="w-10 h-6 bg-gray-600 rounded-full"></div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white">自动保存</span>
+                    <div className="w-10 h-6 bg-blue-500 rounded-full"></div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        );
+
+      case "platform":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">平台设置</h2>
+              <p className="text-gray-400">配置平台级别的选项和权限</p>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="glass-card p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">资源配置</h3>
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm text-gray-400">默认GPU类型</label>
+                    <select className="w-full mt-1 p-2 bg-white/5 border border-white/10 rounded-lg text-white">
+                      <option value="a100">NVIDIA A100</option>
+                      <option value="v100">NVIDIA V100</option>
+                      <option value="t4">NVIDIA T4</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-400">内存限制 (GB)</label>
+                    <Input className="mt-1 bg-white/5 border-white/10 text-white" defaultValue="32" />
+                  </div>
+                  <div>
+                    <label className="text-sm text-gray-400">存储限制 (GB)</label>
+                    <Input className="mt-1 bg-white/5 border-white/10 text-white" defaultValue="500" />
+                  </div>
+                </div>
+              </Card>
+              <Card className="glass-card p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">安全设置</h3>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white">双重认证</span>
+                    <div className="w-10 h-6 bg-blue-500 rounded-full"></div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white">IP白名单</span>
+                    <div className="w-10 h-6 bg-gray-600 rounded-full"></div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-white">API访问控制</span>
+                    <div className="w-10 h-6 bg-blue-500 rounded-full"></div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        );
+
+      case "billing":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">计费中心</h2>
+              <p className="text-gray-400">管理账单、费用和支付方式</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+                <div className="text-center">
+                  <h3 className="font-semibold text-white mb-2">本月费用</h3>
+                  <p className="text-3xl font-bold text-blue-400">¥1,234</p>
+                  <p className="text-sm text-gray-400 mt-1">比上月增长 12%</p>
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+                <div className="text-center">
+                  <h3 className="font-semibold text-white mb-2">账户余额</h3>
+                  <p className="text-3xl font-bold text-green-400">¥856</p>
+                  <p className="text-sm text-gray-400 mt-1">可用 2.5 个月</p>
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+                <div className="text-center">
+                  <h3 className="font-semibold text-white mb-2">预计下月</h3>
+                  <p className="text-3xl font-bold text-purple-400">¥1,089</p>
+                  <p className="text-sm text-gray-400 mt-1">基于当前使用</p>
+                </div>
+              </div>
+            </div>
+            <Card className="glass-card p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold text-white">最近账单</h3>
+                <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">
+                  查看全部
+                </Button>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                  <div>
+                    <p className="font-medium text-white">2024年1月账单</p>
+                    <p className="text-sm text-gray-400">GPU使用费 + 存储费</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-white">¥1,156</p>
+                    <Badge className="bg-green-500/10 text-green-400 border-green-500/20">已支付</Badge>
+                  </div>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
+                  <div>
+                    <p className="font-medium text-white">2023年12月账单</p>
+                    <p className="text-sm text-gray-400">GPU使用费 + 存储费</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-white">¥1,089</p>
+                    <Badge className="bg-green-500/10 text-green-400 border-green-500/20">已支付</Badge>
                   </div>
                 </div>
               </div>
@@ -346,21 +628,30 @@ const Workspace = () => {
           </div>
         </div>
         
-        <nav className="flex-1 p-4 space-y-2">
-          {navItems.map((item) => (
-            <Button
-              key={item.id}
-              variant="ghost"
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-left justify-start ${
-                selectedNav === item.id
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg hover:from-blue-600 hover:to-purple-700'
-                  : 'text-gray-300 hover:text-white hover:bg-white/5'
-              }`}
-              onClick={() => setSelectedNav(item.id)}
-            >
-              <span className="text-lg">{item.icon}</span>
-              {item.name}
-            </Button>
+        <nav className="flex-1 p-4 space-y-6">
+          {navGroups.map((group) => (
+            <div key={group.title} className="space-y-2">
+              <h3 className="text-xs uppercase tracking-wider text-gray-400 font-medium px-2">
+                {group.title}
+              </h3>
+              <div className="space-y-1">
+                {group.items.map((item) => (
+                  <Button
+                    key={item.id}
+                    variant="ghost"
+                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-left justify-start ${
+                      selectedNav === item.id
+                        ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg hover:from-blue-600 hover:to-purple-700'
+                        : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    }`}
+                    onClick={() => setSelectedNav(item.id)}
+                  >
+                    <span className="text-lg">{item.icon}</span>
+                    {item.name}
+                  </Button>
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
       </div>
