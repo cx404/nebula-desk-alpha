@@ -13,6 +13,8 @@ import { PerformanceChart } from "@/components/charts/PerformanceChart";
 import { Canvas } from "@/components/workspace/Canvas";
 import { ModelDeployment } from "@/components/workspace/ModelDeployment";
 import { AIAgent } from "@/components/workspace/AIAgent";
+import { ComponentMarketplace } from "@/components/marketplace/ComponentMarketplace";
+import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace";
 import { mockDataService } from "@/services/mockDataService";
 
 const Workspace = () => {
@@ -80,6 +82,7 @@ const Workspace = () => {
       title: "资源",
       items: [
         { id: "marketplace", name: "组件市场", icon: "🛍️" },
+        { id: "workspace", name: "组件工作空间", icon: "🔧" },
         { id: "community", name: "社区", icon: "👥" },
         { id: "docs", name: "文档", icon: "📖" },
       ]
@@ -344,58 +347,10 @@ const Workspace = () => {
         );
       
       case "marketplace":
-        return (
-          <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">组件市场</h2>
-              <p className="text-gray-400">发现和安装各种开发组件</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
-                    <span className="text-xl">📊</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">数据可视化</h3>
-                    <p className="text-sm text-gray-400">Chart.js 组件包</p>
-                  </div>
-                </div>
-                <Button className="w-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/30">
-                  安装
-                </Button>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
-                    <span className="text-xl">🤖</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">AI 模型</h3>
-                    <p className="text-sm text-gray-400">预训练模型库</p>
-                  </div>
-                </div>
-                <Button className="w-full bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
-                  安装
-                </Button>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-                    <span className="text-xl">🔧</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">开发工具</h3>
-                    <p className="text-sm text-gray-400">调试和测试工具</p>
-                  </div>
-                </div>
-                <Button className="w-full bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/30">
-                  安装
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
+        return <ComponentMarketplace />;
+      
+      case "workspace":
+        return <ComponentWorkspace />;
 
       case "community":
         return (
