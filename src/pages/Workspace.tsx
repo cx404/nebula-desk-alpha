@@ -54,43 +54,43 @@ const Workspace = () => {
         return (
           <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">仪表盘</h2>
-              <p className="text-muted-foreground">项目总览和系统状态</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">仪表盘</h2>
+              <p className="text-gray-400">项目总览和系统状态</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Card className="glass-card p-6">
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <span className="text-xl">💼</span>
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">💼</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold">活跃项目</h3>
-                    <p className="text-2xl font-bold text-primary">3</p>
+                    <h3 className="font-semibold text-white">活跃项目</h3>
+                    <p className="text-3xl font-bold text-blue-400">3</p>
                   </div>
                 </div>
-              </Card>
-              <Card className="glass-card p-6">
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-green-500/20 rounded-lg flex items-center justify-center">
-                    <span className="text-xl">⚡</span>
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">⚡</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold">算力使用</h3>
-                    <p className="text-2xl font-bold text-green-400">78%</p>
+                    <h3 className="font-semibold text-white">算力使用</h3>
+                    <p className="text-3xl font-bold text-green-400">78%</p>
                   </div>
                 </div>
-              </Card>
-              <Card className="glass-card p-6">
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                    <span className="text-xl">💰</span>
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">💰</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold">今日费用</h3>
-                    <p className="text-2xl font-bold text-blue-400">¥126</p>
+                    <h3 className="font-semibold text-white">今日费用</h3>
+                    <p className="text-3xl font-bold text-purple-400">¥126</p>
                   </div>
                 </div>
-              </Card>
+              </div>
             </div>
           </div>
         );
@@ -99,8 +99,8 @@ const Workspace = () => {
         return (
           <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">算力管理</h2>
-              <p className="text-muted-foreground">管理和监控计算资源</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">算力管理</h2>
+              <p className="text-gray-400">管理和监控计算资源</p>
             </div>
             <Card className="glass-card p-6">
               <h3 className="text-lg font-semibold mb-4">GPU 实例</h3>
@@ -132,26 +132,30 @@ const Workspace = () => {
         return (
           <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">开发环境</h2>
-              <p className="text-muted-foreground">管理您的开发环境配置</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">开发环境</h2>
+              <p className="text-gray-400">管理您的开发环境配置</p>
             </div>
-            <div className="relative h-[400px] bg-card/20 rounded-lg border-2 border-dashed border-border/50 overflow-hidden">
-              {workspaceItems.map((item) => (
-                <div
-                  key={item.id}
-                  className="absolute w-20 h-20 bg-card/80 backdrop-blur-lg rounded-lg border border-border/50 flex flex-col items-center justify-center cursor-move hover:scale-105 transition-transform group"
-                  style={{ left: item.x, top: item.y }}
-                >
-                  <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">
-                    {item.icon}
-                  </div>
-                  <span className="text-xs text-center leading-tight">{item.name}</span>
+            <div className="relative h-[500px] bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xl overflow-hidden">
+              <div className="absolute inset-0 bg-grid-pattern opacity-30"></div>
+              <div className="relative p-6 h-full">
+                <div className="grid grid-cols-4 gap-6 h-full">
+                  {workspaceItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="group cursor-pointer transform hover:scale-105 transition-all duration-200"
+                    >
+                      <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300 h-full flex flex-col items-center justify-center">
+                        <div className="text-4xl mb-4">{item.icon}</div>
+                        <h3 className="text-white font-medium text-center">{item.name}</h3>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-              <div className="absolute bottom-4 right-4">
-                <Button variant="outline" className="bg-card/80 backdrop-blur-lg">
-                  ➕ 添加组件
-                </Button>
+                <div className="absolute bottom-4 right-4">
+                  <Button className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white">
+                    ➕ 添加组件
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
@@ -330,102 +334,111 @@ const Workspace = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Header */}
-      <header className="border-b border-border/50 bg-card/50 backdrop-blur-lg flex-shrink-0">
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-              <div className="w-4 h-4 bg-primary rounded"></div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900 flex">
+      {/* Left Navigation */}
+      <div className="w-64 bg-white/5 backdrop-blur-xl border-r border-white/10 flex flex-col">
+        <div className="p-6 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+              <div className="w-6 h-6 bg-white rounded"></div>
             </div>
+            <span className="text-lg font-semibold text-white">算力云桌面</span>
+          </div>
+        </div>
+        
+        <nav className="flex-1 p-4 space-y-2">
+          {navItems.map((item) => (
+            <Button
+              key={item.id}
+              variant="ghost"
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-left justify-start ${
+                selectedNav === item.id
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg hover:from-blue-600 hover:to-purple-700'
+                  : 'text-gray-300 hover:text-white hover:bg-white/5'
+              }`}
+              onClick={() => setSelectedNav(item.id)}
+            >
+              <span className="text-lg">{item.icon}</span>
+              {item.name}
+            </Button>
+          ))}
+        </nav>
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Header */}
+        <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 p-6">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-semibold">算力云桌面</h1>
-              <p className="text-sm text-muted-foreground">智能工作空间</p>
+              <h1 className="text-2xl font-bold text-white">工作空间</h1>
+              <p className="text-gray-400 mt-1">自定义您的云桌面环境</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <Badge className="bg-green-500/10 text-green-400 border-green-500/20">
+                <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
+                运行中
+              </Badge>
+              <UserMenu />
             </div>
           </div>
-          
-          <div className="flex items-center gap-4">
-            <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20">
-              <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-              运行中
-            </Badge>
-            <UserMenu />
-          </div>
-        </div>
-      </header>
-
-      {/* Main Layout */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Left Sidebar - Navigation */}
-        <div className="w-64 border-r border-border/50 bg-card/30 backdrop-blur-lg flex-shrink-0">
-          <div className="p-4">
-            <h3 className="text-lg font-semibold mb-4">导航菜单</h3>
-            <nav className="space-y-2">
-              {navItems.map((item) => (
-                <Button
-                  key={item.id}
-                  variant={selectedNav === item.id ? "default" : "ghost"}
-                  className="w-full justify-start gap-3"
-                  onClick={() => setSelectedNav(item.id)}
-                >
-                  <span className="text-lg">{item.icon}</span>
-                  {item.name}
-                </Button>
-              ))}
-            </nav>
-          </div>
         </div>
 
-        {/* Center - Dynamic Content */}
-        <div className="flex-1 overflow-auto">
-          <div className="h-full p-6">
+        {/* Content Area */}
+        <div className="flex-1 p-6 overflow-auto">
+          <div className="h-full">
             {renderContent()}
           </div>
         </div>
+      </div>
 
-        {/* Right Sidebar - AI Chat */}
-        <div className="w-80 border-l border-border/50 bg-card/30 backdrop-blur-lg flex-shrink-0 flex flex-col">
-          <div className="p-4 border-b border-border/50">
-            <h3 className="text-lg font-semibold">AI 助手</h3>
-            <p className="text-sm text-muted-foreground">智能对话助手</p>
+      {/* Right AI Chat */}
+      <div className="w-80 bg-white/5 backdrop-blur-xl border-l border-white/10 flex flex-col">
+        <div className="p-6 border-b border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+              <span className="text-xl">🤖</span>
+            </div>
+            <span className="text-lg font-semibold text-white">AI助手</span>
           </div>
-          
-          {/* Chat Messages */}
-          <ScrollArea className="flex-1 p-4">
-            <div className="space-y-4">
-              {chatMessages.map((message) => (
+        </div>
+        
+        <ScrollArea className="flex-1 p-4">
+          <div className="space-y-4">
+            {chatMessages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
                 <div
-                  key={message.id}
-                  className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                  className={`max-w-xs p-3 rounded-2xl ${
+                    message.type === 'user'
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white'
+                      : 'bg-white/10 text-gray-200 border border-white/20'
+                  }`}
                 >
-                  <div
-                    className={`max-w-[80%] p-3 rounded-lg ${
-                      message.type === 'user'
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-card/80 backdrop-blur-lg border border-border/50'
-                    }`}
-                  >
-                    <p className="text-sm">{message.content}</p>
-                  </div>
+                  <p className="text-sm">{message.content}</p>
                 </div>
-              ))}
-            </div>
-          </ScrollArea>
-          
-          {/* Chat Input */}
-          <div className="p-4 border-t border-border/50">
-            <div className="flex gap-2">
-              <Input
-                placeholder="输入消息..."
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                className="flex-1"
-              />
-              <Button onClick={handleSendMessage} size="sm">
-                发送
-              </Button>
-            </div>
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+        
+        <div className="p-4 border-t border-white/10">
+          <div className="flex gap-2">
+            <Input
+              placeholder="输入消息..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              className="flex-1 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:border-blue-500"
+            />
+            <Button 
+              onClick={handleSendMessage} 
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white rounded-xl"
+            >
+              发送
+            </Button>
           </div>
         </div>
       </div>
