@@ -173,5 +173,51 @@ export const AIAgent = ({
     }
   };
   const predefinedCommands = ["部署 DeepSeek-R1 模型", "添加 Terminal 组件", "检查系统资源状态", "分析本月费用情况", "重新整理画布布局"];
-  return;
+  
+  return (
+    <Card className="p-4 bg-white/5 backdrop-blur-xl border border-white/10">
+      <h3 className="text-lg font-semibold text-white mb-4">AI 助手</h3>
+      
+      <div className="space-y-4">
+        {/* 快捷指令 */}
+        <div className="space-y-2">
+          <p className="text-sm text-gray-400">快捷指令:</p>
+          {predefinedCommands.map((cmd, index) => (
+            <Button
+              key={index}
+              onClick={() => executeAgentTask(cmd)}
+              size="sm"
+              disabled={isProcessing}
+              className="w-full justify-start text-xs bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30"
+            >
+              {cmd}
+            </Button>
+          ))}
+        </div>
+        
+        {/* 任务历史 */}
+        {tasks.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-sm text-gray-400">任务历史:</p>
+            <div className="space-y-2 max-h-60 overflow-y-auto">
+              {tasks.slice(0, 5).map((task) => (
+                <div key={task.id} className="p-3 bg-black/20 rounded-lg border border-white/10">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-sm text-white">{task.command}</span>
+                    {getStatusBadge(task.status)}
+                  </div>
+                  {task.result && (
+                    <p className="text-xs text-gray-400 mt-1">{task.result}</p>
+                  )}
+                  <p className="text-xs text-gray-500">
+                    {task.timestamp.toLocaleTimeString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
 };
