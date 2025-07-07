@@ -665,7 +665,7 @@ const Workspace = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
                 <div className="w-4 h-4 bg-white rounded-sm"></div>
               </div>
-              <span className="text-sm font-semibold text-purple-100">Alaya NeW算力云工作空间</span>
+              <User className="h-5 w-5 text-purple-100" />
             </div>
           )}
           <Button
