@@ -856,3 +856,6 @@ const Workspace = () => {
       </div>
     </div>
   );
+};
+
+export default Workspace;
