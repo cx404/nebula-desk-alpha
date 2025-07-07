@@ -15,27 +15,27 @@ import { ModelDeployment } from "@/components/workspace/ModelDeployment";
 import { AIAgent } from "@/components/workspace/AIAgent";
 import { ComponentMarketplace } from "@/components/marketplace/ComponentMarketplace";
 import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace";
+import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard } from "lucide-react";
-const Workspace = () => {
-  const [selectedNav, setSelectedNav] = useState("dashboard");
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [chatMessages, setChatMessages] = useState([{
-    id: 1,
-    type: "assistant",
-    content: "您好！我是Alaya AI助手，可以帮您管理工作空间、部署模型、执行AI任务。试试说'帮我部署一个模型'或'调整画布布局'？"
-  }]);
-  const [newMessage, setNewMessage] = useState("");
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout } from "lucide-react";
 
+const Workspace = () => {
+  const [selectedNav, setSelectedNav] = useState("workspace");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [chatMessages, setChatMessages] = useState([
+    { id: 1, type: "assistant", content: "您好！我是Alaya AI助手，可以帮您管理工作空间、部署模型、执行AI任务。试试说'帮我部署一个模型'或'调整画布布局'？" },
+  ]);
+  const [newMessage, setNewMessage] = useState("");
+  
   // 图表数据状态
   const [resourceData, setResourceData] = useState([]);
   const [billingData, setBillingData] = useState([]);
   const [apiUsageData, setApiUsageData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
-
+  
   // AI Agent状态
   const [agentTasks, setAgentTasks] = useState([]);
-
+  
   // 初始化和更新数据
   useEffect(() => {
     const updateData = () => {
@@ -44,16 +44,17 @@ const Workspace = () => {
       setApiUsageData(mockDataService.generateAPIUsageData());
       setPerformanceData(mockDataService.generatePerformanceData());
     };
+    
     updateData();
     const interval = setInterval(updateData, 30000); // 每30秒更新一次
-
+    
     return () => clearInterval(interval);
   }, []);
 
   // AI Agent执行指令
   const handleExecuteCommand = async (command: string): Promise<string> => {
     // 这里可以集成真实的AI模型API
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve(`已执行指令: ${command}`);
       }, 1000);
@@ -71,111 +72,54 @@ const Workspace = () => {
     console.log('Model deployment:', config);
     // 实际的模型部署逻辑
   };
-  const navGroups = [{
-    title: "主菜单",
-    items: [{
-      id: "dashboard",
-      name: "仪表盘",
-      icon: BarChart3,
-      fullName: "仪表盘"
-    }, {
-      id: "compute",
-      name: "算力管理",
-      icon: Zap,
-      fullName: "算力管理"
-    }]
-  }, {
-    title: "资源",
-    items: [{
-      id: "marketplace",
-      name: "组件市场",
-      icon: ShoppingBag,
-      fullName: "组件市场"
-    }, {
-      id: "workspace",
-      name: "组件工作空间",
-      icon: Wrench,
-      fullName: "组件工作空间"
-    }, {
-      id: "community",
-      name: "社区",
-      icon: Users,
-      fullName: "社区"
-    }, {
-      id: "docs",
-      name: "文档",
-      icon: FileText,
-      fullName: "文档"
-    }]
-  }, {
-    title: "设置",
-    items: [{
-      id: "personal",
-      name: "个人设置",
-      icon: User,
-      fullName: "个人设置"
-    }, {
-      id: "platform",
-      name: "平台设置",
-      icon: Settings,
-      fullName: "平台设置"
-    }, {
-      id: "billing",
-      name: "计费中心",
-      icon: CreditCard,
-      fullName: "计费中心"
-    }]
-  }];
-  const workspaceItems = [{
-    id: "notebook",
-    name: "Jupyter Notebook",
-    icon: "📓",
-    x: 100,
-    y: 100
-  }, {
-    id: "vscode",
-    name: "VS Code",
-    icon: "💻",
-    x: 250,
-    y: 100
-  }, {
-    id: "terminal",
-    name: "Terminal",
-    icon: "⚡",
-    x: 400,
-    y: 100
-  }, {
-    id: "browser",
-    name: "Browser",
-    icon: "🌐",
-    x: 100,
-    y: 250
-  }, {
-    id: "docker",
-    name: "Docker",
-    icon: "🐳",
-    x: 250,
-    y: 250
-  }, {
-    id: "git",
-    name: "Git Client",
-    icon: "📋",
-    x: 400,
-    y: 250
-  }];
+
+  const navGroups = [
+    {
+      title: "主菜单",
+      items: [
+        { id: "workspace", name: "工作空间", icon: Wrench, fullName: "工作空间" },
+        { id: "compute", name: "算力管理", icon: Zap, fullName: "算力管理" },
+      ]
+    },
+    {
+      title: "资源",
+      items: [
+        { id: "marketplace", name: "组件市场", icon: ShoppingBag, fullName: "组件市场" },
+        { id: "template", name: "工作空间模板", icon: Layout, fullName: "工作空间模板" },
+        { id: "community", name: "社区", icon: Users, fullName: "社区" },
+        { id: "docs", name: "文档", icon: FileText, fullName: "文档" },
+      ]
+    },
+    {
+      title: "设置",
+      items: [
+        { id: "personal", name: "个人设置", icon: User, fullName: "个人设置" },
+        { id: "platform", name: "平台设置", icon: Settings, fullName: "平台设置" },
+        { id: "billing", name: "计费中心", icon: CreditCard, fullName: "计费中心" },
+      ]
+    }
+  ];
+
+  const workspaceItems = [
+    { id: "notebook", name: "Jupyter Notebook", icon: "📓", x: 100, y: 100 },
+    { id: "vscode", name: "VS Code", icon: "💻", x: 250, y: 100 },
+    { id: "terminal", name: "Terminal", icon: "⚡", x: 400, y: 100 },
+    { id: "browser", name: "Browser", icon: "🌐", x: 100, y: 250 },
+    { id: "docker", name: "Docker", icon: "🐳", x: 250, y: 250 },
+    { id: "git", name: "Git Client", icon: "📋", x: 400, y: 250 },
+  ];
+
   const handleSendMessage = () => {
     if (!newMessage.trim()) return;
-    const userMessage = {
-      id: Date.now(),
-      type: "user",
-      content: newMessage
-    };
+    
+    const userMessage = { id: Date.now(), type: "user", content: newMessage };
     setChatMessages(prev => [...prev, userMessage]);
     setNewMessage("");
-
+    
     // 增强的AI回复逻辑
     setTimeout(() => {
       let response = "我已经收到您的消息，正在为您处理...";
+      
       const message = newMessage.toLowerCase();
       if (message.includes("部署") && message.includes("模型")) {
         response = "我可以帮您部署模型！请告诉我模型类型和配置要求，我将为您自动配置GPU资源并启动部署流程。";
@@ -186,11 +130,8 @@ const Workspace = () => {
       } else if (message.includes("费用") || message.includes("账单")) {
         response = "根据当前使用情况，本月预计费用¥1,234，比上月增长12%。我建议启用自动资源调度来优化成本。";
       }
-      const aiResponse = {
-        id: Date.now() + 1,
-        type: "assistant",
-        content: response
-      };
+      
+      const aiResponse = { id: Date.now() + 1, type: "assistant", content: response };
       setChatMessages(prev => [...prev, aiResponse]);
     }, 1000);
   };
@@ -198,11 +139,172 @@ const Workspace = () => {
   // 渲染不同导航项的内容看板
   const renderContent = () => {
     switch (selectedNav) {
-      case "dashboard":
-        return <div className="space-y-6">
+      case "compute":
+        return (
+          <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">仪表盘</h2>
-              <p className="text-gray-400">项目总览和系统状态</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">算力管理</h2>
+              <p className="text-gray-400">管理和监控计算资源</p>
+            </div>
+            
+            {/* GPU实例列表 */}
+            <Card className="glass-card p-6 mb-6">
+              <h3 className="text-lg font-semibold mb-4 text-white">GPU 实例</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+                  <div>
+                    <p className="font-medium text-white">NVIDIA A100</p>
+                    <p className="text-sm text-gray-400">80GB 显存</p>
+                  </div>
+                  <Badge className="bg-green-500/10 text-green-400 border-green-500/20">
+                    运行中
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
+                  <div>
+                    <p className="font-medium text-white">NVIDIA V100</p>
+                    <p className="text-sm text-gray-400">32GB 显存</p>
+                  </div>
+                  <Badge className="bg-gray-500/10 text-gray-400 border-gray-500/20">
+                    已停止
+                  </Badge>
+                </div>
+              </div>
+            </Card>
+
+            {/* 资源监控图表 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ResourceMonitorChart data={resourceData} />
+              <PerformanceChart data={performanceData} />
+            </div>
+          </div>
+        );
+      
+      case "environment":
+        return <Canvas />;
+      
+      case "model":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">模型部署</h2>
+              <p className="text-gray-400">部署和管理AI模型</p>
+            </div>
+            <ModelDeployment onDeploy={handleModelDeploy} />
+          </div>
+        );
+      
+      case "dataset":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2">数据集</h2>
+              <p className="text-muted-foreground">管理训练和测试数据集</p>
+            </div>
+            <Card className="glass-card p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">我的数据集</h3>
+                <Button variant="outline" size="sm">
+                  ➕ 上传数据集
+                </Button>
+              </div>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center p-3 bg-card/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg">📊</span>
+                    <div>
+                      <p className="font-medium">CIFAR-10</p>
+                      <p className="text-xs text-muted-foreground">图像分类数据集</p>
+                    </div>
+                  </div>
+                  <span className="text-sm text-muted-foreground">50MB</span>
+                </div>
+                <div className="flex justify-between items-center p-3 bg-card/50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg">📝</span>
+                    <div>
+                      <p className="font-medium">Text Corpus</p>
+                      <p className="text-xs text-muted-foreground">自然语言处理数据</p>
+                    </div>
+                  </div>
+                  <span className="text-sm text-muted-foreground">128MB</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+        );
+      
+      case "tasks":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2">任务管理</h2>
+              <p className="text-muted-foreground">监控训练任务和作业状态</p>
+            </div>
+            <Card className="glass-card p-6">
+              <h3 className="text-lg font-semibold mb-4">运行中的任务</h3>
+              <div className="space-y-4">
+                <div className="p-4 bg-card/50 rounded-lg">
+                  <div className="flex justify-between items-start mb-2">
+                    <h4 className="font-medium">图像分类模型训练</h4>
+                    <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20">
+                      训练中
+                    </Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-2">ResNet50 在 CIFAR-10 数据集上的训练</p>
+                  <div className="w-full bg-border/50 rounded-full h-2">
+                    <div className="bg-primary h-2 rounded-full" style={{ width: '65%' }}></div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">Epoch 65/100</p>
+                </div>
+              </div>
+            </Card>
+          </div>
+        );
+      
+      case "model":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2">模型部署</h2>
+              <p className="text-muted-foreground">部署和管理AI模型</p>
+            </div>
+            <Card className="glass-card p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-lg font-semibold">已部署模型</h3>
+                <Button variant="outline" size="sm">
+                  🚀 部署新模型
+                </Button>
+              </div>
+              <div className="space-y-3">
+                <div className="p-4 bg-card/50 rounded-lg">
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h4 className="font-medium">GPT-3.5 微调模型</h4>
+                      <p className="text-sm text-muted-foreground">文本生成模型</p>
+                    </div>
+                    <div className="text-right">
+                      <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20">
+                        在线
+                      </Badge>
+                      <p className="text-xs text-muted-foreground mt-1">QPS: 45</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        );
+      
+      case "marketplace":
+        return <ComponentMarketplace />;
+      
+      case "workspace":
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">工作空间</h2>
+              <p className="text-gray-400">统一的开发环境和项目管理中心</p>
             </div>
             
             {/* 概览卡片 */}
@@ -243,160 +345,30 @@ const Workspace = () => {
             </div>
 
             {/* 图表区域 */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
               <ResourceMonitorChart data={resourceData} />
               <APIUsageChart data={apiUsageData} />
             </div>
-          </div>;
-      case "compute":
-        return <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">算力管理</h2>
-              <p className="text-gray-400">管理和监控计算资源</p>
-            </div>
-            
-            {/* GPU实例列表 */}
-            <Card className="glass-card p-6 mb-6">
-              <h3 className="text-lg font-semibold mb-4 text-white">GPU 实例</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
-                  <div>
-                    <p className="font-medium text-white">NVIDIA A100</p>
-                    <p className="text-sm text-gray-400">80GB 显存</p>
-                  </div>
-                  <Badge className="bg-green-500/10 text-green-400 border-green-500/20">
-                    运行中
-                  </Badge>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
-                  <div>
-                    <p className="font-medium text-white">NVIDIA V100</p>
-                    <p className="text-sm text-gray-400">32GB 显存</p>
-                  </div>
-                  <Badge className="bg-gray-500/10 text-gray-400 border-gray-500/20">
-                    已停止
-                  </Badge>
-                </div>
-              </div>
-            </Card>
 
-            {/* 资源监控图表 */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <ResourceMonitorChart data={resourceData} />
-              <PerformanceChart data={performanceData} />
-            </div>
-          </div>;
-      case "environment":
-        return <Canvas />;
-      case "model":
-        return <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">模型部署</h2>
-              <p className="text-gray-400">部署和管理AI模型</p>
-            </div>
-            <ModelDeployment onDeploy={handleModelDeploy} />
-          </div>;
-      case "dataset":
-        return <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">数据集</h2>
-              <p className="text-muted-foreground">管理训练和测试数据集</p>
-            </div>
-            <Card className="glass-card p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">我的数据集</h3>
-                <Button variant="outline" size="sm">
-                  ➕ 上传数据集
+            {/* 组件工作空间区域 */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-white">组件工作空间</h3>
+                <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">
+                  管理组件
                 </Button>
               </div>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 bg-card/50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg">📊</span>
-                    <div>
-                      <p className="font-medium">CIFAR-10</p>
-                      <p className="text-xs text-muted-foreground">图像分类数据集</p>
-                    </div>
-                  </div>
-                  <span className="text-sm text-muted-foreground">50MB</span>
-                </div>
-                <div className="flex justify-between items-center p-3 bg-card/50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg">📝</span>
-                    <div>
-                      <p className="font-medium">Text Corpus</p>
-                      <p className="text-xs text-muted-foreground">自然语言处理数据</p>
-                    </div>
-                  </div>
-                  <span className="text-sm text-muted-foreground">128MB</span>
-                </div>
-              </div>
-            </Card>
-          </div>;
-      case "tasks":
-        return <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">任务管理</h2>
-              <p className="text-muted-foreground">监控训练任务和作业状态</p>
+              <ComponentWorkspace />
             </div>
-            <Card className="glass-card p-6">
-              <h3 className="text-lg font-semibold mb-4">运行中的任务</h3>
-              <div className="space-y-4">
-                <div className="p-4 bg-card/50 rounded-lg">
-                  <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-medium">图像分类模型训练</h4>
-                    <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20">
-                      训练中
-                    </Badge>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-2">ResNet50 在 CIFAR-10 数据集上的训练</p>
-                  <div className="w-full bg-border/50 rounded-full h-2">
-                    <div className="bg-primary h-2 rounded-full" style={{
-                    width: '65%'
-                  }}></div>
-                  </div>
-                  <p className="text-xs text-muted-foreground mt-1">Epoch 65/100</p>
-                </div>
-              </div>
-            </Card>
-          </div>;
-      case "model":
-        return <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">模型部署</h2>
-              <p className="text-muted-foreground">部署和管理AI模型</p>
-            </div>
-            <Card className="glass-card p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">已部署模型</h3>
-                <Button variant="outline" size="sm">
-                  🚀 部署新模型
-                </Button>
-              </div>
-              <div className="space-y-3">
-                <div className="p-4 bg-card/50 rounded-lg">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="font-medium">GPT-3.5 微调模型</h4>
-                      <p className="text-sm text-muted-foreground">文本生成模型</p>
-                    </div>
-                    <div className="text-right">
-                      <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20">
-                        在线
-                      </Badge>
-                      <p className="text-xs text-muted-foreground mt-1">QPS: 45</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>;
-      case "marketplace":
-        return <ComponentMarketplace />;
-      case "workspace":
-        return <ComponentWorkspace />;
+          </div>
+        );
+
+      case "template":
+        return <WorkspaceTemplate />;
+
       case "community":
-        return <div className="space-y-6">
+        return (
+          <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2 text-white">社区</h2>
               <p className="text-gray-400">与开发者交流和分享经验</p>
@@ -438,9 +410,12 @@ const Workspace = () => {
                 </div>
               </div>
             </Card>
-          </div>;
+          </div>
+        );
+
       case "docs":
-        return <div className="space-y-6">
+        return (
+          <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2 text-white">文档</h2>
               <p className="text-gray-400">查看API文档和使用指南</p>
@@ -481,9 +456,12 @@ const Workspace = () => {
                 </div>
               </Card>
             </div>
-          </div>;
+          </div>
+        );
+
       case "personal":
-        return <div className="space-y-6">
+        return (
+          <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2 text-white">个人设置</h2>
               <p className="text-gray-400">管理个人账户和偏好设置</p>
@@ -523,9 +501,12 @@ const Workspace = () => {
                 </div>
               </Card>
             </div>
-          </div>;
+          </div>
+        );
+
       case "platform":
-        return <div className="space-y-6">
+        return (
+          <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2 text-white">平台设置</h2>
               <p className="text-gray-400">配置平台级别的选项和权限</p>
@@ -570,9 +551,12 @@ const Workspace = () => {
                 </div>
               </Card>
             </div>
-          </div>;
+          </div>
+        );
+
       case "billing":
-        return <div className="space-y-6">
+        return (
+          <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2 text-white">计费中心</h2>
               <p className="text-gray-400">管理账单、费用和支付方式</p>
@@ -637,43 +621,59 @@ const Workspace = () => {
                 </div>
               </div>
             </Card>
-          </div>;
+          </div>
+        );
+      
       default:
-        return <div className="space-y-6">
+        return (
+          <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2">自定义工作空间</h2>
               <p className="text-muted-foreground">拖拽组件创建您的专属工作环境</p>
             </div>
             <div className="relative h-[600px] bg-card/20 rounded-lg border-2 border-dashed border-border/50 overflow-hidden">
-              {workspaceItems.map(item => <div key={item.id} className="absolute w-20 h-20 bg-card/80 backdrop-blur-lg rounded-lg border border-border/50 flex flex-col items-center justify-center cursor-move hover:scale-105 transition-transform group" style={{
-              left: item.x,
-              top: item.y
-            }}>
+              {workspaceItems.map((item) => (
+                <div
+                  key={item.id}
+                  className="absolute w-20 h-20 bg-card/80 backdrop-blur-lg rounded-lg border border-border/50 flex flex-col items-center justify-center cursor-move hover:scale-105 transition-transform group"
+                  style={{ left: item.x, top: item.y }}
+                >
                   <div className="text-2xl mb-1 group-hover:scale-110 transition-transform">
                     {item.icon}
                   </div>
                   <span className="text-xs text-center leading-tight">{item.name}</span>
-                </div>)}
+                </div>
+              ))}
               <div className="absolute bottom-4 right-4">
                 <Button variant="outline" className="bg-card/80 backdrop-blur-lg">
                   ➕ 添加组件
                 </Button>
               </div>
             </div>
-          </div>;
+          </div>
+        );
     }
   };
-  return <div className="min-h-screen bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 flex">
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 flex">
       {/* Left Navigation */}
       <div className={`${sidebarCollapsed ? 'w-16' : 'w-56'} bg-purple-950/20 backdrop-blur-xl border-r border-purple-500/20 flex flex-col transition-all duration-300`}>
         <div className={`${sidebarCollapsed ? 'p-3' : 'p-4'} border-b border-purple-500/20 flex items-center justify-between`}>
-          {!sidebarCollapsed && <div className="flex items-center gap-2">
+          {!sidebarCollapsed && (
+            <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
                 <div className="w-4 h-4 bg-white rounded-sm"></div>
               </div>
-              <span className="text-sm font-semibold text-purple-100">Alaya NeW算力云工作空间</span>
-            </div>}
-          <Button variant="ghost" size="sm" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="text-purple-300 hover:text-white hover:bg-purple-500/20 p-1">
+              <User className="h-5 w-5 text-purple-100" />
+            </div>
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="text-purple-300 hover:text-white hover:bg-purple-500/20 p-1"
+          >
             {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </Button>
         </div>
@@ -684,20 +684,37 @@ const Workspace = () => {
         </div>
         
         <nav className={`flex-1 ${sidebarCollapsed ? 'p-2' : 'p-3'} space-y-4`}>
-          {navGroups.map(group => <div key={group.title} className="space-y-1">
-              {!sidebarCollapsed && <h3 className="text-xs uppercase tracking-wider text-purple-400 font-medium px-2 mb-2">
+          {navGroups.map((group) => (
+            <div key={group.title} className="space-y-1">
+              {!sidebarCollapsed && (
+                <h3 className="text-xs uppercase tracking-wider text-purple-400 font-medium px-2 mb-2">
                   {group.title}
-                </h3>}
-              <div className="space-y-1 bg-transparent rounded-none mx-0 px-0">
-                {group.items.map(item => {
-              const IconComponent = item.icon;
-              return <Button key={item.id} variant="ghost" size={sidebarCollapsed ? "sm" : "default"} className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2 rounded-lg transition-all duration-200 text-left justify-start ${selectedNav === item.id ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'text-purple-300 hover:text-white hover:bg-purple-500/10'}`} onClick={() => setSelectedNav(item.id)} title={sidebarCollapsed ? item.fullName : undefined}>
+                </h3>
+              )}
+              <div className="space-y-1">
+                {group.items.map((item) => {
+                  const IconComponent = item.icon;
+                  return (
+                    <Button
+                      key={item.id}
+                      variant="ghost"
+                      size={sidebarCollapsed ? "sm" : "default"}
+                      className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2 rounded-lg transition-all duration-200 text-left justify-start ${
+                        selectedNav === item.id
+                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg'
+                          : 'text-purple-300 hover:text-white hover:bg-purple-500/10'
+                      }`}
+                      onClick={() => setSelectedNav(item.id)}
+                      title={sidebarCollapsed ? item.fullName : undefined}
+                    >
                       <IconComponent className="h-4 w-4" />
                       {!sidebarCollapsed && <span className="text-sm">{item.name}</span>}
-                    </Button>;
-            })}
+                    </Button>
+                  );
+                })}
               </div>
-            </div>)}
+            </div>
+          ))}
         </nav>
       </div>
 
@@ -741,29 +758,55 @@ const Workspace = () => {
         
         {/* AI Agent面板 */}
         <div className="p-3 border-b border-purple-500/20">
-          <AIAgent onExecuteCommand={handleExecuteCommand} onUpdateCanvas={handleUpdateCanvas} />
+          <AIAgent 
+            onExecuteCommand={handleExecuteCommand}
+            onUpdateCanvas={handleUpdateCanvas}
+          />
         </div>
         
         {/* 对话区域 */}
         <ScrollArea className="flex-1 p-3">
           <div className="space-y-3">
-            {chatMessages.map(message => <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[180px] p-2 rounded-lg text-xs ${message.type === 'user' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white' : 'bg-purple-500/10 text-purple-200 border border-purple-500/20'}`}>
+            {chatMessages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[180px] p-2 rounded-lg text-xs ${
+                    message.type === 'user'
+                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white'
+                      : 'bg-purple-500/10 text-purple-200 border border-purple-500/20'
+                  }`}
+                >
                   <p>{message.content}</p>
                 </div>
-              </div>)}
+              </div>
+            ))}
           </div>
         </ScrollArea>
         
         <div className="p-3 border-t border-purple-500/20">
           <div className="flex gap-2">
-            <Input placeholder="输入消息..." value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1 bg-purple-500/5 border border-purple-500/20 rounded-lg text-purple-100 placeholder-purple-400 focus:border-purple-500 text-sm h-8" />
-            <Button onClick={handleSendMessage} size="sm" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg h-8 px-3">
+            <Input
+              placeholder="输入消息..."
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+              className="flex-1 bg-purple-500/5 border border-purple-500/20 rounded-lg text-purple-100 placeholder-purple-400 focus:border-purple-500 text-sm h-8"
+            />
+            <Button 
+              onClick={handleSendMessage} 
+              size="sm"
+              className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg h-8 px-3"
+            >
               发送
             </Button>
           </div>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Workspace;
