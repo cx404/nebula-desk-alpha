@@ -21,7 +21,7 @@ import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout } from "lucide-react";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X } from "lucide-react";
 const Workspace = () => {
   const { currentWorkspace, updateWorkspace } = useWorkspace();
   const [selectedNav, setSelectedNav] = useState("workspace");
@@ -45,6 +45,17 @@ const Workspace = () => {
 
   // 资源监控图表显示状态
   const [showResourceCharts, setShowResourceCharts] = useState(false);
+
+  // 工作空间名称编辑状态
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editingName, setEditingName] = useState("");
+
+  // 初始化当前工作空间名称
+  useEffect(() => {
+    if (currentWorkspace) {
+      setEditingName(currentWorkspace.name);
+    }
+  }, [currentWorkspace]);
 
   // 初始化和更新数据
   useEffect(() => {
@@ -80,6 +91,24 @@ const Workspace = () => {
   const handleModelDeploy = (config: any) => {
     console.log('Model deployment:', config);
     // 实际的模型部署逻辑
+  };
+
+  // 处理工作空间名称编辑
+  const handleSaveWorkspaceName = async () => {
+    if (!currentWorkspace || !editingName.trim()) return;
+    
+    try {
+      await updateWorkspace(currentWorkspace.id, { name: editingName.trim() });
+      setIsEditingName(false);
+      toast.success("工作空间名称已更新");
+    } catch (error) {
+      toast.error("更新工作空间名称失败");
+    }
+  };
+
+  const handleCancelEditName = () => {
+    setEditingName(currentWorkspace?.name || "");
+    setIsEditingName(false);
   };
 
   // 应用工作空间模板
@@ -421,8 +450,49 @@ const Workspace = () => {
       case "workspace":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">工作空间</h2>
-              <p className="text-gray-400">统一的开发环境和项目管理中心</p>
+              <div className="flex items-center gap-4 mb-2">
+                {isEditingName ? (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={editingName}
+                      onChange={(e) => setEditingName(e.target.value)}
+                      className="bg-white/10 border-white/20 text-white text-2xl font-bold px-3 py-1 h-auto"
+                      autoFocus
+                      onKeyPress={(e) => e.key === 'Enter' && handleSaveWorkspaceName()}
+                    />
+                    <Button
+                      onClick={handleSaveWorkspaceName}
+                      size="sm"
+                      className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30"
+                    >
+                      <Check className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      onClick={handleCancelEditName}
+                      size="sm"
+                      variant="outline"
+                      className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-2xl font-bold text-white">
+                      {currentWorkspace?.name || "工作空间"}
+                    </h2>
+                    <Button
+                      onClick={() => setIsEditingName(true)}
+                      size="sm"
+                      variant="ghost"
+                      className="text-white/60 hover:text-white hover:bg-white/10"
+                    >
+                      <Edit3 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <p className="text-gray-400">{currentWorkspace?.description || "统一的开发环境和项目管理中心"}</p>
             </div>
             
             {/* 概览卡片 */}

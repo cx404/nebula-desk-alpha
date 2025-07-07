@@ -62,6 +62,130 @@ const ProjectCreation = () => {
     icon: FileText,
     features: ["完全空白", "自由搭建", "无限可能"]
   }];
+  // AI组件生成逻辑
+  const generateComponentsFromRequirements = (requirements: string) => {
+    const components = [];
+    const req = requirements.toLowerCase();
+    
+    // 基础开发环境
+    if (req.includes("开发") || req.includes("编程") || req.includes("代码")) {
+      components.push({
+        id: `vscode-${Date.now()}`,
+        name: "VS Code",
+        icon: "💻",
+        x: 100,
+        y: 100,
+        type: "code-editor",
+        status: "idle"
+      });
+      components.push({
+        id: `terminal-${Date.now()}`,
+        name: "Terminal",
+        icon: "⚡",
+        x: 280,
+        y: 100,
+        type: "terminal",
+        status: "idle"
+      });
+    }
+
+    // 数据科学和机器学习
+    if (req.includes("数据") || req.includes("机器学习") || req.includes("ai") || req.includes("分析")) {
+      components.push({
+        id: `jupyter-${Date.now()}`,
+        name: "Jupyter Notebook",
+        icon: "📓",
+        x: 100,
+        y: 250,
+        type: "jupyter",
+        status: "idle"
+      });
+      components.push({
+        id: `python-${Date.now()}`,
+        name: "Python环境",
+        icon: "🐍",
+        x: 280,
+        y: 250,
+        type: "python",
+        status: "idle"
+      });
+    }
+
+    // Web开发
+    if (req.includes("网站") || req.includes("前端") || req.includes("后端") || req.includes("web")) {
+      components.push({
+        id: `browser-${Date.now()}`,
+        name: "Browser",
+        icon: "🌐",
+        x: 460,
+        y: 100,
+        type: "browser",
+        status: "idle"
+      });
+      if (req.includes("数据库") || req.includes("后端")) {
+        components.push({
+          id: `database-${Date.now()}`,
+          name: "Database Client",
+          icon: "🗄️",
+          x: 460,
+          y: 250,
+          type: "database",
+          status: "idle"
+        });
+      }
+    }
+
+    // 深度学习和GPU
+    if (req.includes("深度学习") || req.includes("训练") || req.includes("gpu") || req.includes("模型")) {
+      components.push({
+        id: `gpu-monitor-${Date.now()}`,
+        name: "GPU Monitor",
+        icon: "⚡",
+        x: 640,
+        y: 100,
+        type: "gpu-monitor",
+        status: "idle"
+      });
+      components.push({
+        id: `tensorboard-${Date.now()}`,
+        name: "TensorBoard",
+        icon: "📊",
+        x: 640,
+        y: 250,
+        type: "tensorboard",
+        status: "idle"
+      });
+    }
+
+    // 容器化和部署
+    if (req.includes("部署") || req.includes("容器") || req.includes("docker")) {
+      components.push({
+        id: `docker-${Date.now()}`,
+        name: "Docker",
+        icon: "🐳",
+        x: 820,
+        y: 100,
+        type: "docker",
+        status: "idle"
+      });
+    }
+
+    // 版本控制
+    if (req.includes("版本") || req.includes("git") || req.includes("协作")) {
+      components.push({
+        id: `git-${Date.now()}`,
+        name: "Git Client",
+        icon: "📋",
+        x: 820,
+        y: 250,
+        type: "git",
+        status: "idle"
+      });
+    }
+
+    return components;
+  };
+
   const handleCustomCreation = async () => {
     if (!customRequirements.trim()) {
       toast({
@@ -72,27 +196,30 @@ const ProjectCreation = () => {
       return;
     }
 
-    // 模拟AI生成过程
+    // AI生成过程
     setIsGenerating(true);
     setIsDialogOpen(false);
     toast({
-      title: "AI正在生成项目...",
-      description: "请稍候，正在根据您的需求生成项目配置"
+      title: "AI正在分析您的需求...",
+      description: "正在为您智能配置工作空间组件"
     });
 
-    // 模拟生成时间
+    // 模拟AI分析和生成时间
     setTimeout(() => {
-      setIsGenerating(false);
+      const generatedComponents = generateComponentsFromRequirements(customRequirements);
+      
       // 创建新工作空间
       createWorkspace({
         name: projectName || "AI 生成工作空间",
         description: customRequirements,
         type: "custom",
-        components: []
+        components: generatedComponents
       });
+      
+      setIsGenerating(false);
       toast({
         title: "项目生成完成！",
-        description: "正在跳转到工作空间..."
+        description: `已为您配置了 ${generatedComponents.length} 个组件，正在跳转到工作空间...`
       });
       navigate("/workspace");
     }, 3000);
