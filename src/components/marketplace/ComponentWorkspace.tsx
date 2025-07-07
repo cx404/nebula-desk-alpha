@@ -2,11 +2,10 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { DraggableComponent } from "../workspace/DraggableComponent";
-import { ConnectionLine } from "../workspace/ComponentConnection";
+import { WorkspaceCanvas } from "../workspace/WorkspaceCanvas";
 import { AIAgent } from "../workspace/AIAgent";
 import { toast } from "sonner";
-import { Terminal, FileText, Rocket, Settings } from "lucide-react";
+import { Terminal, FileText, Rocket, Settings, Play, FolderOpen } from "lucide-react";
 interface WorkspaceComponent {
   id: string;
   name: string;
@@ -273,31 +272,55 @@ export const ComponentWorkspace = () => {
   };
   return <div className="space-y-6">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-2 text-white">管理组件</h2>
-        <p className="text-gray-400">拖拽组件创建自动化工作流程</p>
+        <h2 className="text-2xl font-bold mb-2 text-white">工作空间</h2>
+        <p className="text-gray-400">iPad风格的应用工作空间，拖拽创建和管理您的工作流</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* 左侧：组件库和流程管理 */}
+        {/* 左侧：快速操作和AI助手 */}
         <div className="lg:col-span-1 space-y-4">
-          {/* 可用组件 */}
+          {/* 快速操作 */}
           <Card className="p-4 bg-white/5 backdrop-blur-xl border border-white/10">
-            <h3 className="text-lg font-semibold text-white mb-4">可用组件</h3>
+            <h3 className="text-lg font-semibold text-white mb-4">快速操作</h3>
             <div className="space-y-2">
-              {Object.entries(componentTemplates).map(([key, template]) => <Button key={key} onClick={() => addComponentToWorkspace(key)} size="sm" className="w-full justify-start bg-white/10 hover:bg-white/20 text-white border border-white/20">
-                  <div className="w-6 h-6 mr-2">{template.icon}</div>
-                  {template.name}
-                </Button>)}
+              <Button onClick={executeFlow} size="sm" disabled={components.length === 0} className="w-full justify-start bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
+                <Play className="w-4 h-4 mr-2" />
+                执行全部流程
+              </Button>
+              
+              {predefinedFlows.map(flow => (
+                <Button 
+                  key={flow.id} 
+                  onClick={() => loadPredefinedFlow(flow)} 
+                  size="sm" 
+                  variant="outline" 
+                  className="w-full justify-start bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
+                >
+                  <FolderOpen className="w-4 h-4 mr-2" />
+                  {flow.name}
+                </Button>
+              ))}
             </div>
           </Card>
 
-          {/* 预定义流程 */}
+          {/* 流程统计 */}
           <Card className="p-4 bg-white/5 backdrop-blur-xl border border-white/10">
-            <h3 className="text-lg font-semibold text-white mb-4">预定义流程</h3>
-            <div className="space-y-2">
-              {predefinedFlows.map(flow => <Button key={flow.id} onClick={() => loadPredefinedFlow(flow)} size="sm" variant="outline" className="w-full justify-start bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20">
-                  📋 {flow.name}
-                </Button>)}
+            <h3 className="text-lg font-semibold text-white mb-4">统计信息</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-400">组件总数</span>
+                <Badge className="bg-blue-500/20 text-blue-300">{components.length}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-400">连接数</span>
+                <Badge className="bg-green-500/20 text-green-300">{connections.length}</Badge>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-400">运行中</span>
+                <Badge className="bg-yellow-500/20 text-yellow-300">
+                  {components.filter(c => c.status === "running").length}
+                </Badge>
+              </div>
             </div>
           </Card>
 
@@ -305,73 +328,9 @@ export const ComponentWorkspace = () => {
           <AIAgent onExecuteCommand={handleAIExecuteCommand} onUpdateCanvas={handleAIUpdateCanvas} />
         </div>
 
-        {/* 右侧：工作空间画布 */}
+        {/* 右侧：iPad风格工作空间画布 */}
         <div className="lg:col-span-3">
-          <Card className="p-4 bg-white/5 backdrop-blur-xl border border-white/10">
-            {/* 工具栏 */}
-            <div className="flex justify-between items-center mb-4">
-              <div className="flex gap-2">
-                <Button onClick={startConnection} size="sm" disabled={!selectedComponent} className="bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 border border-yellow-500/30">
-                  🔗 连接组件
-                </Button>
-                <Button onClick={executeFlow} size="sm" disabled={components.length === 0} className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
-                  ▶️ 执行流程
-                </Button>
-              </div>
-              
-              <div className="flex gap-2">
-                {selectedComponent && <Button onClick={() => runComponent(selectedComponent)} size="sm" className="bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border border-blue-500/30">
-                    ▶️ 运行组件
-                  </Button>}
-                {selectedComponent && <Button onClick={deleteSelectedComponent} size="sm" className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30">
-                    🗑️ 删除
-                  </Button>}
-              </div>
-            </div>
-
-            {/* 画布区域 */}
-            <div className="relative h-[500px] bg-black/20 rounded-xl border border-white/10 overflow-hidden">
-              <div className="absolute inset-0">
-                <svg width="100%" height="100%" className="opacity-20">
-                  <defs>
-                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" strokeWidth="1" opacity="0.3" />
-                    </pattern>
-                  </defs>
-                  <rect width="100%" height="100%" fill="url(#grid)" />
-                </svg>
-              </div>
-
-              <div ref={canvasRef} className="relative h-full p-4">
-                {/* 连接线 */}
-                {connections.map((connection, index) => {
-                const sourceComp = components.find(c => c.id === connection.sourceId);
-                const targetComp = components.find(c => c.id === connection.targetId);
-                if (!sourceComp || !targetComp) return null;
-                return <ConnectionLine key={index} startX={sourceComp.x + 56} startY={sourceComp.y + 56} endX={targetComp.x + 56} endY={targetComp.y + 56} type={connection.type} />;
-              })}
-                
-                {/* 组件 */}
-                {components.map(component => <div key={component.id} className="absolute">
-                    <DraggableComponent id={component.id} name={component.name} icon={typeof component.icon === 'string' ? component.icon : '⚙️'} x={component.x} y={component.y} onPositionChange={handlePositionChange} onSelect={handleSelect} isSelected={selectedComponent === component.id} />
-                    {/* 状态指示器 */}
-                    <div className="absolute -top-2 -right-2">
-                      <Badge className={`text-xs ${getStatusColor(component.status)}`}>
-                        {component.status === "running" ? "运行中" : component.status === "error" ? "错误" : "就绪"}
-                      </Badge>
-                    </div>
-                  </div>)}
-
-                {/* 空状态 */}
-                {components.length === 0 && <div className="flex items-center justify-center h-full">
-                    <div className="text-center">
-                      <p className="text-gray-400 mb-2">工作空间为空</p>
-                      <p className="text-gray-500 text-sm">从左侧组件库拖拽组件开始构建流程</p>
-                    </div>
-                  </div>}
-              </div>
-            </div>
-          </Card>
+          <WorkspaceCanvas />
         </div>
       </div>
     </div>;
