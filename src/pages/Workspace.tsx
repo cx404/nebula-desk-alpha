@@ -37,6 +37,9 @@ const Workspace = () => {
   // AI Agent状态
   const [agentTasks, setAgentTasks] = useState([]);
   
+  // 资源监控图表显示状态
+  const [showResourceCharts, setShowResourceCharts] = useState(false);
+  
   // 初始化和更新数据
   useEffect(() => {
     const updateData = () => {
@@ -347,9 +350,17 @@ const Workspace = () => {
 
             {/* 图表区域 */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <ResourceMonitorWidget data={resourceData} />
-              <ResourceMonitorChart data={resourceData} />
-              <APIUsageChart data={apiUsageData} />
+              <ResourceMonitorWidget 
+                data={resourceData} 
+                onClick={() => setShowResourceCharts(!showResourceCharts)}
+                isActive={showResourceCharts}
+              />
+              {showResourceCharts && (
+                <>
+                  <ResourceMonitorChart data={resourceData} />
+                  <APIUsageChart data={apiUsageData} />
+                </>
+              )}
             </div>
 
             {/* 组件工作空间区域 */}
