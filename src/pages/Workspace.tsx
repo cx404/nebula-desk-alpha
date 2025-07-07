@@ -15,11 +15,12 @@ import { ModelDeployment } from "@/components/workspace/ModelDeployment";
 import { AIAgent } from "@/components/workspace/AIAgent";
 import { ComponentMarketplace } from "@/components/marketplace/ComponentMarketplace";
 import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace";
+import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard } from "lucide-react";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout } from "lucide-react";
 
 const Workspace = () => {
-  const [selectedNav, setSelectedNav] = useState("dashboard");
+  const [selectedNav, setSelectedNav] = useState("workspace");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [chatMessages, setChatMessages] = useState([
     { id: 1, type: "assistant", content: "您好！我是Alaya AI助手，可以帮您管理工作空间、部署模型、执行AI任务。试试说'帮我部署一个模型'或'调整画布布局'？" },
@@ -76,7 +77,7 @@ const Workspace = () => {
     {
       title: "主菜单",
       items: [
-        { id: "dashboard", name: "仪表盘", icon: BarChart3, fullName: "仪表盘" },
+        { id: "workspace", name: "工作空间", icon: Wrench, fullName: "工作空间" },
         { id: "compute", name: "算力管理", icon: Zap, fullName: "算力管理" },
       ]
     },
@@ -84,7 +85,7 @@ const Workspace = () => {
       title: "资源",
       items: [
         { id: "marketplace", name: "组件市场", icon: ShoppingBag, fullName: "组件市场" },
-        { id: "workspace", name: "组件工作空间", icon: Wrench, fullName: "组件工作空间" },
+        { id: "template", name: "工作空间模板", icon: Layout, fullName: "工作空间模板" },
         { id: "community", name: "社区", icon: Users, fullName: "社区" },
         { id: "docs", name: "文档", icon: FileText, fullName: "文档" },
       ]
@@ -138,59 +139,6 @@ const Workspace = () => {
   // 渲染不同导航项的内容看板
   const renderContent = () => {
     switch (selectedNav) {
-      case "dashboard":
-        return (
-          <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">仪表盘</h2>
-              <p className="text-gray-400">项目总览和系统状态</p>
-            </div>
-            
-            {/* 概览卡片 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">💼</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">活跃项目</h3>
-                    <p className="text-3xl font-bold text-blue-400">3</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">算力使用</h3>
-                    <p className="text-3xl font-bold text-green-400">78%</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">💰</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">今日费用</h3>
-                    <p className="text-3xl font-bold text-purple-400">¥126</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 图表区域 */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <ResourceMonitorChart data={resourceData} />
-              <APIUsageChart data={apiUsageData} />
-            </div>
-          </div>
-        );
-      
       case "compute":
         return (
           <div className="space-y-6">
@@ -352,7 +300,71 @@ const Workspace = () => {
         return <ComponentMarketplace />;
       
       case "workspace":
-        return <ComponentWorkspace />;
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">工作空间</h2>
+              <p className="text-gray-400">统一的开发环境和项目管理中心</p>
+            </div>
+            
+            {/* 概览卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">💼</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">活跃项目</h3>
+                    <p className="text-3xl font-bold text-blue-400">3</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">⚡</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">算力使用</h3>
+                    <p className="text-3xl font-bold text-green-400">78%</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">💰</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">今日费用</h3>
+                    <p className="text-3xl font-bold text-purple-400">¥126</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 图表区域 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              <ResourceMonitorChart data={resourceData} />
+              <APIUsageChart data={apiUsageData} />
+            </div>
+
+            {/* 组件工作空间区域 */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xl font-semibold text-white">组件工作空间</h3>
+                <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">
+                  管理组件
+                </Button>
+              </div>
+              <ComponentWorkspace />
+            </div>
+          </div>
+        );
+
+      case "template":
+        return <WorkspaceTemplate />;
 
       case "community":
         return (
