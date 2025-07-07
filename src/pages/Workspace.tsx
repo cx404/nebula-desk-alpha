@@ -17,6 +17,7 @@ import { AIAgent } from "@/components/workspace/AIAgent";
 import { ComponentMarketplace } from "@/components/marketplace/ComponentMarketplace";
 import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace";
 import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
+import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
 import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout } from "lucide-react";
 const Workspace = () => {
@@ -28,6 +29,7 @@ const Workspace = () => {
     content: "您好！我是Alaya AI助手，可以帮您管理工作空间、部署模型、执行AI任务。试试说'帮我部署一个模型'或'调整画布布局'？"
   }]);
   const [newMessage, setNewMessage] = useState("");
+  const [workspaceComponents, setWorkspaceComponents] = useState<any[]>([]);
 
   // 图表数据状态
   const [resourceData, setResourceData] = useState([]);
@@ -75,6 +77,63 @@ const Workspace = () => {
   const handleModelDeploy = (config: any) => {
     console.log('Model deployment:', config);
     // 实际的模型部署逻辑
+  };
+
+  // 应用工作空间模板
+  const handleApplyTemplate = (template: any) => {
+    // 根据模板组件创建工作空间组件
+    const templateComponents = template.components.map((componentName: string, index: number) => ({
+      id: `${template.id}-${componentName.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`,
+      name: componentName,
+      icon: getComponentIcon(componentName),
+      x: 100 + (index % 3) * 180,
+      y: 100 + Math.floor(index / 3) * 140,
+      type: getComponentType(componentName),
+      status: "idle"
+    }));
+
+    setWorkspaceComponents(prev => [...prev, ...templateComponents]);
+    setSelectedNav("workspace"); // 切换到工作空间页面
+    toast.success(`${template.name}模板已成功应用到工作空间！`);
+  };
+
+  const getComponentIcon = (componentName: string) => {
+    const iconMap: { [key: string]: string } = {
+      "Jupyter Notebook": "📓",
+      "GPU Monitor": "⚡",
+      "Model Trainer": "🤖",
+      "Data Processor": "🔧",
+      "VS Code": "💻",
+      "Terminal": "⚡",
+      "Database Client": "🗄️",
+      "API Tester": "🔌",
+      "Jupyter Lab": "📓",
+      "Chart Builder": "📊",
+      "Data Connector": "🔗",
+      "Stats Panel": "📈",
+      "Design Tool": "🎨",
+      "Prototype Builder": "🔨",
+      "Color Palette": "🎨",
+      "Asset Manager": "📁",
+      "Solidity IDE": "💻",
+      "Blockchain Explorer": "⛓️",
+      "Wallet Connector": "💳",
+      "Test Network": "🌐",
+      "Monitor Dashboard": "📊",
+      "CI/CD Pipeline": "⚙️",
+      "Log Viewer": "📋",
+      "Deploy Tools": "🚀"
+    };
+    return iconMap[componentName] || "⚙️";
+  };
+
+  const getComponentType = (componentName: string) => {
+    if (componentName.includes("Jupyter")) return "jupyter";
+    if (componentName.includes("Terminal")) return "terminal";
+    if (componentName.includes("Deploy") || componentName.includes("Model")) return "model-deploy";
+    if (componentName.includes("Monitor")) return "tensorboard";
+    if (componentName.includes("Code") || componentName.includes("IDE")) return "code-editor";
+    return "custom";
   };
   const navGroups = [{
     title: "主菜单",
@@ -404,11 +463,11 @@ const Workspace = () => {
             {/* 组件工作空间区域 */}
             <div className="space-y-6">
               
-              <ComponentWorkspace />
+              <ComponentWorkspace initialComponents={workspaceComponents} />
             </div>
           </div>;
       case "template":
-        return <WorkspaceTemplate />;
+        return <WorkspaceTemplate onApplyTemplate={handleApplyTemplate} />;
       case "community":
         return <div className="space-y-6">
             <div className="mb-6">

@@ -93,7 +93,11 @@ const templates: Template[] = [
   }
 ];
 
-export const WorkspaceTemplate = () => {
+interface WorkspaceTemplateProps {
+  onApplyTemplate?: (template: Template) => void;
+}
+
+export const WorkspaceTemplate = ({ onApplyTemplate }: WorkspaceTemplateProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("全部");
   const [downloading, setDownloading] = useState<string | null>(null);
@@ -110,11 +114,18 @@ export const WorkspaceTemplate = () => {
 
   const handleDownload = async (templateId: string) => {
     setDownloading(templateId);
-    // 模拟下载过程
-    setTimeout(() => {
-      setDownloading(null);
-      // 这里可以添加下载成功的提示
-    }, 2000);
+    const template = templates.find(t => t.id === templateId);
+    
+    if (template && onApplyTemplate) {
+      setTimeout(() => {
+        setDownloading(null);
+        onApplyTemplate(template);
+      }, 1000);
+    } else {
+      setTimeout(() => {
+        setDownloading(null);
+      }, 1000);
+    }
   };
 
   return (

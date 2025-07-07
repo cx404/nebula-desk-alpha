@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -132,8 +132,19 @@ const predefinedFlows: ComponentFlow[] = [{
     type: "data"
   }]
 }];
-export const ComponentWorkspace = () => {
-  const [components, setComponents] = useState<WorkspaceComponent[]>([]);
+interface ComponentWorkspaceProps {
+  initialComponents?: WorkspaceComponent[];
+}
+
+export const ComponentWorkspace = ({ initialComponents = [] }: ComponentWorkspaceProps) => {
+  const [components, setComponents] = useState<WorkspaceComponent[]>(initialComponents);
+  
+  // 同步外部传入的组件
+  useEffect(() => {
+    if (initialComponents.length > 0) {
+      setComponents(initialComponents);
+    }
+  }, [initialComponents]);
   const [connections, setConnections] = useState<Array<{
     sourceId: string;
     targetId: string;
