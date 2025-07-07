@@ -1,30 +1,39 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { supabase } from "@/integrations/supabase/client";
 import techBg from "@/assets/tech-bg.jpg";
 
 const Login = () => {
   const navigate = useNavigate();
-  const { hasWorkspaces, lastOpenedWorkspace, switchWorkspace } = useWorkspace();
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [verificationCode, setVerificationCode] = useState("");
-  const [alayaAccount, setAlayaAccount] = useState("");
-  const [password, setPassword] = useState("");
+  const { hasWorkspaces, lastOpenedWorkspace, switchWorkspace, loading } = useWorkspace();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        // 用户已登录，检查是否有工作空间
+        if (hasWorkspaces && lastOpenedWorkspace) {
+          navigate("/workspace");
+        } else {
+          navigate("/projects");
+        }
+      }
+    };
+    
+    if (!loading) {
+      checkUser();
+    }
+  }, [navigate, hasWorkspaces, lastOpenedWorkspace, loading]);
 
   const handleLogin = () => {
-    // 模拟登录逻辑
-    if (hasWorkspaces && lastOpenedWorkspace) {
-      // 如果有工作空间，切换到最后打开的工作空间并跳转到工作空间页面
-      switchWorkspace(lastOpenedWorkspace.id);
-      navigate("/workspace");
-    } else {
-      // 如果没有工作空间，跳转到项目创建页面
-      navigate("/projects");
-    }
+    navigate("/auth");
+  };
+
+  const handleQuickStart = () => {
+    navigate("/projects");
   };
 
   return (
@@ -60,79 +69,36 @@ const Login = () => {
 
         {/* Login form */}
         <Card className="glass-card p-8 animate-slide-in">
-          <Tabs defaultValue="phone" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="phone">手机号登录</TabsTrigger>
-              <TabsTrigger value="alaya">Alaya NeW</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="phone" className="space-y-4">
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">手机号</label>
-                  <Input
-                    type="tel"
-                    placeholder="请输入手机号"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">验证码</label>
-                  <div className="flex gap-2 mt-1">
-                    <Input
-                      type="text"
-                      placeholder="请输入验证码"
-                      value={verificationCode}
-                      onChange={(e) => setVerificationCode(e.target.value)}
-                      className="flex-1"
-                    />
-                    <Button variant="outline" className="shrink-0">
-                      获取验证码
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="alaya" className="space-y-4">
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">Alaya NeW 账号</label>
-                  <Input
-                    type="text"
-                    placeholder="请输入账号"
-                    value={alayaAccount}
-                    onChange={(e) => setAlayaAccount(e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                <div>
-                  <label className="text-sm font-medium text-muted-foreground">密码</label>
-                  <Input
-                    type="password"
-                    placeholder="请输入密码"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-              </div>
-            </TabsContent>
-
-            <Button 
-              onClick={handleLogin} 
-              className="w-full mt-6 btn-premium"
-              size="lg"
-            >
-              立即登录
-            </Button>
-          </Tabs>
+          <div className="space-y-6">
+            <div className="flex gap-4">
+              <Button 
+                onClick={handleLogin}
+                className="flex-1 btn-premium"
+                size="lg"
+              >
+                登录账户
+              </Button>
+              
+              <Button 
+                onClick={handleQuickStart}
+                variant="outline"
+                className="flex-1 glass-button"
+                size="lg"
+              >
+                快速体验
+              </Button>
+            </div>
+            
+            <div className="text-center">
+              <p className="text-sm text-muted-foreground">
+                登录以保存您的工作空间和设置
+              </p>
+            </div>
+          </div>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              登录即表示同意 
+              使用即表示同意 
               <span className="text-primary cursor-pointer hover:underline">用户协议</span> 和 
               <span className="text-primary cursor-pointer hover:underline">隐私政策</span>
             </p>
