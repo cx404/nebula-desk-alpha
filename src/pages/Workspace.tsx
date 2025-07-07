@@ -17,10 +17,13 @@ import { AIAgent } from "@/components/workspace/AIAgent";
 import { ComponentMarketplace } from "@/components/marketplace/ComponentMarketplace";
 import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace";
 import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
+import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
 import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout } from "lucide-react";
 const Workspace = () => {
+  const { currentWorkspace, updateWorkspace } = useWorkspace();
   const [selectedNav, setSelectedNav] = useState("workspace");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [chatMessages, setChatMessages] = useState([{
@@ -93,6 +96,14 @@ const Workspace = () => {
     }));
 
     setWorkspaceComponents(prev => [...prev, ...templateComponents]);
+    
+    // 更新当前工作空间
+    if (currentWorkspace) {
+      updateWorkspace(currentWorkspace.id, {
+        components: [...(currentWorkspace.components || []), ...templateComponents]
+      });
+    }
+    
     setSelectedNav("workspace"); // 切换到工作空间页面
     toast.success(`${template.name}模板已成功应用到工作空间！`);
   };
@@ -736,107 +747,112 @@ const Workspace = () => {
           </div>;
     }
   };
-  return <div className="min-h-screen bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 flex">
-      {/* Left Navigation */}
-      <div className={`${sidebarCollapsed ? 'w-16' : 'w-56'} bg-purple-950/20 backdrop-blur-xl border-r border-purple-500/20 flex flex-col transition-all duration-300`}>
-        <div className={`${sidebarCollapsed ? 'p-3' : 'p-4'} border-b border-purple-500/20 flex items-center justify-between`}>
-          {!sidebarCollapsed && <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                <div className="w-4 h-4 bg-white rounded-sm"></div>
-              </div>
-              <User className="h-5 w-5 text-purple-100" />
-            </div>}
-          <Button variant="ghost" size="sm" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="text-purple-300 hover:text-white hover:bg-purple-500/20 p-1">
-            {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </Button>
-        </div>
-        
-        {/* User Menu */}
-        <div className={`${sidebarCollapsed ? 'p-2' : 'p-3'} border-b border-purple-500/20`}>
-          <UserMenu />
-        </div>
-        
-        <nav className={`flex-1 ${sidebarCollapsed ? 'p-2' : 'p-3'} space-y-4`}>
-          {navGroups.map(group => <div key={group.title} className="space-y-1">
-              {!sidebarCollapsed && <h3 className="text-xs uppercase tracking-wider text-purple-400 font-medium px-2 mb-2">
-                  {group.title}
-                </h3>}
-              <div className="space-y-1">
-                {group.items.map(item => {
-              const IconComponent = item.icon;
-              return <Button key={item.id} variant="ghost" size={sidebarCollapsed ? "sm" : "default"} className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2 rounded-lg transition-all duration-200 text-left justify-start ${selectedNav === item.id ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'text-purple-300 hover:text-white hover:bg-purple-500/10'}`} onClick={() => setSelectedNav(item.id)} title={sidebarCollapsed ? item.fullName : undefined}>
-                      <IconComponent className="h-4 w-4" />
-                      {!sidebarCollapsed && <span className="text-sm">{item.name}</span>}
-                    </Button>;
-            })}
-              </div>
-            </div>)}
-        </nav>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-3 py-3">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-lg font-semibold text-purple-100">Alaya NeW算力云工作空间</h1>
-              <p className="text-purple-400 text-xs">自定义您的云桌面环境</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
-                <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
-                运行中
-              </Badge>
-            </div>
-          </div>
-        </div>
-
-        {/* Content Area */}
-        <div className="flex-1 p-6 overflow-auto">
-          <div className="h-full">
-            {renderContent()}
-          </div>
-        </div>
-      </div>
-
-      {/* Right AI Chat - Reduced size */}
-      <div className="w-64 bg-purple-950/20 backdrop-blur-xl border-l border-purple-500/20 flex flex-col">
-        <div className="p-4 border-b border-purple-500/20">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
-              <span className="text-sm">🤖</span>
-            </div>
-            <span className="text-sm font-semibold text-purple-100">Alaya AI助手</span>
-          </div>
-          <p className="text-xs text-purple-400 mt-1">工作空间管理、模型部署</p>
-        </div>
-        
-        {/* AI Agent面板 */}
-        <div className="p-3 border-b border-purple-500/20">
-          <AIAgent onExecuteCommand={handleExecuteCommand} onUpdateCanvas={handleUpdateCanvas} />
-        </div>
-        
-        {/* 对话区域 */}
-        <ScrollArea className="flex-1 p-3">
-          <div className="space-y-3">
-            {chatMessages.map(message => <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[180px] p-2 rounded-lg text-xs ${message.type === 'user' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white' : 'bg-purple-500/10 text-purple-200 border border-purple-500/20'}`}>
-                  <p>{message.content}</p>
+  return (
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* 工作空间工具栏 */}
+      <WorkspaceToolbar />
+      
+      <div className="flex flex-1">
+        {/* 侧边栏 */}
+        <div className={`${sidebarCollapsed ? 'w-16' : 'w-56'} bg-purple-950/20 backdrop-blur-xl border-r border-purple-500/20 flex flex-col transition-all duration-300`}>
+          <div className={`${sidebarCollapsed ? 'p-3' : 'p-4'} border-b border-purple-500/20 flex items-center justify-between`}>
+            {!sidebarCollapsed && <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
+                  <div className="w-4 h-4 bg-white rounded-sm"></div>
                 </div>
-              </div>)}
-          </div>
-        </ScrollArea>
-        
-        <div className="p-3 border-t border-purple-500/20">
-          <div className="flex gap-2">
-            <Input placeholder="输入消息..." value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1 bg-purple-500/5 border border-purple-500/20 rounded-lg text-purple-100 placeholder-purple-400 focus:border-purple-500 text-sm h-8" />
-            <Button onClick={handleSendMessage} size="sm" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg h-8 px-3">
-              发送
+                <User className="h-5 w-5 text-purple-100" />
+              </div>}
+            <Button variant="ghost" size="sm" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="text-purple-300 hover:text-white hover:bg-purple-500/20 p-1">
+              {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
             </Button>
           </div>
+          
+          {/* User Menu */}
+          <div className={`${sidebarCollapsed ? 'p-2' : 'p-3'} border-b border-purple-500/20`}>
+            <UserMenu />
+          </div>
+          
+          <nav className={`flex-1 ${sidebarCollapsed ? 'p-2' : 'p-3'} space-y-4`}>
+            {navGroups.map(group => <div key={group.title} className="space-y-1">
+                {!sidebarCollapsed && <h3 className="text-xs uppercase tracking-wider text-purple-400 font-medium px-2 mb-2">
+                    {group.title}
+                  </h3>}
+                <div className="space-y-1">
+                  {group.items.map(item => {
+                const IconComponent = item.icon;
+                return <Button key={item.id} variant="ghost" size={sidebarCollapsed ? "sm" : "default"} className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2 rounded-lg transition-all duration-200 text-left justify-start ${selectedNav === item.id ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'text-purple-300 hover:text-white hover:bg-purple-500/10'}`} onClick={() => setSelectedNav(item.id)} title={sidebarCollapsed ? item.fullName : undefined}>
+                        <IconComponent className="h-4 w-4" />
+                        {!sidebarCollapsed && <span className="text-sm">{item.name}</span>}
+                      </Button>;
+              })}
+                </div>
+              </div>)}
+          </nav>
+        </div>
+
+        {/* 主内容区域 */}
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-3 py-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-lg font-semibold text-purple-100">Alaya NeW算力云工作空间</h1>
+                <p className="text-purple-400 text-xs">自定义您的云桌面环境</p>
+              </div>
+              <div className="flex items-center gap-4">
+                <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
+                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
+                  运行中
+                </Badge>
+              </div>
+            </div>
+          </div>
+
+          {/* Content Area */}
+          <div className="flex-1 p-6 overflow-auto">
+            <div className="h-full">
+              {renderContent()}
+            </div>
+          </div>
+        </div>
+
+        {/* 右侧 AI Chat */}
+        <div className="w-64 bg-purple-950/20 backdrop-blur-xl border-l border-purple-500/20 flex flex-col">
+          <div className="p-4 border-b border-purple-500/20">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
+                <span className="text-sm">🤖</span>
+              </div>
+              <span className="text-sm font-semibold text-purple-100">Alaya AI助手</span>
+            </div>
+            <p className="text-xs text-purple-400 mt-1">工作空间管理、模型部署</p>
+          </div>
+          
+          {/* AI Agent面板 */}
+          <div className="p-3 border-b border-purple-500/20">
+            <AIAgent onExecuteCommand={handleExecuteCommand} onUpdateCanvas={handleUpdateCanvas} />
+          </div>
+          
+          {/* 对话区域 */}
+          <ScrollArea className="flex-1 p-3">
+            <div className="space-y-3">
+              {chatMessages.map(message => <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[180px] p-2 rounded-lg text-xs ${message.type === 'user' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white' : 'bg-purple-500/10 text-purple-200 border border-purple-500/20'}`}>
+                    <p>{message.content}</p>
+                  </div>
+                </div>)}
+            </div>
+          </ScrollArea>
+          
+          <div className="p-3 border-t border-purple-500/20">
+            <div className="flex gap-2">
+              <Input placeholder="输入消息..." value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1 bg-purple-500/5 border border-purple-500/20 rounded-lg text-purple-100 placeholder-purple-400 focus:border-purple-500 text-sm h-8" />
+              <Button onClick={handleSendMessage} size="sm" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg h-8 px-3">
+                发送
+              </Button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>;
-};
-export default Workspace;
+    </div>
+  );

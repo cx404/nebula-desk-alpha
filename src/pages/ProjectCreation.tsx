@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,9 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Rocket, Settings, FileText } from "lucide-react";
 const ProjectCreation = () => {
   const navigate = useNavigate();
-  const {
-    toast
-  } = useToast();
+  const { createWorkspace } = useWorkspace();
+  const { toast } = useToast();
   const [selectedMethod, setSelectedMethod] = useState<string>("");
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
@@ -83,6 +83,13 @@ const ProjectCreation = () => {
     // 模拟生成时间
     setTimeout(() => {
       setIsGenerating(false);
+      // 创建新工作空间
+      createWorkspace({
+        name: projectName || "AI 生成工作空间",
+        description: customRequirements,
+        type: "custom",
+        components: []
+      });
       toast({
         title: "项目生成完成！",
         description: "正在跳转到工作空间..."
@@ -92,7 +99,13 @@ const ProjectCreation = () => {
   };
   const handleCreateProject = async () => {
     if (selectedMethod === "blank") {
-      // 空白创建直接跳转
+      // 空白创建
+      createWorkspace({
+        name: projectName || "空白工作空间",
+        description: "从零开始创建的空白工作空间",
+        type: "blank",
+        components: []
+      });
       navigate("/workspace");
       return;
     }
@@ -117,6 +130,12 @@ const ProjectCreation = () => {
       // 模拟生成时间
       setTimeout(() => {
         setIsGenerating(false);
+        createWorkspace({
+          name: projectName || "AI 生成工作空间",
+          description: customRequirements,
+          type: "custom",
+          components: []
+        });
         toast({
           title: "项目生成完成！",
           description: "正在跳转到工作空间..."
@@ -127,6 +146,12 @@ const ProjectCreation = () => {
     }
 
     // 模板创建
+    createWorkspace({
+      name: projectName || "模板工作空间",
+      description: "基于模板创建的工作空间",
+      type: "template",
+      components: []
+    });
     navigate("/workspace");
   };
   return <div className="min-h-screen bg-background">

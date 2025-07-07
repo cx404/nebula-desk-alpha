@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useWorkspace } from "@/hooks/useWorkspace";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -8,6 +9,7 @@ import techBg from "@/assets/tech-bg.jpg";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { hasWorkspaces, lastOpenedWorkspace, switchWorkspace } = useWorkspace();
   const [phoneNumber, setPhoneNumber] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
   const [alayaAccount, setAlayaAccount] = useState("");
@@ -15,7 +17,14 @@ const Login = () => {
 
   const handleLogin = () => {
     // 模拟登录逻辑
-    navigate("/projects");
+    if (hasWorkspaces && lastOpenedWorkspace) {
+      // 如果有工作空间，切换到最后打开的工作空间并跳转到工作空间页面
+      switchWorkspace(lastOpenedWorkspace.id);
+      navigate("/workspace");
+    } else {
+      // 如果没有工作空间，跳转到项目创建页面
+      navigate("/projects");
+    }
   };
 
   return (
