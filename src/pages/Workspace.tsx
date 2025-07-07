@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserMenu } from "@/components/UserMenu";
 import { ResourceMonitorChart } from "@/components/charts/ResourceMonitorChart";
+import { ResourceMonitorWidget } from "@/components/charts/ResourceMonitorWidget";
 import { BillingChart } from "@/components/charts/BillingChart";
 import { APIUsageChart } from "@/components/charts/APIUsageChart";
 import { PerformanceChart } from "@/components/charts/PerformanceChart";
@@ -345,7 +346,8 @@ const Workspace = () => {
             </div>
 
             {/* 图表区域 */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              <ResourceMonitorWidget data={resourceData} />
               <ResourceMonitorChart data={resourceData} />
               <APIUsageChart data={apiUsageData} />
             </div>
