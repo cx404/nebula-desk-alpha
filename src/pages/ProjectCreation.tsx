@@ -351,20 +351,34 @@ const ProjectCreation = () => {
     navigate("/workspace");
   };
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-blue-500/5 to-purple-500/5 relative overflow-hidden">
-      {/* 背景装饰 */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      <div className="absolute top-20 left-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-20 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+    <div className="min-h-screen relative overflow-hidden">
+      {/* 星空渐变背景 */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500"></div>
+      <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/50 via-purple-900/30 to-pink-900/50"></div>
+      
+      {/* 星空效果装饰 */}
+      <div className="absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full animate-pulse opacity-80"></div>
+        <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-white rounded-full animate-pulse opacity-60" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-pulse opacity-70" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 right-1/3 w-1 h-1 bg-white rounded-full animate-pulse opacity-50" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-white rounded-full animate-pulse opacity-90" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute top-3/4 left-1/2 w-1 h-1 bg-white rounded-full animate-pulse opacity-40" style={{ animationDelay: '2.5s' }}></div>
+      </div>
+      
+      {/* 光晕效果 */}
+      <div className="absolute top-20 left-20 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }}></div>
       
       {/* Header */}
-      <header className="border-b border-border/50 bg-card/50 backdrop-blur-lg relative z-10">
+      <header className="border-b border-white/20 bg-white/5 backdrop-blur-lg relative z-10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-              <div className="w-4 h-4 bg-primary rounded"></div>
+            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+              <div className="w-4 h-4 bg-white rounded"></div>
             </div>
-            <span className="text-xl font-semibold">算力云桌面</span>
+            <span className="text-xl font-semibold text-white">算力云桌面</span>
           </div>
           <UserMenu />
         </div>
@@ -380,24 +394,24 @@ const ProjectCreation = () => {
 
       <div className="container mx-auto px-6 py-8 relative z-10">
         {/* AI 超级聊天界面 */}
-        <div className="max-w-4xl mx-auto mb-16">
+        <div className="max-w-6xl mx-auto mb-12">
           {/* AI Chat Header */}
-          <div className="text-center mb-8 animate-fade-in">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Sparkles className="w-8 h-8 text-blue-400" />
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="flex items-center justify-center gap-4 mb-6">
+              <Sparkles className="w-12 h-12 text-white animate-pulse" />
+              <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
                 AI 智能工作空间助手
               </h1>
-              <Sparkles className="w-8 h-8 text-purple-400" />
+              <Sparkles className="w-12 h-12 text-white animate-pulse" />
             </div>
-            <p className="text-lg text-muted-foreground">告诉我您的需求，我将为您量身定制完美的工作空间</p>
+            <p className="text-xl text-white/90 font-medium">告诉我您的需求，我将为您量身定制完美的工作空间</p>
           </div>
 
-          {/* AI 聊天窗口 */}
-          <Card className="glass-card border-2 border-blue-500/20 shadow-2xl hover:border-blue-400/40 transition-all duration-300">
-            <div className="p-6">
-              {/* 聊天消息区域 */}
-              <div className="h-96 overflow-y-auto mb-4 space-y-4 scrollbar-thin scrollbar-thumb-blue-500/20">
+          {/* AI 聊天窗口 - 放大 */}
+          <Card className="glass-card border-2 border-white/30 shadow-2xl hover:border-white/50 transition-all duration-300 bg-white/10 backdrop-blur-xl">
+            <div className="p-8">
+              {/* 聊天消息区域 - 增大高度 */}
+              <div className="h-[500px] overflow-y-auto mb-6 space-y-6 scrollbar-thin scrollbar-thumb-white/20">
                 {chatMessages.map((message) => (
                   <div
                     key={message.id}
@@ -416,12 +430,12 @@ const ProjectCreation = () => {
                         <span className="text-white text-xs font-bold">我</span>
                       )}
                     </div>
-                    <div className={`max-w-[80%] p-4 rounded-2xl ${
-                      message.type === 'ai'
-                        ? 'bg-blue-500/10 border border-blue-500/20'
-                        : 'bg-green-500/10 border border-green-500/20'
-                    }`}>
-                      <p className="text-sm">{message.content}</p>
+                     <div className={`max-w-[80%] p-5 rounded-2xl ${
+                       message.type === 'ai'
+                         ? 'bg-white/15 border border-white/30 text-white'
+                         : 'bg-white/20 border border-white/40 text-white'
+                     }`}>
+                       <p className="text-base">{message.content}</p>
                       {message.suggestedComponents && (
                         <div className="mt-3 pt-3 border-t border-border/50">
                           <Button
@@ -437,38 +451,38 @@ const ProjectCreation = () => {
                   </div>
                 ))}
                 
-                {isAIThinking && (
-                  <div className="flex items-start gap-3 animate-fade-in">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                      <Bot className="w-4 h-4 text-white" />
-                    </div>
-                    <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-2xl">
-                      <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-blue-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                        <span className="text-sm text-blue-400 ml-2">AI正在思考...</span>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                 {isAIThinking && (
+                   <div className="flex items-start gap-3 animate-fade-in">
+                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                       <Bot className="w-4 h-4 text-white" />
+                     </div>
+                     <div className="bg-white/15 border border-white/30 p-5 rounded-2xl">
+                       <div className="flex items-center gap-2">
+                         <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
+                         <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                         <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                         <span className="text-base text-white ml-2">AI正在思考...</span>
+                       </div>
+                     </div>
+                   </div>
+                 )}
               </div>
 
               {/* 输入区域 */}
-              <div className="flex gap-3">
+              <div className="flex gap-4">
                 <Input
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder="描述您想要创建的项目，比如：我想做一个电商网站..."
-                  className="flex-1 border-blue-500/20 focus:border-blue-400 bg-background/50"
+                  className="flex-1 border-white/20 focus:border-white/40 bg-white/10 text-white placeholder:text-white/60 text-lg py-4 px-6 rounded-xl"
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
                 />
                 <Button 
                   onClick={handleSendMessage}
                   disabled={!chatInput.trim() || isAIThinking}
-                  className="btn-premium px-6"
+                  className="btn-premium px-8 py-4 text-lg rounded-xl"
                 >
-                  <Send className="w-4 h-4 mr-2" />
+                  <Send className="w-5 h-5 mr-2" />
                   发送
                 </Button>
               </div>
@@ -476,22 +490,22 @@ const ProjectCreation = () => {
           </Card>
         </div>
 
-        {/* 传统创建方式 - 放在底部，比较低调 */}
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-6">
-            <p className="text-sm text-muted-foreground">或者选择传统创建方式</p>
+        {/* 传统创建方式 - 缩小占比，更低调 */}
+        <div className="max-w-2xl mx-auto opacity-70 hover:opacity-90 transition-opacity duration-300">
+          <div className="text-center mb-4">
+            <p className="text-xs text-white/60">或者选择传统创建方式</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 opacity-60 hover:opacity-100 transition-opacity duration-300">
+          <div className="grid grid-cols-2 gap-3">
             {/* 简化的模板创建 */}
-            <Card className="p-4 cursor-pointer hover:scale-[1.02] transition-all duration-300 bg-card/50 border-border/50">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 bg-blue-500/20 rounded-lg flex items-center justify-center">
-                  <Rocket className="w-4 h-4 text-blue-400" />
+            <Card className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-6 h-6 bg-blue-400/30 rounded-lg flex items-center justify-center">
+                  <Rocket className="w-3 h-3 text-blue-300" />
                 </div>
-                <h3 className="font-medium">模板创建</h3>
+                <h3 className="text-sm font-medium text-white">模板创建</h3>
               </div>
-              <p className="text-sm text-muted-foreground">从预设模板快速创建</p>
+              <p className="text-xs text-white/60 mb-2">从预设模板快速创建</p>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="mt-3 w-full">
@@ -524,7 +538,7 @@ const ProjectCreation = () => {
 
             {/* 简化的空白创建 */}
             <Card 
-              className="p-4 cursor-pointer hover:scale-[1.02] transition-all duration-300 bg-card/50 border-border/50"
+              className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20"
               onClick={() => {
                 createWorkspace({
                   name: "空白工作空间",
@@ -535,14 +549,14 @@ const ProjectCreation = () => {
                 navigate("/workspace");
               }}
             >
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-8 h-8 bg-purple-500/20 rounded-lg flex items-center justify-center">
-                  <FileText className="w-4 h-4 text-purple-400" />
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-6 h-6 bg-purple-400/30 rounded-lg flex items-center justify-center">
+                  <FileText className="w-3 h-3 text-purple-300" />
                 </div>
-                <h3 className="font-medium">空白创建</h3>
+                <h3 className="text-sm font-medium text-white">空白创建</h3>
               </div>
-              <p className="text-sm text-muted-foreground mb-3">从零开始创建全新项目</p>
-              <Button variant="outline" size="sm" className="w-full">
+              <p className="text-xs text-white/60 mb-2">从零开始创建全新项目</p>
+              <Button variant="outline" size="sm" className="w-full text-xs border-white/20 text-white/80 hover:bg-white/10">
                 立即创建
               </Button>
             </Card>
