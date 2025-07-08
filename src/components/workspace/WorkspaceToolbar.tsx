@@ -30,6 +30,8 @@ export const WorkspaceToolbar = () => {
   const handleSwitchWorkspace = (workspaceId: string) => {
     switchWorkspace(workspaceId);
     toast.success("工作空间已切换");
+    // 重新加载页面以应用新的工作空间布局
+    window.location.reload();
   };
 
   const handleSaveTemplate = () => {

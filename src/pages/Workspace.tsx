@@ -301,6 +301,356 @@ const Workspace = () => {
     }, 1000);
   };
 
+  // 根据工作空间类型获取可用的导航项
+  const getAvailableNavItems = () => {
+    const workspaceType = currentWorkspace?.type || 'default';
+    
+    switch (workspaceType) {
+      case 'machine-learning':
+        return navGroups.map(group => ({
+          ...group,
+          items: group.items.filter(item => 
+            ['compute', 'model', 'dataset', 'tasks', 'workspace', 'template'].includes(item.id)
+          )
+        })).filter(group => group.items.length > 0);
+      
+      case 'web-development':
+        return navGroups.map(group => ({
+          ...group,
+          items: group.items.filter(item => 
+            ['environment', 'workspace', 'marketplace', 'template', 'community', 'docs'].includes(item.id)
+          )
+        })).filter(group => group.items.length > 0);
+      
+      case 'data-analysis':
+        return navGroups.map(group => ({
+          ...group,
+          items: group.items.filter(item => 
+            ['compute', 'dataset', 'tasks', 'workspace', 'template', 'billing'].includes(item.id)
+          )
+        })).filter(group => group.items.length > 0);
+      
+      default:
+        return navGroups;
+    }
+  };
+
+  // 根据工作空间类型渲染不同的工作空间布局
+  const renderWorkspaceByType = () => {
+    const workspaceType = currentWorkspace?.type || 'default';
+    
+    switch (workspaceType) {
+      case 'machine-learning':
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                🧠 {currentWorkspace?.name || "机器学习工作空间"}
+                <Badge className="bg-blue-500/10 text-blue-400 border-blue-500/20 ml-2">ML</Badge>
+              </h2>
+              <p className="text-gray-400">专为机器学习和深度学习优化的工作环境</p>
+            </div>
+            
+            {/* ML特定的概览卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">🧠</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">训练任务</h3>
+                    <p className="text-2xl font-bold text-blue-400">2</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">📊</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">数据集</h3>
+                    <p className="text-2xl font-bold text-green-400">5</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">🚀</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">部署模型</h3>
+                    <p className="text-2xl font-bold text-purple-400">3</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-orange-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">⚡</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">GPU使用率</h3>
+                    <p className="text-2xl font-bold text-orange-400">78%</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* ML专用组件 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <ResourceMonitorChart data={resourceData} />
+              <PerformanceChart data={performanceData} />
+            </div>
+          </div>
+        );
+
+      case 'web-development':
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                💻 {currentWorkspace?.name || "Web开发工作空间"}
+                <Badge className="bg-green-500/10 text-green-400 border-green-500/20 ml-2">WEB</Badge>
+              </h2>
+              <p className="text-gray-400">专为前端和全栈开发优化的工作环境</p>
+            </div>
+            
+            {/* Web开发特定的概览卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">🌐</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">活跃项目</h3>
+                    <p className="text-2xl font-bold text-green-400">4</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">🔧</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">开发工具</h3>
+                    <p className="text-2xl font-bold text-blue-400">8</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">📦</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">组件库</h3>
+                    <p className="text-2xl font-bold text-purple-400">12</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-orange-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">🚀</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">部署状态</h3>
+                    <p className="text-2xl font-bold text-orange-400">良好</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* Web开发专用组件工作空间 */}
+            <ComponentWorkspace initialComponents={workspaceComponents} />
+          </div>
+        );
+
+      case 'data-analysis':
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                📊 {currentWorkspace?.name || "数据分析工作空间"}
+                <Badge className="bg-cyan-500/10 text-cyan-400 border-cyan-500/20 ml-2">DATA</Badge>
+              </h2>
+              <p className="text-gray-400">专为数据科学和分析优化的工作环境</p>
+            </div>
+            
+            {/* 数据分析特定的概览卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-cyan-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">📈</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">分析任务</h3>
+                    <p className="text-2xl font-bold text-cyan-400">6</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">💾</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">数据源</h3>
+                    <p className="text-2xl font-bold text-green-400">9</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">📋</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">报告</h3>
+                    <p className="text-2xl font-bold text-purple-400">15</p>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-orange-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">⚡</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm">处理能力</h3>
+                    <p className="text-2xl font-bold text-orange-400">92%</p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
+            {/* 数据分析专用图表 */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <APIUsageChart data={apiUsageData} />
+              <BillingChart data={billingData} />
+            </div>
+          </div>
+        );
+
+      default:
+        return (
+          <div className="space-y-6">
+            <div className="mb-6">
+              <div className="flex items-center gap-4 mb-2">
+                {isEditingName ? (
+                  <div className="flex items-center gap-2">
+                    <Input
+                      value={editingName}
+                      onChange={(e) => setEditingName(e.target.value)}
+                      className="bg-white/10 border-white/20 text-white text-2xl font-bold px-3 py-1 h-auto"
+                      autoFocus
+                      onKeyPress={(e) => e.key === 'Enter' && handleSaveWorkspaceName()}
+                    />
+                    <Button
+                      onClick={handleSaveWorkspaceName}
+                      size="sm"
+                      className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30"
+                    >
+                      <Check className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      onClick={handleCancelEditName}
+                      size="sm"
+                      variant="outline"
+                      className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30"
+                    >
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-2xl font-bold text-white">
+                      {currentWorkspace?.name || "工作空间"}
+                    </h2>
+                    <Button
+                      onClick={() => setIsEditingName(true)}
+                      size="sm"
+                      variant="ghost"
+                      className="text-white/60 hover:text-white hover:bg-white/10"
+                    >
+                      <Edit3 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+              <p className="text-gray-400">{currentWorkspace?.description || "统一的开发环境和项目管理中心"}</p>
+            </div>
+            
+            {/* 概览卡片 */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">💼</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">活跃项目</h3>
+                    <p className="text-3xl font-bold text-blue-400">3</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">⚡</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">算力使用</h3>
+                    <p className="text-3xl font-bold text-green-400">78%</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                    <span className="text-2xl">💰</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white">今日费用</h3>
+                    <p className="text-3xl font-bold text-purple-400">¥126</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 图表区域 */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+              <ResourceMonitorWidget data={resourceData} onClick={() => setShowResourceCharts(!showResourceCharts)} isActive={showResourceCharts} />
+              {showResourceCharts && <>
+                  <ResourceMonitorChart data={resourceData} />
+                  <APIUsageChart data={apiUsageData} />
+                </>}
+            </div>
+
+            {/* 组件工作空间区域 */}
+            <div className="space-y-6">
+              <ComponentWorkspace initialComponents={workspaceComponents} />
+            </div>
+          </div>
+        );
+    }
+  };
+
   // 渲染不同导航项的内容看板
   const renderContent = () => {
     switch (selectedNav) {
@@ -450,105 +800,7 @@ const Workspace = () => {
       case "marketplace":
         return <ComponentMarketplace />;
       case "workspace":
-        return <div className="space-y-6">
-            <div className="mb-6">
-              <div className="flex items-center gap-4 mb-2">
-                {isEditingName ? (
-                  <div className="flex items-center gap-2">
-                    <Input
-                      value={editingName}
-                      onChange={(e) => setEditingName(e.target.value)}
-                      className="bg-white/10 border-white/20 text-white text-2xl font-bold px-3 py-1 h-auto"
-                      autoFocus
-                      onKeyPress={(e) => e.key === 'Enter' && handleSaveWorkspaceName()}
-                    />
-                    <Button
-                      onClick={handleSaveWorkspaceName}
-                      size="sm"
-                      className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30"
-                    >
-                      <Check className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      onClick={handleCancelEditName}
-                      size="sm"
-                      variant="outline"
-                      className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30"
-                    >
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-2xl font-bold text-white">
-                      {currentWorkspace?.name || "工作空间"}
-                    </h2>
-                    <Button
-                      onClick={() => setIsEditingName(true)}
-                      size="sm"
-                      variant="ghost"
-                      className="text-white/60 hover:text-white hover:bg-white/10"
-                    >
-                      <Edit3 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                )}
-              </div>
-              <p className="text-gray-400">{currentWorkspace?.description || "统一的开发环境和项目管理中心"}</p>
-            </div>
-            
-            {/* 概览卡片 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">💼</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">活跃项目</h3>
-                    <p className="text-3xl font-bold text-blue-400">3</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">算力使用</h3>
-                    <p className="text-3xl font-bold text-green-400">78%</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">💰</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">今日费用</h3>
-                    <p className="text-3xl font-bold text-purple-400">¥126</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* 图表区域 */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              <ResourceMonitorWidget data={resourceData} onClick={() => setShowResourceCharts(!showResourceCharts)} isActive={showResourceCharts} />
-              {showResourceCharts && <>
-                  <ResourceMonitorChart data={resourceData} />
-                  <APIUsageChart data={apiUsageData} />
-                </>}
-            </div>
-
-            {/* 组件工作空间区域 */}
-            <div className="space-y-6">
-              
-              <ComponentWorkspace initialComponents={workspaceComponents} />
-            </div>
-          </div>;
+        return renderWorkspaceByType();
       case "template":
         return <WorkspaceTemplate onApplyTemplate={handleApplyTemplate} />;
       case "community":
@@ -853,7 +1105,7 @@ const Workspace = () => {
           </div>
           
           <nav className={`flex-1 ${sidebarCollapsed ? 'p-2' : 'p-3'} space-y-4`}>
-            {navGroups.map(group => <div key={group.title} className="space-y-1">
+            {getAvailableNavItems().map(group => <div key={group.title} className="space-y-1">
                 {!sidebarCollapsed && <h3 className="text-xs uppercase tracking-wider text-purple-400 font-medium px-2 mb-2">
                     {group.title}
                   </h3>}
