@@ -5,16 +5,19 @@ import { Badge } from "@/components/ui/badge";
 import { DraggableComponent } from "../workspace/DraggableComponent";
 import { ConnectionLine } from "../workspace/ComponentConnection";
 import { AIAgent } from "../workspace/AIAgent";
+import { ResourceMonitorWidget } from "../charts/ResourceMonitorWidget";
+import { ResourceMonitorChart } from "../charts/ResourceMonitorChart";
 import { toast } from "sonner";
-import { Terminal, FileText, Rocket, Settings } from "lucide-react";
+import { Terminal, FileText, Rocket, Settings, Monitor } from "lucide-react";
 interface WorkspaceComponent {
   id: string;
   name: string;
   icon: React.ReactNode;
   x: number;
   y: number;
-  type: "terminal" | "jupyter" | "model-deploy" | "tensorboard" | "code-editor" | "custom";
+  type: "terminal" | "jupyter" | "model-deploy" | "tensorboard" | "code-editor" | "resource-monitor" | "custom";
   status: "idle" | "running" | "error";
+  size: "1x1" | "1x4"; // 组件尺寸
   connections?: Array<{
     targetId: string;
     type: "data" | "control" | "error";
@@ -33,28 +36,39 @@ interface ComponentFlow {
 const componentTemplates = {
   terminal: {
     name: "Terminal",
-    icon: <Terminal className="w-6 h-6" />,
-    type: "terminal" as const
+    icon: <Terminal className="w-8 h-8" />,
+    type: "terminal" as const,
+    size: "1x1" as const
   },
   jupyter: {
-    name: "Jupyter Notebook",
-    icon: <FileText className="w-6 h-6" />,
-    type: "jupyter" as const
+    name: "Jupyter",
+    icon: <FileText className="w-8 h-8" />,
+    type: "jupyter" as const,
+    size: "1x1" as const
   },
   "model-deploy": {
     name: "模型部署",
-    icon: <Rocket className="w-6 h-6" />,
-    type: "model-deploy" as const
+    icon: <Rocket className="w-8 h-8" />,
+    type: "model-deploy" as const,
+    size: "1x1" as const
   },
   tensorboard: {
     name: "TensorBoard",
-    icon: <Settings className="w-6 h-6" />,
-    type: "tensorboard" as const
+    icon: <Settings className="w-8 h-8" />,
+    type: "tensorboard" as const,
+    size: "1x1" as const
   },
   "code-editor": {
     name: "代码编辑器",
-    icon: <FileText className="w-6 h-6" />,
-    type: "code-editor" as const
+    icon: <FileText className="w-8 h-8" />,
+    type: "code-editor" as const,
+    size: "1x1" as const
+  },
+  "resource-monitor": {
+    name: "资源监控",
+    icon: <Monitor className="w-8 h-8" />,
+    type: "resource-monitor" as const,
+    size: "1x1" as const
   }
 };
 const predefinedFlows: ComponentFlow[] = [{
@@ -67,7 +81,8 @@ const predefinedFlows: ComponentFlow[] = [{
     x: 100,
     y: 100,
     type: "jupyter",
-    status: "idle"
+    status: "idle",
+    size: "1x1"
   }, {
     id: "training",
     name: "模型训练",
@@ -75,7 +90,8 @@ const predefinedFlows: ComponentFlow[] = [{
     x: 300,
     y: 100,
     type: "jupyter",
-    status: "idle"
+    status: "idle",
+    size: "1x1"
   }, {
     id: "deploy",
     name: "模型部署",
@@ -83,7 +99,8 @@ const predefinedFlows: ComponentFlow[] = [{
     x: 500,
     y: 100,
     type: "model-deploy",
-    status: "idle"
+    status: "idle",
+    size: "1x1"
   }],
   connections: [{
     sourceId: "data-prep",
@@ -104,7 +121,8 @@ const predefinedFlows: ComponentFlow[] = [{
     x: 100,
     y: 100,
     type: "code-editor",
-    status: "idle"
+    status: "idle",
+    size: "1x1"
   }, {
     id: "terminal",
     name: "终端",
@@ -112,7 +130,8 @@ const predefinedFlows: ComponentFlow[] = [{
     x: 300,
     y: 100,
     type: "terminal",
-    status: "idle"
+    status: "idle",
+    size: "1x1"
   }, {
     id: "jupyter",
     name: "测试",
@@ -120,7 +139,8 @@ const predefinedFlows: ComponentFlow[] = [{
     x: 500,
     y: 100,
     type: "jupyter",
-    status: "idle"
+    status: "idle",
+    size: "1x1"
   }],
   connections: [{
     sourceId: "editor",
@@ -139,6 +159,16 @@ export const ComponentWorkspace = ({
   initialComponents = []
 }: ComponentWorkspaceProps) => {
   const [components, setComponents] = useState<WorkspaceComponent[]>(initialComponents);
+  const [isEditMode, setIsEditMode] = useState(false);
+  
+  // 模拟资源数据
+  const [resourceData] = useState([
+    { time: "14:00", cpu: 45, memory: 62, gpu: 30 },
+    { time: "14:05", cpu: 52, memory: 58, gpu: 35 },
+    { time: "14:10", cpu: 48, memory: 65, gpu: 42 },
+    { time: "14:15", cpu: 55, memory: 60, gpu: 38 },
+    { time: "14:20", cpu: 50, memory: 63, gpu: 45 }
+  ]);
 
   // 同步外部传入的组件
   useEffect(() => {
@@ -188,10 +218,30 @@ export const ComponentWorkspace = ({
       x: Math.random() * 400 + 100,
       y: Math.random() * 200 + 100,
       type: template.type,
-      status: "idle"
+      status: "idle",
+      size: template.size
     };
     setComponents(prev => [...prev, newComponent]);
     toast.success(`${template.name} 组件已添加到工作空间`);
+  };
+
+  const toggleComponentSize = (componentId: string) => {
+    setComponents(prev => prev.map(comp => {
+      if (comp.id === componentId && comp.type === "resource-monitor") {
+        const newSize = comp.size === "1x1" ? "1x4" : "1x1";
+        return { ...comp, size: newSize };
+      }
+      return comp;
+    }));
+  };
+
+  const getComponentSize = (size: "1x1" | "1x4") => {
+    switch (size) {
+      case "1x4":
+        return "w-64 h-32"; // 1x4 size for expanded resource monitor
+      default:
+        return "w-20 h-20"; // 1x1 size (smaller, more icon-like)
+    }
   };
   const startConnection = () => {
     if (!selectedComponent) {
@@ -288,18 +338,29 @@ export const ComponentWorkspace = ({
       {/* Component Palette */}
       <div className="absolute top-4 left-4 z-10">
         <Card className="p-4 w-64">
-          <h3 className="font-semibold mb-3">组件库</h3>
-          <div className="grid grid-cols-2 gap-2 mb-4">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-semibold">组件库</h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsEditMode(!isEditMode)}
+              className="text-xs"
+            >
+              {isEditMode ? "预览" : "编辑"}
+            </Button>
+          </div>
+          <div className="grid grid-cols-4 gap-2 mb-4">
             {Object.entries(componentTemplates).map(([key, template]) => (
               <Button
                 key={key}
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={() => addComponentToWorkspace(key)}
-                className="flex items-center gap-2 h-auto p-2"
+                className="flex flex-col items-center justify-center h-16 w-16 p-1 hover:bg-white/10"
+                title={template.name}
               >
-                {template.icon}
-                <span className="text-xs">{template.name}</span>
+                <div className="mb-1">{template.icon}</div>
+                <span className="text-[10px] leading-none">{template.name}</span>
               </Button>
             ))}
           </div>
@@ -385,17 +446,31 @@ export const ComponentWorkspace = ({
         {/* Components */}
         {components.map((component) => (
           <div key={component.id} className="absolute" style={{ left: component.x, top: component.y }}>
-            <Card className={`w-32 h-32 bg-white/10 backdrop-blur-xl border border-white/20 hover:border-blue-500/50 transition-all duration-300 flex flex-col items-center justify-center p-4 cursor-pointer ${
-              selectedComponent === component.id ? 'border-blue-500 ring-2 ring-blue-500' : ''
-            }`}>
-              <div className="mb-2">{component.icon}</div>
-              <h3 className="text-white text-sm font-medium text-center leading-tight mb-1">
-                {component.name}
-              </h3>
-              <Badge className={`text-xs ${getStatusColor(component.status)}`}>
-                {component.status}
-              </Badge>
-            </Card>
+            {component.type === "resource-monitor" && component.size === "1x4" && isEditMode ? (
+              <div className="w-64 h-32">
+                <ResourceMonitorChart data={resourceData} />
+              </div>
+            ) : (
+              <Card 
+                className={`${getComponentSize(component.size)} bg-white/10 backdrop-blur-xl border border-white/20 hover:border-blue-500/50 transition-all duration-300 flex flex-col items-center justify-center p-2 cursor-pointer ${
+                  selectedComponent === component.id ? 'border-blue-500 ring-2 ring-blue-500' : ''
+                }`}
+                onClick={() => {
+                  handleSelect(component.id);
+                  if (component.type === "resource-monitor" && isEditMode) {
+                    toggleComponentSize(component.id);
+                  }
+                }}
+              >
+                <div className="mb-1">{component.icon}</div>
+                <h3 className="text-white text-xs font-medium text-center leading-tight mb-1">
+                  {component.name}
+                </h3>
+                <Badge className={`text-[10px] ${getStatusColor(component.status)}`}>
+                  {component.status}
+                </Badge>
+              </Card>
+            )}
           </div>
         ))}
       </div>
