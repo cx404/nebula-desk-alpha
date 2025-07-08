@@ -405,9 +405,7 @@ export const ComponentWorkspace = ({
           </div>)}
       </div>
 
-      {/* AI Agent */}
-      <div className="absolute bottom-4 left-4 w-64">
-        <AIAgent onExecuteCommand={handleAIExecuteCommand} onUpdateCanvas={handleAIUpdateCanvas} />
-      </div>
+      {/* AI Agent - now floating */}
+      <AIAgent onExecuteCommand={handleAIExecuteCommand} onUpdateCanvas={handleAIUpdateCanvas} />
     </div>;
 };

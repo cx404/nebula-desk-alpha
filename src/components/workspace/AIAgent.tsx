@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Bot, Send } from "lucide-react";
 interface AIAgentProps {
   onExecuteCommand: (command: string) => Promise<string>;
   onUpdateCanvas: (action: string, params: any) => void;
@@ -20,6 +23,8 @@ export const AIAgent = ({
 }: AIAgentProps) => {
   const [tasks, setTasks] = useState<AgentTask[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [currentCommand, setCurrentCommand] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const parseCommand = (command: string) => {
     const cmd = command.toLowerCase();
 
@@ -173,5 +178,98 @@ export const AIAgent = ({
     }
   };
   const predefinedCommands = ["部署 DeepSeek-R1 模型", "添加 Terminal 组件", "检查系统资源状态", "分析本月费用情况", "重新整理画布布局"];
-  return;
+
+  const handleSubmitCommand = async () => {
+    if (!currentCommand.trim() || isProcessing) return;
+    
+    await executeAgentTask(currentCommand);
+    setCurrentCommand("");
+  };
+
+  const handleQuickCommand = async (command: string) => {
+    await executeAgentTask(command);
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button
+          size="icon"
+          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300 z-50"
+        >
+          <Bot className="h-6 w-6" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-md h-[600px] flex flex-col p-0">
+        <DialogHeader className="p-4 pb-2">
+          <DialogTitle className="flex items-center gap-2">
+            <Bot className="h-5 w-5" />
+            Alaya AI助手
+          </DialogTitle>
+        </DialogHeader>
+        
+        <div className="flex-1 flex flex-col">
+          {/* Quick Commands */}
+          <div className="px-4 pb-2">
+            <div className="text-sm text-muted-foreground mb-2">快速指令:</div>
+            <div className="grid grid-cols-1 gap-1">
+              {predefinedCommands.map((cmd, index) => (
+                <Button
+                  key={index}
+                  variant="ghost"
+                  size="sm"
+                  className="justify-start text-xs h-8"
+                  onClick={() => handleQuickCommand(cmd)}
+                  disabled={isProcessing}
+                >
+                  {cmd}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          {/* Task History */}
+          <ScrollArea className="flex-1 px-4">
+            <div className="space-y-2 pb-4">
+              {tasks.map((task) => (
+                <Card key={task.id} className="p-3">
+                  <div className="flex items-start justify-between mb-2">
+                    <span className="text-sm font-medium">{task.command}</span>
+                    {getStatusBadge(task.status)}
+                  </div>
+                  {task.result && (
+                    <p className="text-xs text-muted-foreground">{task.result}</p>
+                  )}
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {task.timestamp.toLocaleTimeString()}
+                  </p>
+                </Card>
+              ))}
+            </div>
+          </ScrollArea>
+
+          {/* Input Area */}
+          <div className="p-4 border-t">
+            <div className="flex gap-2">
+              <Input
+                placeholder="输入指令..."
+                value={currentCommand}
+                onChange={(e) => setCurrentCommand(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleSubmitCommand()}
+                disabled={isProcessing}
+                className="text-sm"
+              />
+              <Button 
+                size="icon" 
+                onClick={handleSubmitCommand}
+                disabled={isProcessing || !currentCommand.trim()}
+              >
+                <Send className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 };
