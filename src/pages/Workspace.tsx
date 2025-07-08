@@ -554,39 +554,21 @@ const Workspace = () => {
             </div>
             
             {/* 概览卡片 */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-blue-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">💼</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">活跃项目</h3>
-                    <p className="text-3xl font-bold text-blue-400">3</p>
-                  </div>
-                </div>
+            <div className="grid grid-cols-6 gap-4 mb-8">
+              <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-lg flex flex-col items-center justify-center hover:bg-white/20 transition-all duration-300">
+                <span className="text-2xl mb-1">💼</span>
+                <span className="text-xs text-white">项目</span>
+                <span className="text-sm font-bold text-blue-400">3</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">算力使用</h3>
-                    <p className="text-3xl font-bold text-green-400">78%</p>
-                  </div>
-                </div>
+              <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-lg flex flex-col items-center justify-center hover:bg-white/20 transition-all duration-300">
+                <span className="text-2xl mb-1">⚡</span>
+                <span className="text-xs text-white">算力</span>
+                <span className="text-sm font-bold text-green-400">78%</span>
               </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-purple-500/50 transition-all duration-300">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
-                    <span className="text-2xl">💰</span>
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-white">今日费用</h3>
-                    <p className="text-3xl font-bold text-purple-400">¥126</p>
-                  </div>
-                </div>
+              <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-lg flex flex-col items-center justify-center hover:bg-white/20 transition-all duration-300">
+                <span className="text-2xl mb-1">💰</span>
+                <span className="text-xs text-white">费用</span>
+                <span className="text-sm font-bold text-purple-400">¥126</span>
               </div>
             </div>
 
