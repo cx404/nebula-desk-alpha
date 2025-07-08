@@ -19,6 +19,7 @@ import { ComponentMarketplace } from "@/components/marketplace/ComponentMarketpl
 import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace";
 import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
 import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
+import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvider";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
@@ -1072,9 +1073,10 @@ const Workspace = () => {
     }
   };
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* 工作空间工具栏 */}
-      <WorkspaceToolbar />
+    <WorkspaceModeProvider>
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* 工作空间工具栏 */}
+        <WorkspaceToolbar />
       
       <div className="flex flex-1">
         {/* 侧边栏 */}
@@ -1187,6 +1189,7 @@ const Workspace = () => {
         </div>
       </div>
     </div>
+    </WorkspaceModeProvider>
   );
 };
 
