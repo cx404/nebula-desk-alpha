@@ -283,5 +283,130 @@ export const ComponentWorkspace = ({
         return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
   };
-  return;
+  return (
+    <div className="h-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      {/* Component Palette */}
+      <div className="absolute top-4 left-4 z-10">
+        <Card className="p-4 w-64">
+          <h3 className="font-semibold mb-3">组件库</h3>
+          <div className="grid grid-cols-2 gap-2 mb-4">
+            {Object.entries(componentTemplates).map(([key, template]) => (
+              <Button
+                key={key}
+                variant="outline"
+                size="sm"
+                onClick={() => addComponentToWorkspace(key)}
+                className="flex items-center gap-2 h-auto p-2"
+              >
+                {template.icon}
+                <span className="text-xs">{template.name}</span>
+              </Button>
+            ))}
+          </div>
+          
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium">预定义流程</h4>
+            {predefinedFlows.map((flow) => (
+              <Button
+                key={flow.id}
+                variant="ghost"
+                size="sm"
+                onClick={() => loadPredefinedFlow(flow)}
+                className="w-full justify-start text-xs"
+              >
+                {flow.name}
+              </Button>
+            ))}
+          </div>
+        </Card>
+      </div>
+
+      {/* Toolbar */}
+      <div className="absolute top-4 right-4 z-10">
+        <Card className="p-2">
+          <div className="flex gap-2">
+            <Button
+              variant={isConnecting ? "default" : "outline"}
+              size="sm"
+              onClick={startConnection}
+              disabled={!selectedComponent}
+            >
+              连接
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={deleteSelectedComponent}
+              disabled={!selectedComponent}
+            >
+              删除
+            </Button>
+            <Button
+              variant="default"
+              size="sm"
+              onClick={executeFlow}
+            >
+              执行流程
+            </Button>
+          </div>
+        </Card>
+      </div>
+
+      {/* Canvas */}
+      <div
+        ref={canvasRef}
+        className="relative w-full h-full overflow-hidden"
+        style={{ 
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+          backgroundSize: "20px 20px"
+        }}
+      >
+        {/* Connections */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none">
+          {connections.map((connection, index) => {
+            const sourceComponent = components.find(c => c.id === connection.sourceId);
+            const targetComponent = components.find(c => c.id === connection.targetId);
+            
+            if (!sourceComponent || !targetComponent) return null;
+            
+            return (
+              <ConnectionLine
+                key={index}
+                startX={sourceComponent.x + 100}
+                startY={sourceComponent.y + 40}
+                endX={targetComponent.x}
+                endY={targetComponent.y + 40}
+                type={connection.type}
+              />
+            );
+          })}
+        </svg>
+
+        {/* Components */}
+        {components.map((component) => (
+          <div key={component.id} className="absolute" style={{ left: component.x, top: component.y }}>
+            <Card className={`w-32 h-32 bg-white/10 backdrop-blur-xl border border-white/20 hover:border-blue-500/50 transition-all duration-300 flex flex-col items-center justify-center p-4 cursor-pointer ${
+              selectedComponent === component.id ? 'border-blue-500 ring-2 ring-blue-500' : ''
+            }`}>
+              <div className="mb-2">{component.icon}</div>
+              <h3 className="text-white text-sm font-medium text-center leading-tight mb-1">
+                {component.name}
+              </h3>
+              <Badge className={`text-xs ${getStatusColor(component.status)}`}>
+                {component.status}
+              </Badge>
+            </Card>
+          </div>
+        ))}
+      </div>
+
+      {/* AI Agent */}
+      <div className="absolute bottom-4 left-4 w-64">
+        <AIAgent
+          onExecuteCommand={handleAIExecuteCommand}
+          onUpdateCanvas={handleAIUpdateCanvas}
+        />
+      </div>
+    </div>
+  );
 };
