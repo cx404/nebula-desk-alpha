@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
+import { useWorkspaceMode } from "@/hooks/useWorkspaceMode";
 
 interface DraggableComponentProps {
   id: string;
@@ -9,6 +10,7 @@ interface DraggableComponentProps {
   y: number;
   onPositionChange: (id: string, x: number, y: number) => void;
   onSelect: (id: string) => void;
+  onRun?: (id: string) => void;
   isSelected: boolean;
 }
 
@@ -20,13 +22,16 @@ export const DraggableComponent = ({
   y,
   onPositionChange,
   onSelect,
+  onRun,
   isSelected,
 }: DraggableComponentProps) => {
+  const { isEditMode } = useWorkspaceMode();
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const elementRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (!isEditMode) return;
     e.preventDefault();
     setIsDragging(true);
     setDragStart({
@@ -34,6 +39,12 @@ export const DraggableComponent = ({
       y: e.clientY - y,
     });
     onSelect(id);
+  };
+
+  const handleDoubleClick = () => {
+    if (onRun) {
+      onRun(id);
+    }
   };
 
   const handleMouseMove = (e: MouseEvent) => {
@@ -69,11 +80,14 @@ export const DraggableComponent = ({
   return (
     <div
       ref={elementRef}
-      className={`absolute w-28 h-28 cursor-move transition-transform duration-200 ${
+      className={`absolute w-28 h-28 transition-transform duration-200 ${
+        isEditMode ? 'cursor-move' : 'cursor-pointer'
+      } ${
         isDragging ? 'scale-105 z-50' : 'hover:scale-105'
       } ${isSelected ? 'ring-2 ring-blue-500' : ''}`}
       style={{ left: x, top: y }}
       onMouseDown={handleMouseDown}
+      onDoubleClick={handleDoubleClick}
     >
       <Card className={`w-full h-full bg-white/10 backdrop-blur-xl border border-white/20 hover:border-blue-500/50 transition-all duration-300 flex flex-col items-center justify-center p-4 ${
         isSelected ? 'border-blue-500' : ''

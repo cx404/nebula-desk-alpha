@@ -5,9 +5,10 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useWorkspace } from "@/hooks/useWorkspace";
+import { useWorkspaceMode } from "@/hooks/useWorkspaceMode";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { Plus, FolderOpen, Save, Settings, ChevronDown } from "lucide-react";
+import { Plus, FolderOpen, Save, Settings, ChevronDown, Edit, Eye } from "lucide-react";
 
 export const WorkspaceToolbar = () => {
   const { 
@@ -16,6 +17,7 @@ export const WorkspaceToolbar = () => {
     switchWorkspace, 
     saveWorkspaceAsTemplate 
   } = useWorkspace();
+  const { mode, setMode, isEditMode } = useWorkspaceMode();
   const navigate = useNavigate();
   
   const [isNewWorkspaceDialogOpen, setIsNewWorkspaceDialogOpen] = useState(false);
@@ -65,6 +67,29 @@ export const WorkspaceToolbar = () => {
       </div>
 
       <div className="ml-auto flex items-center gap-2">
+        {/* 模式切换 */}
+        <Button
+          onClick={() => setMode(isEditMode ? 'view' : 'edit')}
+          size="sm"
+          className={`border transition-colors ${
+            isEditMode 
+              ? 'bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 border-blue-500/30' 
+              : 'bg-green-500/20 hover:bg-green-500/30 text-green-300 border-green-500/30'
+          }`}
+        >
+          {isEditMode ? (
+            <>
+              <Eye className="w-4 h-4 mr-1" />
+              切换到陈列模式
+            </>
+          ) : (
+            <>
+              <Edit className="w-4 h-4 mr-1" />
+              切换到编辑模式
+            </>
+          )}
+        </Button>
+
         {/* 新建工作空间 */}
         <Button
           onClick={handleNewWorkspace}

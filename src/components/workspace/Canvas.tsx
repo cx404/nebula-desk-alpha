@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { DraggableComponent } from "./DraggableComponent";
 import { ConnectionLine } from "./ComponentConnection";
+import { ComponentRunWindow } from "./ComponentRunWindow";
+import { useWorkspaceMode } from "@/hooks/useWorkspaceMode";
 import { toast } from "sonner";
 
 interface CanvasComponent {
@@ -49,6 +51,7 @@ const availableComponents = [
 ];
 
 export const Canvas = () => {
+  const { isEditMode } = useWorkspaceMode();
   const [components, setComponents] = useState<CanvasComponent[]>(initialComponents);
   const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
   const [connections, setConnections] = useState<Array<{
@@ -59,6 +62,7 @@ export const Canvas = () => {
   const [savedLayouts, setSavedLayouts] = useState<SavedLayout[]>([]);
   const [isConnecting, setIsConnecting] = useState(false);
   const [connectionSource, setConnectionSource] = useState<string | null>(null);
+  const [runningComponent, setRunningComponent] = useState<CanvasComponent | null>(null);
   const canvasRef = useRef<HTMLDivElement>(null);
 
   const handlePositionChange = (id: string, x: number, y: number) => {
@@ -84,6 +88,14 @@ export const Canvas = () => {
     };
     setComponents(prev => [...prev, newComponent]);
     toast.success(`${component.name} 组件已添加`);
+  };
+
+  const handleRunComponent = (componentId: string) => {
+    const component = components.find(comp => comp.id === componentId);
+    if (component) {
+      setRunningComponent(component);
+      toast.success(`正在启动 ${component.name}`);
+    }
   };
 
   const deleteSelectedComponent = () => {
@@ -145,23 +157,24 @@ export const Canvas = () => {
       </div>
 
       {/* 组件库和布局管理 */}
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex-1">
-          <h3 className="text-lg font-semibold text-white mb-3">组件库</h3>
-          <div className="flex gap-2 flex-wrap">
-            {availableComponents.map((comp, index) => (
-              <Button
-                key={index}
-                onClick={() => addComponent(comp)}
-                size="sm"
-                className="bg-white/10 hover:bg-white/20 text-white border border-white/20 flex items-center gap-2"
-              >
-                <span>{comp.icon}</span>
-                {comp.name}
-              </Button>
-            ))}
+      {isEditMode && (
+        <div className="flex justify-between items-start mb-4">
+          <div className="flex-1">
+            <h3 className="text-lg font-semibold text-white mb-3">组件库</h3>
+            <div className="flex gap-2 flex-wrap">
+              {availableComponents.map((comp, index) => (
+                <Button
+                  key={index}
+                  onClick={() => addComponent(comp)}
+                  size="sm"
+                  className="bg-white/10 hover:bg-white/20 text-white border border-white/20 flex items-center gap-2"
+                >
+                  <span>{comp.icon}</span>
+                  {comp.name}
+                </Button>
+              ))}
+            </div>
           </div>
-        </div>
         
         <div className="ml-6">
           <h3 className="text-lg font-semibold text-white mb-3">布局管理</h3>
@@ -198,6 +211,7 @@ export const Canvas = () => {
           )}
         </div>
       </div>
+      )}
 
       {/* 画布区域 */}
       <div className="relative h-[600px] bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xl overflow-hidden">
@@ -249,31 +263,48 @@ export const Canvas = () => {
               y={component.y}
               onPositionChange={handlePositionChange}
               onSelect={handleSelect}
+              onRun={handleRunComponent}
               isSelected={selectedComponent === component.id}
             />
           ))}
         </div>
 
         {/* 工具栏 */}
-        <div className="absolute bottom-4 right-4 flex gap-2">
-          {selectedComponent && (
-            <Button
-              onClick={deleteSelectedComponent}
-              size="sm"
-              className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30"
+        {isEditMode && (
+          <div className="absolute bottom-4 right-4 flex gap-2">
+            {selectedComponent && (
+              <Button
+                onClick={deleteSelectedComponent}
+                size="sm"
+                className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30"
+              >
+                🗑️ 删除
+              </Button>
+            )}
+            <Button 
+              onClick={saveCurrentLayout}
+              size="sm" 
+              className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
             >
-              🗑️ 删除
+              💾 保存当前布局
             </Button>
-          )}
-          <Button 
-            onClick={saveCurrentLayout}
-            size="sm" 
-            className="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white"
-          >
-            💾 保存当前布局
-          </Button>
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* 运行窗口 */}
+      {runningComponent && (
+        <ComponentRunWindow
+          componentId={runningComponent.id}
+          componentName={runningComponent.name}
+          componentType={runningComponent.icon === "📓" ? "jupyter" : 
+                        runningComponent.icon === "⚡" ? "terminal" :
+                        runningComponent.icon === "🤖" ? "model-deploy" :
+                        runningComponent.icon === "📈" ? "tensorboard" : 
+                        runningComponent.icon === "💻" ? "code-editor" : "custom"}
+          onClose={() => setRunningComponent(null)}
+        />
+      )}
     </div>
   );
 };
