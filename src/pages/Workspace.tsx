@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -21,8 +22,9 @@ import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home } from "lucide-react";
 const Workspace = () => {
+  const navigate = useNavigate();
   const { currentWorkspace, updateWorkspace } = useWorkspace();
   const [selectedNav, setSelectedNav] = useState("workspace");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -830,7 +832,15 @@ const Workspace = () => {
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
                   <div className="w-4 h-4 bg-white rounded-sm"></div>
                 </div>
-                <User className="h-5 w-5 text-purple-100" />
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={() => navigate('/')}
+                  className="p-1 hover:bg-purple-500/20 rounded-lg"
+                  title="返回首页"
+                >
+                  <Home className="h-5 w-5 text-purple-100" />
+                </Button>
               </div>}
             <Button variant="ghost" size="sm" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="text-purple-300 hover:text-white hover:bg-purple-500/20 p-1">
               {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
