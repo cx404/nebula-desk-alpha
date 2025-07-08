@@ -26,7 +26,10 @@ import { mockDataService } from "@/services/mockDataService";
 import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home } from "lucide-react";
 const Workspace = () => {
   const navigate = useNavigate();
-  const { currentWorkspace, updateWorkspace } = useWorkspace();
+  const {
+    currentWorkspace,
+    updateWorkspace
+  } = useWorkspace();
   const [selectedNav, setSelectedNav] = useState("workspace");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [chatMessages, setChatMessages] = useState([{
@@ -99,16 +102,16 @@ const Workspace = () => {
   // 处理工作空间名称编辑
   const handleSaveWorkspaceName = async () => {
     if (!currentWorkspace || !editingName.trim()) return;
-    
     try {
-      await updateWorkspace(currentWorkspace.id, { name: editingName.trim() });
+      await updateWorkspace(currentWorkspace.id, {
+        name: editingName.trim()
+      });
       setIsEditingName(false);
       toast.success("工作空间名称已更新");
     } catch (error) {
       toast.error("更新工作空间名称失败");
     }
   };
-
   const handleCancelEditName = () => {
     setEditingName(currentWorkspace?.name || "");
     setIsEditingName(false);
@@ -121,27 +124,26 @@ const Workspace = () => {
       id: `${template.id}-${componentName.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`,
       name: componentName,
       icon: getComponentIcon(componentName),
-      x: 100 + (index % 3) * 180,
+      x: 100 + index % 3 * 180,
       y: 100 + Math.floor(index / 3) * 140,
       type: getComponentType(componentName),
       status: "idle"
     }));
-
     setWorkspaceComponents(prev => [...prev, ...templateComponents]);
-    
+
     // 更新当前工作空间
     if (currentWorkspace) {
       updateWorkspace(currentWorkspace.id, {
         components: [...(currentWorkspace.components || []), ...templateComponents]
       });
     }
-    
     setSelectedNav("workspace"); // 切换到工作空间页面
     toast.success(`${template.name}模板已成功应用到工作空间！`);
   };
-
   const getComponentIcon = (componentName: string) => {
-    const iconMap: { [key: string]: string } = {
+    const iconMap: {
+      [key: string]: string;
+    } = {
       "Jupyter Notebook": "📓",
       "GPU Monitor": "⚡",
       "Model Trainer": "🤖",
@@ -169,7 +171,6 @@ const Workspace = () => {
     };
     return iconMap[componentName] || "⚙️";
   };
-
   const getComponentType = (componentName: string) => {
     if (componentName.includes("Jupyter")) return "jupyter";
     if (componentName.includes("Terminal")) return "terminal";
@@ -305,32 +306,22 @@ const Workspace = () => {
   // 根据工作空间类型获取可用的导航项
   const getAvailableNavItems = () => {
     const workspaceType = currentWorkspace?.type || 'default';
-    
     switch (workspaceType) {
       case 'machine-learning':
         return navGroups.map(group => ({
           ...group,
-          items: group.items.filter(item => 
-            ['compute', 'model', 'dataset', 'tasks', 'workspace', 'template'].includes(item.id)
-          )
+          items: group.items.filter(item => ['compute', 'model', 'dataset', 'tasks', 'workspace', 'template'].includes(item.id))
         })).filter(group => group.items.length > 0);
-      
       case 'web-development':
         return navGroups.map(group => ({
           ...group,
-          items: group.items.filter(item => 
-            ['environment', 'workspace', 'marketplace', 'template', 'community', 'docs'].includes(item.id)
-          )
+          items: group.items.filter(item => ['environment', 'workspace', 'marketplace', 'template', 'community', 'docs'].includes(item.id))
         })).filter(group => group.items.length > 0);
-      
       case 'data-analysis':
         return navGroups.map(group => ({
           ...group,
-          items: group.items.filter(item => 
-            ['compute', 'dataset', 'tasks', 'workspace', 'template', 'billing'].includes(item.id)
-          )
+          items: group.items.filter(item => ['compute', 'dataset', 'tasks', 'workspace', 'template', 'billing'].includes(item.id))
         })).filter(group => group.items.length > 0);
-      
       default:
         return navGroups;
     }
@@ -339,11 +330,9 @@ const Workspace = () => {
   // 根据工作空间类型渲染不同的工作空间布局
   const renderWorkspaceByType = () => {
     const workspaceType = currentWorkspace?.type || 'default';
-    
     switch (workspaceType) {
       case 'machine-learning':
-        return (
-          <div className="space-y-6">
+        return <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                 🧠 {currentWorkspace?.name || "机器学习工作空间"}
@@ -408,12 +397,9 @@ const Workspace = () => {
               <ResourceMonitorChart data={resourceData} />
               <PerformanceChart data={performanceData} />
             </div>
-          </div>
-        );
-
+          </div>;
       case 'web-development':
-        return (
-          <div className="space-y-6">
+        return <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                 💻 {currentWorkspace?.name || "Web开发工作空间"}
@@ -475,12 +461,9 @@ const Workspace = () => {
 
             {/* Web开发专用组件工作空间 */}
             <ComponentWorkspace initialComponents={workspaceComponents} />
-          </div>
-        );
-
+          </div>;
       case 'data-analysis':
-        return (
-          <div className="space-y-6">
+        return <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-white flex items-center gap-2">
                 📊 {currentWorkspace?.name || "数据分析工作空间"}
@@ -545,54 +528,27 @@ const Workspace = () => {
               <APIUsageChart data={apiUsageData} />
               <BillingChart data={billingData} />
             </div>
-          </div>
-        );
-
+          </div>;
       default:
-        return (
-          <div className="space-y-6">
+        return <div className="space-y-6">
             <div className="mb-6">
               <div className="flex items-center gap-4 mb-2">
-                {isEditingName ? (
-                  <div className="flex items-center gap-2">
-                    <Input
-                      value={editingName}
-                      onChange={(e) => setEditingName(e.target.value)}
-                      className="bg-white/10 border-white/20 text-white text-2xl font-bold px-3 py-1 h-auto"
-                      autoFocus
-                      onKeyPress={(e) => e.key === 'Enter' && handleSaveWorkspaceName()}
-                    />
-                    <Button
-                      onClick={handleSaveWorkspaceName}
-                      size="sm"
-                      className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30"
-                    >
+                {isEditingName ? <div className="flex items-center gap-2">
+                    <Input value={editingName} onChange={e => setEditingName(e.target.value)} className="bg-white/10 border-white/20 text-white text-2xl font-bold px-3 py-1 h-auto" autoFocus onKeyPress={e => e.key === 'Enter' && handleSaveWorkspaceName()} />
+                    <Button onClick={handleSaveWorkspaceName} size="sm" className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
                       <Check className="h-4 w-4" />
                     </Button>
-                    <Button
-                      onClick={handleCancelEditName}
-                      size="sm"
-                      variant="outline"
-                      className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30"
-                    >
+                    <Button onClick={handleCancelEditName} size="sm" variant="outline" className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30">
                       <X className="h-4 w-4" />
                     </Button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
+                  </div> : <div className="flex items-center gap-2">
                     <h2 className="text-2xl font-bold text-white">
                       {currentWorkspace?.name || "工作空间"}
                     </h2>
-                    <Button
-                      onClick={() => setIsEditingName(true)}
-                      size="sm"
-                      variant="ghost"
-                      className="text-white/60 hover:text-white hover:bg-white/10"
-                    >
+                    <Button onClick={() => setIsEditingName(true)} size="sm" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/10">
                       <Edit3 className="h-4 w-4" />
                     </Button>
-                  </div>
-                )}
+                  </div>}
               </div>
               <p className="text-gray-400">{currentWorkspace?.description || "统一的开发环境和项目管理中心"}</p>
             </div>
@@ -647,8 +603,7 @@ const Workspace = () => {
             <div className="space-y-6">
               <ComponentWorkspace initialComponents={workspaceComponents} />
             </div>
-          </div>
-        );
+          </div>;
     }
   };
 
@@ -1072,8 +1027,7 @@ const Workspace = () => {
           </div>;
     }
   };
-  return (
-    <WorkspaceModeProvider>
+  return <WorkspaceModeProvider>
       <div className="min-h-screen bg-background flex flex-col">
         {/* 工作空间工具栏 */}
         <WorkspaceToolbar />
@@ -1086,13 +1040,7 @@ const Workspace = () => {
                 <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
                   <div className="w-4 h-4 bg-white rounded-sm"></div>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  onClick={() => navigate('/')}
-                  className="p-1 hover:bg-purple-500/20 rounded-lg"
-                  title="返回首页"
-                >
+                <Button variant="ghost" size="sm" onClick={() => navigate('/')} className="p-1 hover:bg-purple-500/20 rounded-lg" title="返回首页">
                   <Home className="h-5 w-5 text-purple-100" />
                 </Button>
               </div>}
@@ -1113,12 +1061,12 @@ const Workspace = () => {
                   </h3>}
                 <div className="space-y-1">
                   {group.items.map(item => {
-                const IconComponent = item.icon;
-                return <Button key={item.id} variant="ghost" size={sidebarCollapsed ? "sm" : "default"} className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2 rounded-lg transition-all duration-200 text-left justify-start ${selectedNav === item.id ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'text-purple-300 hover:text-white hover:bg-purple-500/10'}`} onClick={() => setSelectedNav(item.id)} title={sidebarCollapsed ? item.fullName : undefined}>
+                  const IconComponent = item.icon;
+                  return <Button key={item.id} variant="ghost" size={sidebarCollapsed ? "sm" : "default"} className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2 rounded-lg transition-all duration-200 text-left justify-start ${selectedNav === item.id ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'text-purple-300 hover:text-white hover:bg-purple-500/10'}`} onClick={() => setSelectedNav(item.id)} title={sidebarCollapsed ? item.fullName : undefined}>
                         <IconComponent className="h-4 w-4" />
                         {!sidebarCollapsed && <span className="text-sm">{item.name}</span>}
                       </Button>;
-              })}
+                })}
                 </div>
               </div>)}
           </nav>
@@ -1151,46 +1099,9 @@ const Workspace = () => {
         </div>
 
         {/* 右侧 AI Chat */}
-        <div className="w-64 bg-purple-950/20 backdrop-blur-xl border-l border-purple-500/20 flex flex-col">
-          <div className="p-4 border-b border-purple-500/20">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                <span className="text-sm">🤖</span>
-              </div>
-              <span className="text-sm font-semibold text-purple-100">Alaya AI助手</span>
-            </div>
-            <p className="text-xs text-purple-400 mt-1">工作空间管理、模型部署</p>
-          </div>
-          
-          {/* AI Agent面板 */}
-          <div className="p-3 border-b border-purple-500/20">
-            <AIAgent onExecuteCommand={handleExecuteCommand} onUpdateCanvas={handleUpdateCanvas} />
-          </div>
-          
-          {/* 对话区域 */}
-          <ScrollArea className="flex-1 p-3">
-            <div className="space-y-3">
-              {chatMessages.map(message => <div key={message.id} className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[180px] p-2 rounded-lg text-xs ${message.type === 'user' ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white' : 'bg-purple-500/10 text-purple-200 border border-purple-500/20'}`}>
-                    <p>{message.content}</p>
-                  </div>
-                </div>)}
-            </div>
-          </ScrollArea>
-          
-          <div className="p-3 border-t border-purple-500/20">
-            <div className="flex gap-2">
-              <Input placeholder="输入消息..." value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1 bg-purple-500/5 border border-purple-500/20 rounded-lg text-purple-100 placeholder-purple-400 focus:border-purple-500 text-sm h-8" />
-              <Button onClick={handleSendMessage} size="sm" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white rounded-lg h-8 px-3">
-                发送
-              </Button>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
-    </WorkspaceModeProvider>
-  );
+    </WorkspaceModeProvider>;
 };
-
 export default Workspace;
