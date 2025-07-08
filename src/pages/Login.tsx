@@ -10,23 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
   const { hasWorkspaces, lastOpenedWorkspace, switchWorkspace, loading } = useWorkspace();
 
-  useEffect(() => {
-    const checkUser = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        // 用户已登录，检查是否有工作空间
-        if (hasWorkspaces && lastOpenedWorkspace) {
-          navigate("/workspace");
-        } else {
-          navigate("/projects");
-        }
-      }
-    };
-    
-    if (!loading) {
-      checkUser();
-    }
-  }, [navigate, hasWorkspaces, lastOpenedWorkspace, loading]);
+  // 移除自动跳转逻辑，让用户手动选择登录或快速体验
 
   const handleLogin = () => {
     navigate("/auth");
