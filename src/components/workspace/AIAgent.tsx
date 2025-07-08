@@ -3,9 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Bot, Send } from "lucide-react";
+import { Sparkles, Send, X } from "lucide-react";
 interface AIAgentProps {
   onExecuteCommand: (command: string) => Promise<string>;
   onUpdateCanvas: (action: string, params: any) => void;
@@ -191,26 +190,42 @@ export const AIAgent = ({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button
-          size="icon"
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300 z-50"
-        >
-          <Bot className="h-6 w-6" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="max-w-md h-[600px] flex flex-col p-0">
-        <DialogHeader className="p-4 pb-2">
-          <DialogTitle className="flex items-center gap-2">
-            <Bot className="h-5 w-5" />
-            Alaya AI助手
-          </DialogTitle>
-        </DialogHeader>
-        
-        <div className="flex-1 flex flex-col">
+    <>
+      {/* Floating AI Icon */}
+      <Button
+        size="icon"
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed bottom-6 right-6 h-16 w-16 rounded-full bg-gradient-to-br from-primary via-purple-500 to-blue-500 hover:from-primary/90 hover:via-purple-400 hover:to-blue-400 shadow-2xl hover:shadow-3xl transition-all duration-500 z-50 group animate-pulse hover:animate-none border-2 border-white/20"
+      >
+        <div className="relative">
+          <Sparkles className="h-8 w-8 text-white group-hover:scale-110 transition-transform duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full group-hover:from-white/30 transition-all duration-300" />
+        </div>
+      </Button>
+
+      {/* AI Chat Panel */}
+      {isOpen && (
+        <div className="fixed top-4 right-4 w-96 h-[600px] bg-background/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-2xl z-40 flex flex-col animate-scale-in">
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 border-b border-border/50">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center">
+                <Sparkles className="h-4 w-4 text-white" />
+              </div>
+              <span className="font-semibold text-foreground">Alaya AI助手</span>
+            </div>
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={() => setIsOpen(false)}
+              className="h-8 w-8 hover:bg-muted"
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+
           {/* Quick Commands */}
-          <div className="px-4 pb-2">
+          <div className="p-4 border-b border-border/30">
             <div className="text-sm text-muted-foreground mb-2">快速指令:</div>
             <div className="grid grid-cols-1 gap-1">
               {predefinedCommands.map((cmd, index) => (
@@ -218,7 +233,7 @@ export const AIAgent = ({
                   key={index}
                   variant="ghost"
                   size="sm"
-                  className="justify-start text-xs h-8"
+                  className="justify-start text-xs h-8 hover:bg-primary/10"
                   onClick={() => handleQuickCommand(cmd)}
                   disabled={isProcessing}
                 >
@@ -229,10 +244,10 @@ export const AIAgent = ({
           </div>
 
           {/* Task History */}
-          <ScrollArea className="flex-1 px-4">
-            <div className="space-y-2 pb-4">
+          <ScrollArea className="flex-1 p-4">
+            <div className="space-y-2">
               {tasks.map((task) => (
-                <Card key={task.id} className="p-3">
+                <Card key={task.id} className="p-3 bg-muted/30 border-border/50">
                   <div className="flex items-start justify-between mb-2">
                     <span className="text-sm font-medium">{task.command}</span>
                     {getStatusBadge(task.status)}
@@ -249,7 +264,7 @@ export const AIAgent = ({
           </ScrollArea>
 
           {/* Input Area */}
-          <div className="p-4 border-t">
+          <div className="p-4 border-t border-border/50">
             <div className="flex gap-2">
               <Input
                 placeholder="输入指令..."
@@ -257,19 +272,20 @@ export const AIAgent = ({
                 onChange={(e) => setCurrentCommand(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSubmitCommand()}
                 disabled={isProcessing}
-                className="text-sm"
+                className="text-sm bg-muted/50"
               />
               <Button 
                 size="icon" 
                 onClick={handleSubmitCommand}
                 disabled={isProcessing || !currentCommand.trim()}
+                className="bg-primary hover:bg-primary/90"
               >
                 <Send className="h-4 w-4" />
               </Button>
             </div>
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      )}
+    </>
   );
 };
