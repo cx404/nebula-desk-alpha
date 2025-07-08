@@ -160,15 +160,34 @@ export const ComponentWorkspace = ({
 }: ComponentWorkspaceProps) => {
   const [components, setComponents] = useState<WorkspaceComponent[]>(initialComponents);
   const [isEditMode, setIsEditMode] = useState(false);
-  
+
   // 模拟资源数据
-  const [resourceData] = useState([
-    { time: "14:00", cpu: 45, memory: 62, gpu: 30 },
-    { time: "14:05", cpu: 52, memory: 58, gpu: 35 },
-    { time: "14:10", cpu: 48, memory: 65, gpu: 42 },
-    { time: "14:15", cpu: 55, memory: 60, gpu: 38 },
-    { time: "14:20", cpu: 50, memory: 63, gpu: 45 }
-  ]);
+  const [resourceData] = useState([{
+    time: "14:00",
+    cpu: 45,
+    memory: 62,
+    gpu: 30
+  }, {
+    time: "14:05",
+    cpu: 52,
+    memory: 58,
+    gpu: 35
+  }, {
+    time: "14:10",
+    cpu: 48,
+    memory: 65,
+    gpu: 42
+  }, {
+    time: "14:15",
+    cpu: 55,
+    memory: 60,
+    gpu: 38
+  }, {
+    time: "14:20",
+    cpu: 50,
+    memory: 63,
+    gpu: 45
+  }]);
 
   // 同步外部传入的组件
   useEffect(() => {
@@ -224,23 +243,26 @@ export const ComponentWorkspace = ({
     setComponents(prev => [...prev, newComponent]);
     toast.success(`${template.name} 组件已添加到工作空间`);
   };
-
   const toggleComponentSize = (componentId: string) => {
     setComponents(prev => prev.map(comp => {
       if (comp.id === componentId && comp.type === "resource-monitor") {
         const newSize = comp.size === "1x1" ? "1x4" : "1x1";
-        return { ...comp, size: newSize };
+        return {
+          ...comp,
+          size: newSize
+        };
       }
       return comp;
     }));
   };
-
   const getComponentSize = (size: "1x1" | "1x4") => {
     switch (size) {
       case "1x4":
-        return "w-64 h-32"; // 1x4 size for expanded resource monitor
+        return "w-64 h-32";
+      // 1x4 size for expanded resource monitor
       default:
-        return "w-20 h-20"; // 1x1 size (smaller, more icon-like)
+        return "w-20 h-20";
+      // 1x1 size (smaller, more icon-like)
     }
   };
   const startConnection = () => {
@@ -333,135 +355,45 @@ export const ComponentWorkspace = ({
         return "bg-gray-500/20 text-gray-400 border-gray-500/30";
     }
   };
-  return (
-    <div className="h-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+  return <div className="h-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       {/* Component Palette */}
       <div className="absolute top-4 left-4 z-10">
-        <Card className="p-4 w-64">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold">组件库</h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsEditMode(!isEditMode)}
-              className="text-xs"
-            >
-              {isEditMode ? "预览" : "编辑"}
-            </Button>
-          </div>
-          <div className="grid grid-cols-4 gap-2 mb-4">
-            {Object.entries(componentTemplates).map(([key, template]) => (
-              <Button
-                key={key}
-                variant="ghost"
-                size="sm"
-                onClick={() => addComponentToWorkspace(key)}
-                className="flex flex-col items-center justify-center h-16 w-16 p-1 hover:bg-white/10"
-                title={template.name}
-              >
-                <div className="mb-1">{template.icon}</div>
-                <span className="text-[10px] leading-none">{template.name}</span>
-              </Button>
-            ))}
-          </div>
-          
-          <div className="space-y-2">
-            <h4 className="text-sm font-medium">预定义流程</h4>
-            {predefinedFlows.map((flow) => (
-              <Button
-                key={flow.id}
-                variant="ghost"
-                size="sm"
-                onClick={() => loadPredefinedFlow(flow)}
-                className="w-full justify-start text-xs"
-              >
-                {flow.name}
-              </Button>
-            ))}
-          </div>
-        </Card>
+        
       </div>
 
       {/* Toolbar */}
       <div className="absolute top-4 right-4 z-10">
-        <Card className="p-2">
-          <div className="flex gap-2">
-            <Button
-              variant={isConnecting ? "default" : "outline"}
-              size="sm"
-              onClick={startConnection}
-              disabled={!selectedComponent}
-            >
-              连接
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={deleteSelectedComponent}
-              disabled={!selectedComponent}
-            >
-              删除
-            </Button>
-            <Button
-              variant="default"
-              size="sm"
-              onClick={executeFlow}
-            >
-              执行流程
-            </Button>
-          </div>
-        </Card>
+        
       </div>
 
       {/* Canvas */}
-      <div
-        ref={canvasRef}
-        className="relative w-full h-full overflow-hidden"
-        style={{ 
-          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
-          backgroundSize: "20px 20px"
-        }}
-      >
+      <div ref={canvasRef} className="relative w-full h-full overflow-hidden" style={{
+      backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+      backgroundSize: "20px 20px"
+    }}>
         {/* Connections */}
         <svg className="absolute inset-0 w-full h-full pointer-events-none">
           {connections.map((connection, index) => {
-            const sourceComponent = components.find(c => c.id === connection.sourceId);
-            const targetComponent = components.find(c => c.id === connection.targetId);
-            
-            if (!sourceComponent || !targetComponent) return null;
-            
-            return (
-              <ConnectionLine
-                key={index}
-                startX={sourceComponent.x + 100}
-                startY={sourceComponent.y + 40}
-                endX={targetComponent.x}
-                endY={targetComponent.y + 40}
-                type={connection.type}
-              />
-            );
-          })}
+          const sourceComponent = components.find(c => c.id === connection.sourceId);
+          const targetComponent = components.find(c => c.id === connection.targetId);
+          if (!sourceComponent || !targetComponent) return null;
+          return <ConnectionLine key={index} startX={sourceComponent.x + 100} startY={sourceComponent.y + 40} endX={targetComponent.x} endY={targetComponent.y + 40} type={connection.type} />;
+        })}
         </svg>
 
         {/* Components */}
-        {components.map((component) => (
-          <div key={component.id} className="absolute" style={{ left: component.x, top: component.y }}>
-            {component.type === "resource-monitor" && component.size === "1x4" && isEditMode ? (
-              <div className="w-64 h-32">
+        {components.map(component => <div key={component.id} className="absolute" style={{
+        left: component.x,
+        top: component.y
+      }}>
+            {component.type === "resource-monitor" && component.size === "1x4" && isEditMode ? <div className="w-64 h-32">
                 <ResourceMonitorChart data={resourceData} />
-              </div>
-            ) : (
-              <Card 
-                className={`${getComponentSize(component.size)} bg-white/10 backdrop-blur-xl border border-white/20 hover:border-blue-500/50 transition-all duration-300 flex flex-col items-center justify-center p-2 cursor-pointer ${
-                  selectedComponent === component.id ? 'border-blue-500 ring-2 ring-blue-500' : ''
-                }`}
-                onClick={() => {
-                  handleSelect(component.id);
-                  if (component.type === "resource-monitor" && isEditMode) {
-                    toggleComponentSize(component.id);
-                  }
-                }}
-              >
+              </div> : <Card className={`${getComponentSize(component.size)} bg-white/10 backdrop-blur-xl border border-white/20 hover:border-blue-500/50 transition-all duration-300 flex flex-col items-center justify-center p-2 cursor-pointer ${selectedComponent === component.id ? 'border-blue-500 ring-2 ring-blue-500' : ''}`} onClick={() => {
+          handleSelect(component.id);
+          if (component.type === "resource-monitor" && isEditMode) {
+            toggleComponentSize(component.id);
+          }
+        }}>
                 <div className="mb-1">{component.icon}</div>
                 <h3 className="text-white text-xs font-medium text-center leading-tight mb-1">
                   {component.name}
@@ -469,19 +401,13 @@ export const ComponentWorkspace = ({
                 <Badge className={`text-[10px] ${getStatusColor(component.status)}`}>
                   {component.status}
                 </Badge>
-              </Card>
-            )}
-          </div>
-        ))}
+              </Card>}
+          </div>)}
       </div>
 
       {/* AI Agent */}
       <div className="absolute bottom-4 left-4 w-64">
-        <AIAgent
-          onExecuteCommand={handleAIExecuteCommand}
-          onUpdateCanvas={handleAIUpdateCanvas}
-        />
+        <AIAgent onExecuteCommand={handleAIExecuteCommand} onUpdateCanvas={handleAIUpdateCanvas} />
       </div>
-    </div>
-  );
+    </div>;
 };

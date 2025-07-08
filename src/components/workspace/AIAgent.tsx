@@ -173,45 +173,5 @@ export const AIAgent = ({
     }
   };
   const predefinedCommands = ["部署 DeepSeek-R1 模型", "添加 Terminal 组件", "检查系统资源状态", "分析本月费用情况", "重新整理画布布局"];
-  
-  return (
-    <Card className="glass-card p-4">
-      <div className="space-y-4">
-        <div className="text-sm font-medium text-white">快速指令</div>
-        <div className="space-y-2">
-          {predefinedCommands.map((cmd, index) => (
-            <Button
-              key={index}
-              variant="outline"
-              size="sm"
-              onClick={() => executeAgentTask(cmd)}
-              disabled={isProcessing}
-              className="w-full text-xs bg-white/5 border-white/10 text-white hover:bg-white/10 justify-start"
-            >
-              {cmd}
-            </Button>
-          ))}
-        </div>
-        
-        {tasks.length > 0 && (
-          <div className="mt-4">
-            <div className="text-sm font-medium text-white mb-2">任务历史</div>
-            <div className="space-y-2 max-h-32 overflow-y-auto">
-              {tasks.slice(0, 3).map((task) => (
-                <div key={task.id} className="p-2 bg-white/5 rounded-lg border border-white/10">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs text-white truncate">{task.command}</span>
-                    {getStatusBadge(task.status)}
-                  </div>
-                  {task.result && (
-                    <p className="text-xs text-gray-400 mt-1">{task.result}</p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </Card>
-  );
+  return;
 };
