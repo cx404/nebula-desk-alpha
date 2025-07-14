@@ -6,57 +6,61 @@
 
 @layer base {
   :root {
-    /* Dark theme with tech blue accents */
-    --background: 224 15% 8%;
-    --foreground: 210 40% 98%;
+    /* Dreamy purple gradient theme */
+    --background: 260 30% 8%;
+    --foreground: 280 20% 95%;
     
-    /* Tech blue color palette */
-    --primary: 217 91% 60%;
-    --primary-foreground: 224 15% 8%;
-    --primary-glow: 217 91% 70%;
+    /* Magical purple color palette */
+    --primary: 270 50% 65%;
+    --primary-foreground: 260 30% 8%;
+    --primary-glow: 280 60% 75%;
     
-    /* Premium gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(245 100% 70%));
-    --gradient-subtle: linear-gradient(180deg, hsl(224 15% 10%), hsl(224 15% 8%));
-    --gradient-card: linear-gradient(145deg, hsl(224 15% 12%), hsl(224 15% 8%));
+    /* Dreamy gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(270 50% 45%), hsl(290 60% 55%));
+    --gradient-subtle: linear-gradient(180deg, hsl(260 40% 12%), hsl(270 35% 8%));
+    --gradient-card: linear-gradient(145deg, hsl(265 35% 15% / 0.7), hsl(275 30% 10% / 0.8));
+    --gradient-workspace: linear-gradient(135deg, hsl(260 40% 12%), hsl(270 45% 15%), hsl(280 40% 18%));
     
-    /* Glass morphism effects */
-    --glass-bg: hsl(224 15% 12% / 0.8);
-    --glass-border: hsl(217 91% 60% / 0.2);
+    /* Enhanced glass morphism */
+    --glass-bg: hsl(270 30% 15% / 0.6);
+    --glass-border: hsl(270 50% 65% / 0.3);
+    --glass-hover: hsl(270 40% 20% / 0.8);
     
-    /* Shadows with tech glow */
-    --shadow-primary: 0 0 40px hsl(217 91% 60% / 0.3);
-    --shadow-card: 0 10px 30px -10px hsl(224 15% 4% / 0.5);
-    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.4);
+    /* Magical shadows and glows */
+    --shadow-primary: 0 0 50px hsl(270 50% 65% / 0.4);
+    --shadow-card: 0 15px 35px -10px hsl(260 30% 5% / 0.6);
+    --shadow-glow: 0 0 30px hsl(280 60% 75% / 0.5);
+    --shadow-inner: inset 0 1px 0 hsl(270 50% 80% / 0.1);
     
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-glow: all 0.4s ease-out;
 
-    /* Card styles */
-    --card: 224 15% 12%;
-    --card-foreground: 210 40% 98%;
+    /* Card styles with glass effect */
+    --card: 270 30% 12% / 0.7;
+    --card-foreground: 280 20% 95%;
 
-    --popover: 224 15% 12%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 270 30% 12% / 0.9;
+    --popover-foreground: 280 20% 95%;
 
-    /* Secondary colors */
-    --secondary: 224 15% 15%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary colors with purple tint */
+    --secondary: 265 25% 18%;
+    --secondary-foreground: 280 20% 95%;
 
-    --muted: 224 15% 20%;
-    --muted-foreground: 210 20% 70%;
+    --muted: 270 20% 25%;
+    --muted-foreground: 270 10% 70%;
 
-    --accent: 245 100% 70%;
-    --accent-foreground: 224 15% 8%;
+    --accent: 290 60% 70%;
+    --accent-foreground: 260 30% 8%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 280 20% 95%;
 
-    /* Borders and inputs */
-    --border: 224 15% 20%;
-    --input: 224 15% 15%;
-    --ring: 217 91% 60%;
+    /* Borders and inputs with purple theme */
+    --border: 270 25% 25%;
+    --input: 270 30% 18%;
+    --ring: 270 50% 65%;
 
     --radius: 0.5rem;
 
@@ -123,29 +127,51 @@
 
   body {
     @apply bg-background text-foreground;
-    background: var(--gradient-subtle);
+    background: var(--gradient-workspace);
     min-height: 100vh;
   }
 }
 
 @layer components {
-  /* Glass card effect */
+  /* Enhanced glass card effect */
   .glass-card {
-    @apply bg-card/80 backdrop-blur-lg border border-border/50;
-    box-shadow: var(--shadow-card);
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-card), var(--shadow-inner);
+    transition: var(--transition-glow);
   }
   
-  /* Premium button variants */
+  .glass-card:hover {
+    background: var(--glass-hover);
+    box-shadow: var(--shadow-card), var(--shadow-glow), var(--shadow-inner);
+    transform: translateY(-2px);
+  }
+  
+  /* Dreamy button variants */
   .btn-premium {
     @apply relative overflow-hidden;
     background: var(--gradient-primary);
-    box-shadow: var(--shadow-primary);
-    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-primary), var(--shadow-inner);
+    transition: var(--transition-glow);
   }
   
   .btn-premium:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-glow), var(--shadow-inner);
+  }
+  
+  /* Magic icon effects */
+  .magic-icon {
+    @apply relative;
+    transition: var(--transition-glow);
+    filter: drop-shadow(0 0 8px hsl(var(--primary) / 0.4));
+  }
+  
+  .magic-icon:hover {
+    transform: translateY(-2px) scale(1.1);
+    filter: drop-shadow(0 0 15px hsl(var(--primary) / 0.7)) 
+            drop-shadow(0 0 25px hsl(var(--primary-glow) / 0.5));
   }
   
   /* Floating animation */
@@ -155,10 +181,10 @@
   
   @keyframes float {
     0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    50% { transform: translateY(-8px); }
   }
   
-  /* Glow effect */
+  /* Enhanced glow effect */
   .glow {
     position: relative;
   }
@@ -166,19 +192,32 @@
   .glow::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
     background: var(--gradient-primary);
     border-radius: inherit;
-    filter: blur(10px);
+    filter: blur(15px);
     opacity: 0;
-    transition: var(--transition-smooth);
+    transition: var(--transition-glow);
     z-index: -1;
   }
   
   .glow:hover::before {
-    opacity: 0.3;
+    opacity: 0.6;
+  }
+  
+  /* Workspace specific styles */
+  .workspace-container {
+    background: var(--gradient-workspace);
+    min-height: 100vh;
+  }
+  
+  .sidebar-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(25px);
+    border-right: 1px solid var(--glass-border);
+    box-shadow: var(--shadow-inner);
   }
 }
