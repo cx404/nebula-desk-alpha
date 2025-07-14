@@ -516,7 +516,7 @@ const ProjectCreation = () => {
                 <h3 className="text-sm font-medium text-white">空白创建</h3>
               </div>
               <p className="text-xs text-white/60 mb-2">从零开始创建全新项目</p>
-              <Button variant="outline" size="sm" className="w-full border-white/20 text-white/80 hover:bg-white/10 mx-0 my-[12px] text-sm">
+              <Button variant="outline" size="sm" className="w-full border-white/20 mx-0 my-[12px] text-sm text-neutral-50 bg-slate-950 hover:bg-slate-800">
                 立即创建
               </Button>
             </Card>
