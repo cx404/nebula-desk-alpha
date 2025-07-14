@@ -408,11 +408,11 @@ const ProjectCreation = () => {
             <p className="text-xl text-white/90 font-medium">告诉我您的需求，我将为您量身定制完美的工作空间</p>
           </div>
 
-          {/* AI 聊天窗口 - 放大 */}
-          <Card className="glass-card border-2 border-white/30 shadow-2xl hover:border-white/50 transition-all duration-300 bg-white/10 backdrop-blur-xl">
-            <div className="p-8 px-[24px] py-[23px]">
-              {/* 聊天消息区域 - 增大高度 */}
-              <div className="h-[500px] overflow-y-auto mb-6 space-y-6 scrollbar-thin scrollbar-thumb-white/20">
+          {/* AI 聊天窗口 - 缩小 */}
+          <Card className="glass-card border-2 border-white/30 shadow-2xl hover:border-white/50 transition-all duration-300 bg-gray-900/90 backdrop-blur-xl">
+            <div className="p-6 px-[20px] py-[18px]">
+              {/* 聊天消息区域 - 减小高度 */}
+              <div className="h-[350px] overflow-y-auto mb-4 space-y-4 scrollbar-thin scrollbar-thumb-white/20">
                 {chatMessages.map(message => <div key={message.id} className={`flex items-start gap-3 animate-fade-in ${message.type === 'user' ? 'flex-row-reverse' : ''}`}>
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.type === 'ai' ? 'bg-gradient-to-br from-blue-500 to-purple-600' : 'bg-gradient-to-br from-green-500 to-blue-500'}`}>
                       {message.type === 'ai' ? <Bot className="w-4 h-4 text-white" /> : <span className="text-white text-xs font-bold">我</span>}

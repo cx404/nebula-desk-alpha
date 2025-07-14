@@ -195,17 +195,18 @@ export const AIAgent = ({
       <Button
         size="icon"
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 h-16 w-16 rounded-full bg-gradient-to-br from-primary via-purple-500 to-blue-500 hover:from-primary/90 hover:via-purple-400 hover:to-blue-400 shadow-2xl hover:shadow-3xl transition-all duration-500 z-50 group animate-pulse hover:animate-none border-2 border-white/20"
+        className="fixed bottom-6 right-6 h-20 w-20 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-blue-600 hover:from-purple-500 hover:via-pink-400 hover:to-blue-500 shadow-2xl hover:shadow-pink-500/30 transition-all duration-500 z-50 group animate-pulse hover:animate-none border-2 border-white/30 hover:border-white/50"
       >
         <div className="relative">
-          <Sparkles className="h-8 w-8 text-white group-hover:scale-110 transition-transform duration-300" />
-          <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-full group-hover:from-white/30 transition-all duration-300" />
+          <Sparkles className="h-12 w-12 text-white group-hover:scale-125 transition-transform duration-300 drop-shadow-lg" />
+          <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent rounded-full group-hover:from-white/40 transition-all duration-300" />
+          <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-all duration-300" />
         </div>
       </Button>
 
       {/* AI Chat Panel */}
       {isOpen && (
-        <div className="fixed top-4 right-4 w-96 h-[600px] bg-background/95 backdrop-blur-xl border border-border/50 rounded-xl shadow-2xl z-40 flex flex-col animate-scale-in">
+        <div className="fixed top-4 right-4 w-96 h-[600px] bg-gray-900/95 backdrop-blur-xl border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/20 z-40 flex flex-col animate-scale-in">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border/50">
             <div className="flex items-center gap-2">
