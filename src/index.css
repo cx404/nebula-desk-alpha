@@ -6,57 +6,58 @@
 
 @layer base {
   :root {
-    /* Dark theme with tech blue accents */
-    --background: 224 15% 8%;
+    /* Purple-blue gradient theme matching reference */
+    --background: 252 21% 6%;
     --foreground: 210 40% 98%;
     
-    /* Tech blue color palette */
-    --primary: 217 91% 60%;
-    --primary-foreground: 224 15% 8%;
-    --primary-glow: 217 91% 70%;
+    /* Purple-blue color palette */
+    --primary: 262 83% 58%;
+    --primary-foreground: 252 21% 6%;
+    --primary-glow: 262 83% 70%;
     
-    /* Premium gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(245 100% 70%));
-    --gradient-subtle: linear-gradient(180deg, hsl(224 15% 10%), hsl(224 15% 8%));
-    --gradient-card: linear-gradient(145deg, hsl(224 15% 12%), hsl(224 15% 8%));
+    /* Purple-blue gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(242 100% 70%));
+    --gradient-subtle: linear-gradient(180deg, hsl(252 21% 8%), hsl(252 21% 6%));
+    --gradient-card: linear-gradient(145deg, hsl(252 21% 12%), hsl(252 21% 8%));
+    --gradient-workspace: linear-gradient(135deg, hsl(262 83% 25%), hsl(242 100% 30%), hsl(225 100% 35%));
     
     /* Glass morphism effects */
-    --glass-bg: hsl(224 15% 12% / 0.8);
-    --glass-border: hsl(217 91% 60% / 0.2);
+    --glass-bg: hsl(252 21% 12% / 0.8);
+    --glass-border: hsl(262 83% 58% / 0.2);
     
-    /* Shadows with tech glow */
-    --shadow-primary: 0 0 40px hsl(217 91% 60% / 0.3);
-    --shadow-card: 0 10px 30px -10px hsl(224 15% 4% / 0.5);
-    --shadow-glow: 0 0 20px hsl(217 91% 60% / 0.4);
+    /* Shadows with purple glow */
+    --shadow-primary: 0 0 40px hsl(262 83% 58% / 0.3);
+    --shadow-card: 0 10px 30px -10px hsl(252 21% 4% / 0.5);
+    --shadow-glow: 0 0 20px hsl(262 83% 58% / 0.4);
     
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
     /* Card styles */
-    --card: 224 15% 12%;
+    --card: 252 21% 12%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 224 15% 12%;
+    --popover: 252 21% 12%;
     --popover-foreground: 210 40% 98%;
 
     /* Secondary colors */
-    --secondary: 224 15% 15%;
+    --secondary: 252 21% 15%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 224 15% 20%;
+    --muted: 252 21% 20%;
     --muted-foreground: 210 20% 70%;
 
-    --accent: 245 100% 70%;
-    --accent-foreground: 224 15% 8%;
+    --accent: 242 100% 70%;
+    --accent-foreground: 252 21% 8%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
     /* Borders and inputs */
-    --border: 224 15% 20%;
-    --input: 224 15% 15%;
-    --ring: 217 91% 60%;
+    --border: 252 21% 20%;
+    --input: 252 21% 15%;
+    --ring: 262 83% 58%;
 
     --radius: 0.5rem;
 

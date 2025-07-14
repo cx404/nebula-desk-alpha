@@ -11,7 +11,8 @@ import {
   Stethoscope,
   ChevronLeft,
   ChevronRight,
-  Menu
+  Menu,
+  Home
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
 
@@ -31,6 +32,7 @@ export const FixedSidebar = ({
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   const navigationItems = [
+    { id: "home", name: "返回主页", icon: Home },
     { id: "workspace", name: "工作空间管理", icon: FolderOpen },
     { id: "monitor", name: "资源监控", icon: Activity },
     { id: "billing", name: "订单", icon: ShoppingCart },

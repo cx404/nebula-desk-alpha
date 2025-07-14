@@ -191,6 +191,15 @@ const Workspace = () => {
     setIsEditingName(false);
   };
 
+  // 导航处理函数
+  const handleNavSelect = (navId: string) => {
+    if (navId === "home") {
+      navigate("/");
+      return;
+    }
+    setSelectedNav(navId);
+  };
+
   // 悬浮导航栏处理函数
   const handleNewWorkspace = () => {
     navigate("/projects");
@@ -1095,9 +1104,9 @@ const Workspace = () => {
     }
   };
   return <WorkspaceModeProvider>
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black relative flex">
+      <div className="min-h-screen relative flex" style={{background: 'var(--gradient-workspace)'}}>
         {/* 导航栏 - 根据模式选择 */}
-        {useFixedSidebar ? <FixedSidebar selectedNav={selectedNav} onNavSelect={setSelectedNav} isCollapsed={sidebarCollapsed} onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)} /> : <FloatingNavigation selectedNav={selectedNav} onNavSelect={setSelectedNav} onNewWorkspace={handleNewWorkspace} onSwitchWorkspace={handleSwitchWorkspace} onSaveTemplate={handleSaveTemplate} onDeleteTemplate={handleDeleteTemplate} />}
+        {useFixedSidebar ? <FixedSidebar selectedNav={selectedNav} onNavSelect={handleNavSelect} isCollapsed={sidebarCollapsed} onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)} /> : <FloatingNavigation selectedNav={selectedNav} onNavSelect={handleNavSelect} onNewWorkspace={handleNewWorkspace} onSwitchWorkspace={handleSwitchWorkspace} onSaveTemplate={handleSaveTemplate} onDeleteTemplate={handleDeleteTemplate} />}
       
         {/* 主内容区域 - 向右移动并居中分布 */}
         <div className={`flex-1 flex flex-col transition-all duration-300 ${useFixedSidebar ? sidebarCollapsed ? 'ml-16' : 'ml-64' : 'ml-20'}`}>
@@ -1151,7 +1160,7 @@ const Workspace = () => {
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 p-6 overflow-auto bg-[#6f19a1]/[0.81]">
+            <div className="flex-1 p-6 overflow-auto">
             <div className="h-full flex gap-6 mx-0 my-0 px-0 py-0">
               <div className="flex-1">
                 {renderContent()}
