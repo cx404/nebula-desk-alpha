@@ -124,34 +124,10 @@ export const FloatingNavigation = ({
 
   return (
     <TooltipProvider>
-      <div className={`fixed left-4 top-1/2 transform -translate-y-1/2 z-50 transition-all duration-300 ${
-        isCollapsed ? 'translate-x-0' : 'translate-x-0'
-      }`}>
-        {/* 折叠/展开按钮 */}
-        <div className="absolute -right-3 top-1/2 transform -translate-y-1/2">
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-            className="w-6 h-6 rounded-full bg-purple-500/20 backdrop-blur-xl border border-purple-300/30 text-purple-300 hover:bg-purple-500/30 hover:scale-110 transition-all duration-300"
-          >
-            {isCollapsed ? (
-              <ChevronRight className="w-3 h-3" />
-            ) : (
-              <ChevronLeft className="w-3 h-3" />
-            )}
-          </Button>
-        </div>
-
-        <div className={`
-          flex transition-all duration-500 ease-in-out
-          ${isCollapsed ? 'flex-col gap-3 p-4' : 'flex-row flex-wrap gap-4 p-6 w-96'}
-          bg-purple-500/20 backdrop-blur-xl rounded-2xl border border-purple-300/30 shadow-lg shadow-purple-500/20
-        `}>
+      <div className="fixed left-4 top-20 z-50 transition-all duration-300">
+        <div className="flex flex-col gap-3 p-3 bg-purple-900/30 backdrop-blur-xl rounded-2xl border border-purple-500/20 shadow-2xl shadow-purple-900/50">
           {navigationItems.map((item) => (
-            <div key={item.id} className={`
-              ${isCollapsed ? '' : 'flex flex-col items-center'}
-            `}>
+            <div key={item.id}>
               {item.hasDropdown ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -162,21 +138,19 @@ export const FloatingNavigation = ({
                             variant="ghost"
                             size="sm"
                             className={`
-                              ${isCollapsed ? 'w-12 h-12' : hoveredItem === item.id ? 'w-16 h-16' : 'w-12 h-12'}
-                              rounded-xl transition-all duration-300 border-2
+                              w-12 h-12 rounded-2xl transition-all duration-300 backdrop-blur-xl
                               ${selectedNav === item.id 
-                                ? 'bg-purple-400/30 border-purple-400/60 text-purple-200 scale-110' 
-                                : 'bg-purple-500/10 border-purple-300/20 text-purple-200 hover:bg-purple-500/20 hover:border-purple-300/40 hover:scale-110'
+                                ? 'bg-purple-400/40 border border-purple-300/50 text-white shadow-lg shadow-purple-500/30' 
+                                : 'bg-purple-500/20 border border-purple-300/20 text-purple-200 hover:bg-purple-400/30 hover:border-purple-300/40 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/20'
                               }
-                              hover:shadow-lg hover:shadow-purple-500/30
                             `}
                             onMouseEnter={() => setHoveredItem(item.id)}
                             onMouseLeave={() => setHoveredItem(null)}
                           >
-                            <item.icon className={`${hoveredItem === item.id && !isCollapsed ? 'w-6 h-6' : 'w-5 h-5'} transition-all duration-300`} />
+                            <item.icon className="w-5 h-5" />
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent side={isCollapsed ? "right" : "top"} className="ml-2">
+                        <TooltipContent side="right" className="ml-2 bg-purple-900/90 backdrop-blur-xl border border-purple-300/30">
                           <p>{item.name}</p>
                         </TooltipContent>
                       </Tooltip>
@@ -201,41 +175,31 @@ export const FloatingNavigation = ({
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <div className="flex flex-col items-center">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleItemClick(item)}
-                        className={`
-                          ${isCollapsed ? 'w-12 h-12' : hoveredItem === item.id ? 'w-16 h-16' : 'w-12 h-12'}
-                          rounded-xl transition-all duration-300 border-2
-                          ${selectedNav === item.id 
-                            ? 'bg-purple-400/30 border-purple-400/60 text-purple-200 scale-110' 
-                            : item.variant === 'destructive'
-                              ? 'bg-red-500/10 border-red-500/20 text-red-400 hover:bg-red-500/20 hover:border-red-500/40 hover:scale-110'
-                              : 'bg-purple-500/10 border-purple-300/20 text-purple-200 hover:bg-purple-500/20 hover:border-purple-300/40 hover:scale-110'
-                          }
-                          hover:shadow-lg 
-                          ${item.variant === 'destructive' ? 'hover:shadow-red-500/20' : 'hover:shadow-purple-500/30'}
-                        `}
-                        onMouseEnter={() => setHoveredItem(item.id)}
-                        onMouseLeave={() => setHoveredItem(null)}
-                      >
-                        <item.icon className={`${hoveredItem === item.id && !isCollapsed ? 'w-6 h-6' : 'w-5 h-5'} transition-all duration-300`} />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side={isCollapsed ? "right" : "top"} className="ml-2">
-                      <p>{item.name}</p>
-                    </TooltipContent>
-                  </Tooltip>
-                  {!isCollapsed && (
-                    <span className="text-xs text-purple-200 mt-1 text-center leading-tight">
-                      {item.name}
-                    </span>
-                  )}
-                </div>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleItemClick(item)}
+                      className={`
+                        w-12 h-12 rounded-2xl transition-all duration-300 backdrop-blur-xl
+                        ${selectedNav === item.id 
+                          ? 'bg-purple-400/40 border border-purple-300/50 text-white shadow-lg shadow-purple-500/30' 
+                          : item.variant === 'destructive'
+                            ? 'bg-red-500/20 border border-red-400/20 text-red-300 hover:bg-red-500/30 hover:border-red-400/40 hover:scale-110 hover:shadow-lg hover:shadow-red-500/20'
+                            : 'bg-purple-500/20 border border-purple-300/20 text-purple-200 hover:bg-purple-400/30 hover:border-purple-300/40 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/20'
+                        }
+                      `}
+                      onMouseEnter={() => setHoveredItem(item.id)}
+                      onMouseLeave={() => setHoveredItem(null)}
+                    >
+                      <item.icon className="w-5 h-5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent side="right" className="ml-2 bg-purple-900/90 backdrop-blur-xl border border-purple-300/30">
+                    <p>{item.name}</p>
+                  </TooltipContent>
+                </Tooltip>
               )}
             </div>
           ))}

@@ -1094,31 +1094,20 @@ const Workspace = () => {
     }
   };
   return <WorkspaceModeProvider>
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative flex">
-        {/* 导航栏 - 根据模式选择 */}
-        {useFixedSidebar ? (
-          <FixedSidebar 
-            selectedNav={selectedNav} 
-            onNavSelect={setSelectedNav}
-            isCollapsed={sidebarCollapsed}
-            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-          />
-        ) : (
-          <FloatingNavigation 
-            selectedNav={selectedNav} 
-            onNavSelect={setSelectedNav} 
-            onNewWorkspace={handleNewWorkspace} 
-            onSwitchWorkspace={handleSwitchWorkspace} 
-            onSaveTemplate={handleSaveTemplate} 
-            onDeleteTemplate={handleDeleteTemplate} 
-          />
-        )}
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-700 relative flex">
+        {/* 悬浮导航栏 */}
+        <FloatingNavigation 
+          selectedNav={selectedNav} 
+          onNavSelect={setSelectedNav} 
+          onNewWorkspace={handleNewWorkspace} 
+          onSwitchWorkspace={handleSwitchWorkspace} 
+          onSaveTemplate={handleSaveTemplate} 
+          onDeleteTemplate={handleDeleteTemplate} 
+        />
       
-        {/* 主内容区域 - 动态调整左边距 */}
-        <div className={`flex-1 flex flex-col transition-all duration-300 ${
-          useFixedSidebar ? (sidebarCollapsed ? 'ml-0' : 'ml-0') : 'ml-0'
-        }`}>
-          {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
+        {/* 主内容区域 - 调整左边距为悬浮导航留出空间 */}
+        <div className="flex-1 flex flex-col transition-all duration-300 ml-20">
+          {/* 顶部导航栏 - 只保留工作空间名称和用户图标 */}
           <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -1140,40 +1129,15 @@ const Workspace = () => {
                   </div>}
               </div>
               
-              <div className="flex items-center gap-4">
-                {/* 导航模式切换按钮 */}
-                <Button 
-                  onClick={() => setUseFixedSidebar(!useFixedSidebar)} 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
-                >
-                  <Menu className="h-4 w-4 mr-2" />
-                  {useFixedSidebar ? '悬浮模式' : '固定模式'}
-                </Button>
-                
-                {/* 切换工作空间按钮 */}
-                <Button onClick={handleSwitchWorkspace} variant="outline" size="sm" className="bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/20">
-                  <ArrowLeftRight className="h-4 w-4 mr-2" />
-                  切换空间
-                </Button>
-                
-                {/* 工作空间运行状态 */}
-                <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
-                  运行中
-                </Badge>
-                
-                {/* 用户头像图标 */}
-                <UserMenu />
-              </div>
+              {/* 右侧用户图标 */}
+              <UserMenu />
             </div>
           </div>
 
-          {/* Content Area */}
-          <div className="flex-1 p-6 overflow-auto">
-            <div className="h-full flex gap-6">
-              <div className="flex-1">
+          {/* Content Area - 调整为均匀分布在右侧区域 */}
+          <div className="flex-1 p-8 overflow-auto">
+            <div className="h-full flex gap-8">
+              <div className="flex-1 max-w-5xl mx-auto">
                 {renderContent()}
               </div>
               
