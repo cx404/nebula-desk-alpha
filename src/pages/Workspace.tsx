@@ -1151,7 +1151,7 @@ const Workspace = () => {
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 p-6 overflow-auto">
+            <div className="flex-1 p-6 overflow-auto bg-[#6f19a1]/[0.81]">
             <div className="h-full flex gap-6 mx-0 my-0 px-0 py-0">
               <div className="flex-1">
                 {renderContent()}
