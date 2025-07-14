@@ -1094,7 +1094,7 @@ const Workspace = () => {
     }
   };
   return <WorkspaceModeProvider>
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative flex">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black relative flex">
         {/* 导航栏 - 根据模式选择 */}
         {useFixedSidebar ? (
           <FixedSidebar 
@@ -1114,40 +1114,45 @@ const Workspace = () => {
           />
         )}
       
-        {/* 主内容区域 - 动态调整左边距 */}
+        {/* 主内容区域 - 向右移动并居中分布 */}
         <div className={`flex-1 flex flex-col transition-all duration-300 ${
-          useFixedSidebar ? (sidebarCollapsed ? 'ml-0' : 'ml-0') : 'ml-0'
+          useFixedSidebar ? (sidebarCollapsed ? 'ml-16' : 'ml-64') : 'ml-20'
         }`}>
-          {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
-          <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-6 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                {isEditingName ? <div className="flex items-center gap-2">
-                    <Input value={editingName} onChange={e => setEditingName(e.target.value)} className="bg-white/10 border-white/20 text-white text-xl font-bold px-3 py-1 h-auto" autoFocus onKeyPress={e => e.key === 'Enter' && handleSaveWorkspaceName()} />
-                    <Button onClick={handleSaveWorkspaceName} size="sm" className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
-                      <Check className="h-4 w-4" />
-                    </Button>
-                    <Button onClick={handleCancelEditName} size="sm" variant="outline" className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30">
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div> : <div className="flex items-center gap-2">
-                    <h1 className="text-xl font-bold text-white">
-                      {currentWorkspace?.name || "工作空间"}
-                    </h1>
-                    <Button onClick={() => setIsEditingName(true)} size="sm" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/10">
-                      <Edit3 className="h-4 w-4" />
-                    </Button>
-                  </div>}
-              </div>
-              
-              <div className="flex items-center gap-4">
-                {/* 导航模式切换按钮 */}
-                <Button 
-                  onClick={() => setUseFixedSidebar(!useFixedSidebar)} 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
-                >
+            {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
+            <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-6 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  {isEditingName ? <div className="flex items-center gap-2">
+                      <Input value={editingName} onChange={e => setEditingName(e.target.value)} className="bg-white/10 border-white/20 text-white text-xl font-bold px-3 py-1 h-auto" autoFocus onKeyPress={e => e.key === 'Enter' && handleSaveWorkspaceName()} />
+                      <Button onClick={handleSaveWorkspaceName} size="sm" className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
+                        <Check className="h-4 w-4" />
+                      </Button>
+                      <Button onClick={handleCancelEditName} size="sm" variant="outline" className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30">
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div> : <div className="flex items-center gap-2">
+                      <h1 className="text-xl font-bold text-white">
+                        {currentWorkspace?.name || "工作空间"}
+                      </h1>
+                      <Button onClick={() => setIsEditingName(true)} size="sm" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/10">
+                        <Edit3 className="h-4 w-4" />
+                      </Button>
+                    </div>}
+                </div>
+                
+                <div className="flex items-center gap-4">
+                  {/* 用户图标 */}
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
+                  
+                  {/* 导航模式切换按钮 */}
+                  <Button 
+                    onClick={() => setUseFixedSidebar(!useFixedSidebar)} 
+                    variant="outline" 
+                    size="sm" 
+                    className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
+                  >
                   <Menu className="h-4 w-4 mr-2" />
                   {useFixedSidebar ? '悬浮模式' : '固定模式'}
                 </Button>
@@ -1163,15 +1168,12 @@ const Workspace = () => {
                   <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
                   运行中
                 </Badge>
-                
-                {/* 用户头像图标 */}
-                <UserMenu />
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Content Area */}
-          <div className="flex-1 p-6 overflow-auto">
+            {/* Content Area */}
+            <div className="flex-1 p-6 overflow-auto">
             <div className="h-full flex gap-6">
               <div className="flex-1">
                 {renderContent()}
