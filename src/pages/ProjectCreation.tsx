@@ -389,9 +389,7 @@ const ProjectCreation = () => {
 
       {/* 悬浮AI助手图标 */}
       <div className="fixed top-1/2 left-8 transform -translate-y-1/2 z-50 animate-pulse">
-        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform duration-300">
-          <Bot className="w-8 h-8 text-white" />
-        </div>
+        
         <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white animate-ping"></div>
       </div>
 
