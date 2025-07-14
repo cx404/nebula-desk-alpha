@@ -177,36 +177,20 @@ export const AIAgent = ({
     }
   };
   const predefinedCommands = ["部署 DeepSeek-R1 模型", "添加 Terminal 组件", "检查系统资源状态", "分析本月费用情况", "重新整理画布布局"];
-
   const handleSubmitCommand = async () => {
     if (!currentCommand.trim() || isProcessing) return;
-    
     await executeAgentTask(currentCommand);
     setCurrentCommand("");
   };
-
   const handleQuickCommand = async (command: string) => {
     await executeAgentTask(command);
   };
-
-  return (
-    <>
+  return <>
       {/* Floating AI Icon */}
-      <Button
-        size="icon"
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 h-20 w-20 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-blue-600 hover:from-purple-500 hover:via-pink-400 hover:to-blue-500 shadow-2xl hover:shadow-pink-500/30 transition-all duration-500 z-50 group animate-pulse hover:animate-none border-2 border-white/30 hover:border-white/50"
-      >
-        <div className="relative">
-          <Sparkles className="h-12 w-12 text-white group-hover:scale-125 transition-transform duration-300 drop-shadow-lg" />
-          <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent rounded-full group-hover:from-white/40 transition-all duration-300" />
-          <div className="absolute inset-0 rounded-full border border-white/20 group-hover:border-white/40 transition-all duration-300" />
-        </div>
-      </Button>
+      
 
       {/* AI Chat Panel */}
-      {isOpen && (
-        <div className="fixed top-4 right-4 w-96 h-[600px] bg-gray-900/95 backdrop-blur-xl border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/20 z-40 flex flex-col animate-scale-in">
+      {isOpen && <div className="fixed top-4 right-4 w-96 h-[600px] bg-gray-900/95 backdrop-blur-xl border border-purple-500/30 rounded-xl shadow-2xl shadow-purple-500/20 z-40 flex flex-col animate-scale-in">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border/50">
             <div className="flex items-center gap-2">
@@ -215,12 +199,7 @@ export const AIAgent = ({
               </div>
               <span className="font-semibold text-foreground">Alaya AI助手</span>
             </div>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => setIsOpen(false)}
-              className="h-8 w-8 hover:bg-muted"
-            >
+            <Button size="icon" variant="ghost" onClick={() => setIsOpen(false)} className="h-8 w-8 hover:bg-muted">
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -229,64 +208,37 @@ export const AIAgent = ({
           <div className="p-4 border-b border-border/30">
             <div className="text-sm text-muted-foreground mb-2">快速指令:</div>
             <div className="grid grid-cols-1 gap-1">
-              {predefinedCommands.map((cmd, index) => (
-                <Button
-                  key={index}
-                  variant="ghost"
-                  size="sm"
-                  className="justify-start text-xs h-8 hover:bg-primary/10"
-                  onClick={() => handleQuickCommand(cmd)}
-                  disabled={isProcessing}
-                >
+              {predefinedCommands.map((cmd, index) => <Button key={index} variant="ghost" size="sm" className="justify-start text-xs h-8 hover:bg-primary/10" onClick={() => handleQuickCommand(cmd)} disabled={isProcessing}>
                   {cmd}
-                </Button>
-              ))}
+                </Button>)}
             </div>
           </div>
 
           {/* Task History */}
           <ScrollArea className="flex-1 p-4">
             <div className="space-y-2">
-              {tasks.map((task) => (
-                <Card key={task.id} className="p-3 bg-muted/30 border-border/50">
+              {tasks.map(task => <Card key={task.id} className="p-3 bg-muted/30 border-border/50">
                   <div className="flex items-start justify-between mb-2">
                     <span className="text-sm font-medium">{task.command}</span>
                     {getStatusBadge(task.status)}
                   </div>
-                  {task.result && (
-                    <p className="text-xs text-muted-foreground">{task.result}</p>
-                  )}
+                  {task.result && <p className="text-xs text-muted-foreground">{task.result}</p>}
                   <p className="text-xs text-muted-foreground mt-1">
                     {task.timestamp.toLocaleTimeString()}
                   </p>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </ScrollArea>
 
           {/* Input Area */}
           <div className="p-4 border-t border-border/50">
             <div className="flex gap-2">
-              <Input
-                placeholder="输入指令..."
-                value={currentCommand}
-                onChange={(e) => setCurrentCommand(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSubmitCommand()}
-                disabled={isProcessing}
-                className="text-sm bg-muted/50"
-              />
-              <Button 
-                size="icon" 
-                onClick={handleSubmitCommand}
-                disabled={isProcessing || !currentCommand.trim()}
-                className="bg-primary hover:bg-primary/90"
-              >
+              <Input placeholder="输入指令..." value={currentCommand} onChange={e => setCurrentCommand(e.target.value)} onKeyPress={e => e.key === 'Enter' && handleSubmitCommand()} disabled={isProcessing} className="text-sm bg-muted/50" />
+              <Button size="icon" onClick={handleSubmitCommand} disabled={isProcessing || !currentCommand.trim()} className="bg-primary hover:bg-primary/90">
                 <Send className="h-4 w-4" />
               </Button>
             </div>
           </div>
-        </div>
-      )}
-    </>
-  );
+        </div>}
+    </>;
 };
