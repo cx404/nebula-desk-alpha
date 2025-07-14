@@ -2,25 +2,15 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { WorkspaceIconGrid } from "./WorkspaceIconGrid";
-import { 
-  Activity, 
-  Cpu, 
-  HardDrive, 
-  Zap, 
-  Users, 
-  Calendar,
-  Clock,
-  Server,
-  BarChart3,
-  Settings
-} from "lucide-react";
-
+import { Activity, Cpu, HardDrive, Zap, Users, Calendar, Clock, Server, BarChart3, Settings } from "lucide-react";
 interface WorkspaceManagementProps {
   currentWorkspace: any;
   onNavigate?: (nav: string) => void;
 }
-
-export const WorkspaceManagement = ({ currentWorkspace, onNavigate }: WorkspaceManagementProps) => {
+export const WorkspaceManagement = ({
+  currentWorkspace,
+  onNavigate
+}: WorkspaceManagementProps) => {
   // 模拟工作空间状态数据
   const workspaceStatus = {
     isRunning: true,
@@ -33,19 +23,15 @@ export const WorkspaceManagement = ({ currentWorkspace, onNavigate }: WorkspaceM
     completedTasks: 5,
     lastActivity: "5分钟前"
   };
-
   const getStatusColor = (isRunning: boolean) => {
     return isRunning ? "bg-green-500" : "bg-red-500";
   };
-
   const getUsageColor = (usage: number) => {
     if (usage < 50) return "text-green-400";
     if (usage < 80) return "text-yellow-400";
     return "text-red-400";
   };
-
-  return (
-    <div className="p-6 space-y-6">
+  return <div className="p-6 space-y-6 py-[24px] px-[24px] my-px mx-[130px]">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">工作空间管理</h2>
         <Button variant="outline" size="sm" className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20">
@@ -82,10 +68,9 @@ export const WorkspaceManagement = ({ currentWorkspace, onNavigate }: WorkspaceM
               {workspaceStatus.cpuUsage}%
             </div>
             <div className="w-full bg-gray-700 rounded-full h-2">
-              <div 
-                className="bg-blue-500 h-2 rounded-full transition-all duration-300" 
-                style={{ width: `${workspaceStatus.cpuUsage}%` }}
-              />
+              <div className="bg-blue-500 h-2 rounded-full transition-all duration-300" style={{
+              width: `${workspaceStatus.cpuUsage}%`
+            }} />
             </div>
           </div>
 
@@ -99,10 +84,9 @@ export const WorkspaceManagement = ({ currentWorkspace, onNavigate }: WorkspaceM
               {workspaceStatus.memoryUsage}%
             </div>
             <div className="w-full bg-gray-700 rounded-full h-2">
-              <div 
-                className="bg-purple-500 h-2 rounded-full transition-all duration-300" 
-                style={{ width: `${workspaceStatus.memoryUsage}%` }}
-              />
+              <div className="bg-purple-500 h-2 rounded-full transition-all duration-300" style={{
+              width: `${workspaceStatus.memoryUsage}%`
+            }} />
             </div>
           </div>
 
@@ -116,10 +100,9 @@ export const WorkspaceManagement = ({ currentWorkspace, onNavigate }: WorkspaceM
               {workspaceStatus.storageUsage}%
             </div>
             <div className="w-full bg-gray-700 rounded-full h-2">
-              <div 
-                className="bg-green-500 h-2 rounded-full transition-all duration-300" 
-                style={{ width: `${workspaceStatus.storageUsage}%` }}
-              />
+              <div className="bg-green-500 h-2 rounded-full transition-all duration-300" style={{
+              width: `${workspaceStatus.storageUsage}%`
+            }} />
             </div>
           </div>
 
@@ -216,6 +199,5 @@ export const WorkspaceManagement = ({ currentWorkspace, onNavigate }: WorkspaceM
           </Button>
         </div>
       </Card>
-    </div>
-  );
+    </div>;
 };
