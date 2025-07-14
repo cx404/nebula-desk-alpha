@@ -271,17 +271,19 @@ const ProjectCreation = () => {
     }, 2000);
   };
   const handleAICreateWorkspace = (components: any[]) => {
-    createWorkspace({
-      name: "AI 推荐工作空间",
-      description: "基于AI分析生成的工作空间",
-      type: "ai-generated",
-      components
+    // 跳转到工作空间页面并传递创建状态
+    navigate("/workspace", {
+      state: {
+        creationMode: true,
+        chatMessages,
+        suggestedComponents: components,
+        workspaceConfig: {
+          name: "AI 推荐工作空间",
+          description: "基于AI分析生成的工作空间",
+          type: "ai-generated"
+        }
+      }
     });
-    toast({
-      title: "工作空间创建成功！",
-      description: "AI已为您配置了最适合的组件"
-    });
-    navigate("/workspace");
   };
   const handleCreateProject = async () => {
     if (selectedMethod === "blank") {
