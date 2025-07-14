@@ -31,7 +31,7 @@ export const WorkspaceManagement = ({
     if (usage < 80) return "text-yellow-400";
     return "text-red-400";
   };
-  return <div className="p-6 space-y-6 py-[24px] px-[24px] my-px mx-[130px]">
+  return <div className="p-6 space-y-6 mx-0 px-0 py-0 my-0">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">工作空间管理</h2>
         <Button variant="outline" size="sm" className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20">
