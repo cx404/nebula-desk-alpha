@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "@/integrations/supabase/client";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -33,6 +34,30 @@ const Workspace = () => {
     updateWorkspace,
     createWorkspace
   } = useWorkspace();
+
+  // 检查用户认证状态
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        navigate("/");
+        return;
+      }
+    };
+
+    checkAuth();
+
+    // 监听认证状态变化
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (!session?.user) {
+          navigate("/");
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
   // 获取从项目创建页面传递的状态
   const creationState = location.state;
@@ -1134,6 +1159,8 @@ const Workspace = () => {
                   <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
                   运行中
                 </Badge>
+                {/* 用户头像图标 */}
+                <UserMenu />
               </div>
             </div>
           </div>
