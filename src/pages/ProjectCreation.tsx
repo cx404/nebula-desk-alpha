@@ -378,7 +378,7 @@ const ProjectCreation = () => {
       
       {/* Header */}
       <header className="border-b border-white/20 bg-white/5 backdrop-blur-lg relative z-10">
-        <div className="container flex items-center justify-between mx-0 px-0 py-[10px] my-0">
+        <div className="container flex items-center justify-between px-0 py-[10px] my-0 mx-[80px]">
           <div className="flex items-center gap-4">
             <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mx-0 my-0 px-0">
               <div className="w-4 h-4 bg-white rounded"></div>
