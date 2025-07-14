@@ -18,9 +18,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<ProjectCreation />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/projects" element={<ProjectCreation />} />
           <Route path="/workspace" element={<Workspace />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
