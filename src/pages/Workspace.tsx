@@ -35,29 +35,7 @@ const Workspace = () => {
     createWorkspace
   } = useWorkspace();
 
-  // 检查用户认证状态
-  useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        navigate("/");
-        return;
-      }
-    };
-
-    checkAuth();
-
-    // 监听认证状态变化
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (!session?.user) {
-          navigate("/");
-        }
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+  // Authentication check removed since database tables were deleted
 
   // 获取从项目创建页面传递的状态
   const creationState = location.state;
