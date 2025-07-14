@@ -22,6 +22,7 @@ import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
 import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvider";
 import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
+import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
@@ -658,13 +659,7 @@ const Workspace = () => {
   const renderContent = () => {
     switch (selectedNav) {
       case "workspace-management":
-        return <div className="space-y-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">工作空间管理</h2>
-              <p className="text-gray-400">管理您的工作空间配置和模板</p>
-            </div>
-            <WorkspaceTemplate onApplyTemplate={handleApplyTemplate} />
-          </div>;
+        return <WorkspaceManagement currentWorkspace={currentWorkspace} />;
       case "monitoring":
         return <div className="space-y-6">
             <div className="mb-6">
