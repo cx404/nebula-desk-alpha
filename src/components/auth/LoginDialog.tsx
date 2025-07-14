@@ -93,17 +93,13 @@ export const LoginDialog = ({ open, onOpenChange }: LoginDialogProps) => {
   };
 
   const handleQRCodeAuth = () => {
-    // 模拟二维码登录
-    setIsLoading(true);
-    setTimeout(() => {
-      toast({
-        title: "二维码登录成功",
-        description: "正在跳转到工作空间...",
-      });
-      onOpenChange(false);
-      navigate("/workspace");
-      setIsLoading(false);
-    }, 2000);
+    // 直接跳转到工作空间页面
+    toast({
+      title: "登录成功",
+      description: "正在跳转到工作空间...",
+    });
+    onOpenChange(false);
+    navigate("/workspace");
   };
 
   return (
