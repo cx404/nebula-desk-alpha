@@ -6,58 +6,58 @@
 
 @layer base {
   :root {
-    /* Purple-blue gradient theme matching reference */
-    --background: 252 21% 6%;
-    --foreground: 210 40% 98%;
+    /* Light purple theme with reduced saturation */
+    --background: 270 20% 8%;
+    --foreground: 270 15% 96%;
     
-    /* Purple-blue color palette */
-    --primary: 262 83% 58%;
-    --primary-foreground: 252 21% 6%;
-    --primary-glow: 262 83% 70%;
+    /* Light purple color palette with lower saturation */
+    --primary: 270 45% 65%;
+    --primary-foreground: 270 20% 8%;
+    --primary-glow: 270 50% 75%;
     
-    /* Purple-blue gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(262 83% 58%), hsl(242 100% 70%));
-    --gradient-subtle: linear-gradient(180deg, hsl(252 21% 8%), hsl(252 21% 6%));
-    --gradient-card: linear-gradient(145deg, hsl(252 21% 12%), hsl(252 21% 8%));
-    --gradient-workspace: linear-gradient(135deg, hsl(262 83% 25%), hsl(242 100% 30%), hsl(225 100% 35%));
+    /* Light purple gradients with high transparency */
+    --gradient-primary: linear-gradient(135deg, hsl(270 45% 65% / 0.6), hsl(260 40% 70% / 0.5));
+    --gradient-subtle: linear-gradient(180deg, hsl(270 20% 12% / 0.8), hsl(270 20% 8% / 0.9));
+    --gradient-card: linear-gradient(145deg, hsl(270 25% 15% / 0.4), hsl(270 20% 10% / 0.6));
+    --gradient-workspace: linear-gradient(135deg, hsl(270 35% 25% / 0.3), hsl(260 30% 30% / 0.4), hsl(250 25% 35% / 0.5));
     
-    /* Glass morphism effects */
-    --glass-bg: hsl(252 21% 12% / 0.8);
-    --glass-border: hsl(262 83% 58% / 0.2);
+    /* Enhanced glass morphism effects */
+    --glass-bg: hsl(270 25% 15% / 0.2);
+    --glass-border: hsl(270 45% 65% / 0.15);
     
-    /* Shadows with purple glow */
-    --shadow-primary: 0 0 40px hsl(262 83% 58% / 0.3);
-    --shadow-card: 0 10px 30px -10px hsl(252 21% 4% / 0.5);
-    --shadow-glow: 0 0 20px hsl(262 83% 58% / 0.4);
+    /* Soft purple glows with transparency */
+    --shadow-primary: 0 0 40px hsl(270 45% 65% / 0.2);
+    --shadow-card: 0 10px 30px -10px hsl(270 20% 5% / 0.3);
+    --shadow-glow: 0 0 25px hsl(270 50% 75% / 0.3);
     
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    /* Card styles */
-    --card: 252 21% 12%;
-    --card-foreground: 210 40% 98%;
+    /* Card styles with transparency */
+    --card: 270 25% 15% / 0.4;
+    --card-foreground: 270 15% 96%;
 
-    --popover: 252 21% 12%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 270 25% 15% / 0.8;
+    --popover-foreground: 270 15% 96%;
 
-    /* Secondary colors */
-    --secondary: 252 21% 15%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary colors with reduced saturation */
+    --secondary: 270 20% 18% / 0.6;
+    --secondary-foreground: 270 15% 96%;
 
-    --muted: 252 21% 20%;
-    --muted-foreground: 210 20% 70%;
+    --muted: 270 15% 25% / 0.4;
+    --muted-foreground: 270 10% 75%;
 
-    --accent: 242 100% 70%;
-    --accent-foreground: 252 21% 8%;
+    --accent: 260 40% 75%;
+    --accent-foreground: 270 20% 8%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    /* Borders and inputs */
-    --border: 252 21% 20%;
-    --input: 252 21% 15%;
-    --ring: 262 83% 58%;
+    /* Borders and inputs with transparency */
+    --border: 270 20% 25% / 0.3;
+    --input: 270 25% 18% / 0.5;
+    --ring: 270 45% 65%;
 
     --radius: 0.5rem;
 
@@ -130,23 +130,46 @@
 }
 
 @layer components {
-  /* Glass card effect */
+  /* Enhanced glass card effect with tech feel */
   .glass-card {
-    @apply bg-card/80 backdrop-blur-lg border border-border/50;
-    box-shadow: var(--shadow-card);
+    @apply backdrop-blur-xl border;
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+    box-shadow: var(--shadow-card), inset 0 1px 0 hsl(270 50% 80% / 0.1);
   }
   
-  /* Premium button variants */
+  /* Premium tech button variants */
   .btn-premium {
-    @apply relative overflow-hidden;
+    @apply relative overflow-hidden backdrop-blur-xl;
     background: var(--gradient-primary);
-    box-shadow: var(--shadow-primary);
+    box-shadow: var(--shadow-primary), inset 0 1px 0 hsl(270 50% 80% / 0.2);
     transition: var(--transition-smooth);
+    border: 1px solid hsl(270 45% 65% / 0.2);
   }
   
   .btn-premium:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-glow);
+    box-shadow: var(--shadow-glow), inset 0 1px 0 hsl(270 50% 80% / 0.3);
+  }
+
+  /* Tech glass icons */
+  .tech-icon {
+    @apply backdrop-blur-lg rounded-xl border;
+    background: linear-gradient(145deg, hsl(270 30% 25% / 0.3), hsl(270 20% 15% / 0.6));
+    border-color: hsl(270 45% 65% / 0.2);
+    box-shadow: 
+      0 4px 12px hsl(270 20% 5% / 0.4),
+      inset 0 1px 0 hsl(270 50% 80% / 0.15),
+      inset 0 -1px 0 hsl(270 20% 10% / 0.5);
+  }
+
+  .tech-icon:hover {
+    background: linear-gradient(145deg, hsl(270 35% 30% / 0.4), hsl(270 25% 20% / 0.7));
+    border-color: hsl(270 45% 65% / 0.3);
+    box-shadow: 
+      0 6px 20px hsl(270 20% 5% / 0.5),
+      inset 0 1px 0 hsl(270 50% 80% / 0.2),
+      0 0 15px hsl(270 45% 65% / 0.2);
   }
   
   /* Floating animation */
@@ -159,7 +182,7 @@
     50% { transform: translateY(-10px); }
   }
   
-  /* Glow effect */
+  /* Enhanced glow effect */
   .glow {
     position: relative;
   }
@@ -173,13 +196,13 @@
     bottom: 0;
     background: var(--gradient-primary);
     border-radius: inherit;
-    filter: blur(10px);
+    filter: blur(15px);
     opacity: 0;
     transition: var(--transition-smooth);
     z-index: -1;
   }
   
   .glow:hover::before {
-    opacity: 0.3;
+    opacity: 0.4;
   }
 }
