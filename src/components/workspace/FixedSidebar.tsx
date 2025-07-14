@@ -11,9 +11,11 @@ import {
   Stethoscope,
   ChevronLeft,
   ChevronRight,
-  Menu
+  Menu,
+  Home
 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from "@/components/ui/tooltip";
+import { useNavigate } from "react-router-dom";
 
 interface FixedSidebarProps {
   selectedNav: string;
@@ -29,6 +31,11 @@ export const FixedSidebar = ({
   onToggleCollapse
 }: FixedSidebarProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleHomeClick = () => {
+    navigate("/");
+  };
 
   const navigationItems = [
     { id: "workspace", name: "工作空间管理", icon: FolderOpen },
@@ -43,23 +50,44 @@ export const FixedSidebar = ({
 
   return (
     <TooltipProvider>
-      <div className={`fixed left-0 top-0 h-full bg-white/10 backdrop-blur-xl border-r border-white/20 transition-all duration-300 z-40 ${
+      <div className={`sidebar-glass fixed left-0 top-0 h-full transition-all duration-300 z-40 ${
         isCollapsed ? 'w-16' : 'w-64'
       }`}>
-        {/* Toggle Button */}
-        <div className="flex justify-end p-3">
+        {/* Header with Home and Toggle */}
+        <div className="flex items-center justify-between p-3 border-b border-border/20">
+          {/* Home Button */}
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleHomeClick}
+                className="magic-icon text-foreground/80 hover:text-foreground hover:bg-primary/10"
+              >
+                <Home className="w-4 h-4" />
+                {!isCollapsed && <span className="ml-2 text-sm">首页</span>}
+              </Button>
+            </TooltipTrigger>
+            {isCollapsed && (
+              <TooltipContent side="right" className="glass-card text-foreground border-border/30">
+                返回首页
+              </TooltipContent>
+            )}
+          </Tooltip>
+
+          {/* Toggle Button */}
           <Button
             variant="ghost"
             size="sm"
             onClick={onToggleCollapse}
-            className="text-white hover:bg-white/10"
+            className="magic-icon text-foreground/80 hover:text-foreground hover:bg-primary/10"
           >
             {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
           </Button>
         </div>
 
         {/* Navigation Items */}
-        <div className="px-3 space-y-2">
+        <div className="px-3 py-2 space-y-2">
           {navigationItems.map((item) => {
             const Icon = item.icon;
             const isSelected = selectedNav === item.id;
@@ -73,10 +101,10 @@ export const FixedSidebar = ({
                     onClick={() => onNavSelect(item.id)}
                     onMouseEnter={() => setHoveredItem(item.id)}
                     onMouseLeave={() => setHoveredItem(null)}
-                    className={`w-full ${isCollapsed ? 'px-2 justify-center' : 'justify-start'} transition-all duration-200 ${
+                    className={`magic-icon w-full ${isCollapsed ? 'px-2 justify-center' : 'justify-start'} transition-all duration-200 ${
                       isSelected 
-                        ? 'bg-white/20 text-white border border-white/30' 
-                        : 'text-white/70 hover:text-white hover:bg-white/10'
+                        ? 'bg-primary/20 text-foreground border border-primary/30' 
+                        : 'text-foreground/70 hover:text-foreground hover:bg-primary/10'
                     } ${
                       hoveredItem === item.id ? 'scale-105' : ''
                     }`}
@@ -88,7 +116,7 @@ export const FixedSidebar = ({
                   </Button>
                 </TooltipTrigger>
                 {isCollapsed && (
-                  <TooltipContent side="right" className="bg-gray-900 text-white border-gray-700">
+                  <TooltipContent side="right" className="glass-card text-foreground border-border/30">
                     {item.name}
                   </TooltipContent>
                 )}
