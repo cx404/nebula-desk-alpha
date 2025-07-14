@@ -410,7 +410,7 @@ const ProjectCreation = () => {
 
           {/* AI 聊天窗口 - 放大 */}
           <Card className="glass-card border-2 border-white/30 shadow-2xl hover:border-white/50 transition-all duration-300 bg-white/10 backdrop-blur-xl">
-            <div className="p-8">
+            <div className="p-8 px-[24px] py-[23px]">
               {/* 聊天消息区域 - 增大高度 */}
               <div className="h-[500px] overflow-y-auto mb-6 space-y-6 scrollbar-thin scrollbar-thumb-white/20">
                 {chatMessages.map(message => <div key={message.id} className={`flex items-start gap-3 animate-fade-in ${message.type === 'user' ? 'flex-row-reverse' : ''}`}>
@@ -448,7 +448,7 @@ const ProjectCreation = () => {
 
               {/* 输入区域 */}
               <div className="flex gap-4">
-                <Input value={chatInput} onChange={e => setChatInput(e.target.value)} placeholder="描述您想要创建的项目，比如：我想做一个电商网站..." className="flex-1 border-white/20 focus:border-white/40 bg-white/10 text-white placeholder:text-white/60 text-lg py-4 px-6 rounded-xl" onKeyPress={e => e.key === 'Enter' && handleSendMessage()} />
+                <Input value={chatInput} onChange={e => setChatInput(e.target.value)} placeholder="描述您想要创建的项目，比如：我想做一个电商网站..." onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1 border-white/20 focus:border-white/40 bg-white/10 text-white placeholder:text-white/60 text-lg px-6 rounded-xl py-0" />
                 <Button onClick={handleSendMessage} disabled={!chatInput.trim() || isAIThinking} className="btn-premium px-8 py-4 text-lg rounded-xl">
                   <Send className="w-5 h-5 mr-2" />
                   发送
