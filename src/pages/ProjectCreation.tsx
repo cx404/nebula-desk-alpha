@@ -398,7 +398,7 @@ const ProjectCreation = () => {
         <div className="max-w-6xl mx-auto mb-12">
           {/* AI Chat Header */}
           <div className="text-center mb-12 animate-fade-in">
-            <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="flex items-center justify-center gap-4 mb-6 mx-0 my-0 py-0 px-0 rounded-md">
               <Sparkles className="w-12 h-12 text-white animate-pulse" />
               <h1 className="text-6xl font-bold bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
                 AI 智能工作空间助手
