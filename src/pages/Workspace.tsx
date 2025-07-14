@@ -185,11 +185,9 @@ const Workspace = () => {
   const handleNewWorkspace = () => {
     navigate("/projects");
   };
-
   const handleSwitchWorkspace = () => {
     toast.info("切换工作空间功能开发中...");
   };
-
   const handleSaveTemplate = () => {
     if (!currentWorkspace) {
       toast.error("没有可保存的工作空间");
@@ -197,7 +195,6 @@ const Workspace = () => {
     }
     toast.success("工作空间已保存为模板");
   };
-
   const handleDeleteTemplate = () => {
     toast.error("删除模板功能开发中...");
   };
@@ -615,27 +612,10 @@ const Workspace = () => {
             </div>
           </div>;
       default:
-        return <div className="space-y-6">
+        return <div className="space-y-6 mx-[147px]">
             <div className="mb-6">
-              <div className="flex items-center gap-4 mb-2">
-                {isEditingName ? <div className="flex items-center gap-2">
-                    <Input value={editingName} onChange={e => setEditingName(e.target.value)} className="bg-white/10 border-white/20 text-white text-2xl font-bold px-3 py-1 h-auto" autoFocus onKeyPress={e => e.key === 'Enter' && handleSaveWorkspaceName()} />
-                    <Button onClick={handleSaveWorkspaceName} size="sm" className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
-                      <Check className="h-4 w-4" />
-                    </Button>
-                    <Button onClick={handleCancelEditName} size="sm" variant="outline" className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30">
-                      <X className="h-4 w-4" />
-                    </Button>
-                  </div> : <div className="flex items-center gap-2">
-                    <h2 className="text-2xl font-bold text-white">
-                      {currentWorkspace?.name || "工作空间"}
-                    </h2>
-                    <Button onClick={() => setIsEditingName(true)} size="sm" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/10">
-                      <Edit3 className="h-4 w-4" />
-                    </Button>
-                  </div>}
-              </div>
-              <p className="text-gray-400">{currentWorkspace?.description || "统一的开发环境和项目管理中心"}</p>
+              
+              
             </div>
             
             {/* 概览卡片 */}
@@ -685,7 +665,6 @@ const Workspace = () => {
             </div>
             <WorkspaceTemplate onApplyTemplate={handleApplyTemplate} />
           </div>;
-          
       case "monitoring":
         return <div className="space-y-6">
             <div className="mb-6">
@@ -724,7 +703,6 @@ const Workspace = () => {
               <PerformanceChart data={performanceData} />
             </div>
           </div>;
-          
       case "orders":
         return <div className="space-y-6">
             <div className="mb-6">
@@ -762,7 +740,6 @@ const Workspace = () => {
               </div>
             </Card>
           </div>;
-          
       case "task-queue":
         return <div className="space-y-6">
             <div className="mb-6">
@@ -781,14 +758,15 @@ const Workspace = () => {
                   </div>
                   <p className="text-sm text-gray-400 mb-2">ResNet50 在 CIFAR-10 数据集上的训练</p>
                   <div className="w-full bg-border/50 rounded-full h-2">
-                    <div className="bg-primary h-2 rounded-full" style={{width: '65%'}}></div>
+                    <div className="bg-primary h-2 rounded-full" style={{
+                    width: '65%'
+                  }}></div>
                   </div>
                   <p className="text-xs text-gray-400 mt-1">Epoch 65/100</p>
                 </div>
               </div>
             </Card>
           </div>;
-          
       case "diagnostics":
         return <div className="space-y-6">
             <div className="mb-6">
@@ -1109,14 +1087,7 @@ const Workspace = () => {
   return <WorkspaceModeProvider>
       <div className="min-h-screen bg-background flex flex-col">
         {/* 悬浮导航栏 - 设置为默认折叠状态 */}
-        <FloatingNavigation 
-          selectedNav={selectedNav}
-          onNavSelect={setSelectedNav}
-          onNewWorkspace={handleNewWorkspace}
-          onSwitchWorkspace={handleSwitchWorkspace}
-          onSaveTemplate={handleSaveTemplate}
-          onDeleteTemplate={handleDeleteTemplate}
-        />
+        <FloatingNavigation selectedNav={selectedNav} onNavSelect={setSelectedNav} onNewWorkspace={handleNewWorkspace} onSwitchWorkspace={handleSwitchWorkspace} onSaveTemplate={handleSaveTemplate} onDeleteTemplate={handleDeleteTemplate} />
       
         {/* 主内容区域 - 移除左边距以避免被导航栏遮挡 */}
         <div className="flex-1 flex flex-col">
@@ -1124,42 +1095,27 @@ const Workspace = () => {
           <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
-                {isEditingName ? (
-                  <div className="flex items-center gap-2">
-                    <Input 
-                      value={editingName} 
-                      onChange={e => setEditingName(e.target.value)} 
-                      className="bg-white/10 border-white/20 text-white text-xl font-bold px-3 py-1 h-auto" 
-                      autoFocus 
-                      onKeyPress={e => e.key === 'Enter' && handleSaveWorkspaceName()} 
-                    />
+                {isEditingName ? <div className="flex items-center gap-2">
+                    <Input value={editingName} onChange={e => setEditingName(e.target.value)} className="bg-white/10 border-white/20 text-white text-xl font-bold px-3 py-1 h-auto" autoFocus onKeyPress={e => e.key === 'Enter' && handleSaveWorkspaceName()} />
                     <Button onClick={handleSaveWorkspaceName} size="sm" className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
                       <Check className="h-4 w-4" />
                     </Button>
                     <Button onClick={handleCancelEditName} size="sm" variant="outline" className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30">
                       <X className="h-4 w-4" />
                     </Button>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
+                  </div> : <div className="flex items-center gap-2">
                     <h1 className="text-xl font-bold text-white">
                       {currentWorkspace?.name || "工作空间"}
                     </h1>
                     <Button onClick={() => setIsEditingName(true)} size="sm" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/10">
                       <Edit3 className="h-4 w-4" />
                     </Button>
-                  </div>
-                )}
+                  </div>}
               </div>
               
               <div className="flex items-center gap-4">
                 {/* 切换工作空间按钮 */}
-                <Button 
-                  onClick={handleSwitchWorkspace}
-                  variant="outline" 
-                  size="sm"
-                  className="bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/20"
-                >
+                <Button onClick={handleSwitchWorkspace} variant="outline" size="sm" className="bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/20">
                   <ArrowLeftRight className="h-4 w-4 mr-2" />
                   切换空间
                 </Button>
@@ -1186,8 +1142,8 @@ const Workspace = () => {
               {/* 右侧区域 - 创建过程可视化或AI聊天 */}
               <div className="w-96">
                 {isCreating ?
-                // 工作空间创建过程可视化
-                <Card className="h-full bg-gradient-to-br from-purple-900/30 to-blue-900/30 border-purple-500/30 backdrop-blur-xl">
+              // 工作空间创建过程可视化
+              <Card className="h-full bg-gradient-to-br from-purple-900/30 to-blue-900/30 border-purple-500/30 backdrop-blur-xl">
                     <div className="p-6 h-full flex flex-col py-[17px] px-[8px]">
                       <div className="text-center mb-6">
                         <div className="flex items-center justify-center gap-2 mb-4">
@@ -1252,8 +1208,8 @@ const Workspace = () => {
                         </div>}
                     </div>
                   </Card> :
-                // 正常的AI聊天界面
-                <AIAgent onExecuteCommand={handleExecuteCommand} onUpdateCanvas={handleUpdateCanvas} />}
+              // 正常的AI聊天界面
+              <AIAgent onExecuteCommand={handleExecuteCommand} onUpdateCanvas={handleUpdateCanvas} />}
               </div>
             </div>
           </div>
