@@ -409,7 +409,7 @@ const ProjectCreation = () => {
           </div>
 
           {/* AI 聊天窗口 - 缩小 */}
-          <Card className="glass-card border-2 border-white/30 shadow-2xl hover:border-white/50 transition-all duration-300 bg-gray-900/90 backdrop-blur-xl">
+          <Card className="glass-card border-2 border-white/30 shadow-2xl hover:border-white/50 transition-all duration-300 backdrop-blur-xl bg-purple-900">
             <div className="p-6 px-[20px] py-[18px]">
               {/* 聊天消息区域 - 减小高度 */}
               <div className="h-[350px] overflow-y-auto mb-4 space-y-4 scrollbar-thin scrollbar-thumb-white/20">
