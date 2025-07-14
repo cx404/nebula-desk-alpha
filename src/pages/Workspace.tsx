@@ -22,7 +22,6 @@ import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
 import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvider";
 import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
-import { FullSidebar } from "@/components/workspace/FullSidebar";
 import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
@@ -42,7 +41,6 @@ const Workspace = () => {
   // 获取从项目创建页面传递的状态
   const creationState = location.state;
   const [selectedNav, setSelectedNav] = useState("workspace");
-  const [navigationMode, setNavigationMode] = useState<"floating" | "sidebar">("floating");
   const [chatMessages, setChatMessages] = useState([{
     id: 1,
     type: "assistant",
@@ -1082,27 +1080,11 @@ const Workspace = () => {
     }
   };
   return <WorkspaceModeProvider>
-      <div className="min-h-screen bg-background flex">
-        {navigationMode === "sidebar" ? (
-          /* 左侧全屏导航栏模式 */
-          <FullSidebar 
-            selectedNav={selectedNav} 
-            onNavSelect={setSelectedNav} 
-            onCreateWorkspace={handleNewWorkspace}
-          />
-        ) : (
-          /* 悬浮导航栏模式 */
-          <FloatingNavigation 
-            selectedNav={selectedNav} 
-            onNavSelect={setSelectedNav} 
-            onNewWorkspace={handleNewWorkspace} 
-            onSwitchWorkspace={handleSwitchWorkspace} 
-            onSaveTemplate={handleSaveTemplate} 
-            onDeleteTemplate={handleDeleteTemplate} 
-          />
-        )}
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* 悬浮导航栏 - 设置为默认折叠状态 */}
+        <FloatingNavigation selectedNav={selectedNav} onNavSelect={setSelectedNav} onNewWorkspace={handleNewWorkspace} onSwitchWorkspace={handleSwitchWorkspace} onSaveTemplate={handleSaveTemplate} onDeleteTemplate={handleDeleteTemplate} />
       
-        {/* 主内容区域 */}
+        {/* 主内容区域 - 移除左边距以避免被导航栏遮挡 */}
         <div className="flex-1 flex flex-col">
           {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
           <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-6 py-4">
@@ -1127,17 +1109,6 @@ const Workspace = () => {
               </div>
               
               <div className="flex items-center gap-4">
-                {/* 导航模式切换按钮 */}
-                <Button 
-                  onClick={() => setNavigationMode(navigationMode === "floating" ? "sidebar" : "floating")} 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
-                >
-                  <Layout className="h-4 w-4 mr-2" />
-                  {navigationMode === "floating" ? "侧边栏" : "悬浮"}
-                </Button>
-                
                 {/* 切换工作空间按钮 */}
                 <Button onClick={handleSwitchWorkspace} variant="outline" size="sm" className="bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/20">
                   <ArrowLeftRight className="h-4 w-4 mr-2" />
