@@ -45,7 +45,7 @@ export const FloatingNavigation = ({
   onDeleteTemplate
 }: FloatingNavigationProps) => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(true); // 默认保持折叠状态
   const navigate = useNavigate();
 
   const handleHomeClick = () => {

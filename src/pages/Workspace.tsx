@@ -25,7 +25,7 @@ import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send } from "lucide-react";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight } from "lucide-react";
 const Workspace = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1108,10 +1108,7 @@ const Workspace = () => {
   };
   return <WorkspaceModeProvider>
       <div className="min-h-screen bg-background flex flex-col">
-        {/* 工作空间工具栏 */}
-        <WorkspaceToolbar />
-        
-        {/* 悬浮导航栏 */}
+        {/* 悬浮导航栏 - 设置为默认折叠状态 */}
         <FloatingNavigation 
           selectedNav={selectedNav}
           onNavSelect={setSelectedNav}
@@ -1121,22 +1118,58 @@ const Workspace = () => {
           onDeleteTemplate={handleDeleteTemplate}
         />
       
-      <div className="flex flex-1">
-
-        {/* 主内容区域 */}
-        <div className="flex-1 flex flex-col ml-0">
-          {/* Header */}
-          <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-3 py-3">
+        {/* 主内容区域 - 移除左边距以避免被导航栏遮挡 */}
+        <div className="flex-1 flex flex-col">
+          {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
+          <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-6 py-4">
             <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-lg font-semibold text-purple-100">Alaya NeW算力云工作空间</h1>
-                <p className="text-purple-400 text-xs">自定义您的云桌面环境</p>
-              </div>
               <div className="flex items-center gap-4">
+                {isEditingName ? (
+                  <div className="flex items-center gap-2">
+                    <Input 
+                      value={editingName} 
+                      onChange={e => setEditingName(e.target.value)} 
+                      className="bg-white/10 border-white/20 text-white text-xl font-bold px-3 py-1 h-auto" 
+                      autoFocus 
+                      onKeyPress={e => e.key === 'Enter' && handleSaveWorkspaceName()} 
+                    />
+                    <Button onClick={handleSaveWorkspaceName} size="sm" className="bg-green-500/20 hover:bg-green-500/30 text-green-300 border border-green-500/30">
+                      <Check className="h-4 w-4" />
+                    </Button>
+                    <Button onClick={handleCancelEditName} size="sm" variant="outline" className="bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30">
+                      <X className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-xl font-bold text-white">
+                      {currentWorkspace?.name || "工作空间"}
+                    </h1>
+                    <Button onClick={() => setIsEditingName(true)} size="sm" variant="ghost" className="text-white/60 hover:text-white hover:bg-white/10">
+                      <Edit3 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex items-center gap-4">
+                {/* 切换工作空间按钮 */}
+                <Button 
+                  onClick={handleSwitchWorkspace}
+                  variant="outline" 
+                  size="sm"
+                  className="bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/20"
+                >
+                  <ArrowLeftRight className="h-4 w-4 mr-2" />
+                  切换空间
+                </Button>
+                
+                {/* 工作空间运行状态 */}
                 <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
                   <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
                   运行中
                 </Badge>
+                
                 {/* 用户头像图标 */}
                 <UserMenu />
               </div>
@@ -1226,7 +1259,6 @@ const Workspace = () => {
           </div>
         </div>
       </div>
-    </div>
     </WorkspaceModeProvider>;
 };
 export default Workspace;
