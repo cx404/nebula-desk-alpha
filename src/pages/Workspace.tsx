@@ -24,6 +24,7 @@ import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvi
 import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
 import { FixedSidebar } from "@/components/workspace/FixedSidebar";
 import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
+import { FloatingAIChat } from "@/components/workspace/FloatingAIChat";
 import { JobQueue } from "@/components/workspace/JobQueue";
 import { FileSync } from "@/components/workspace/FileSync";
 import { Diagnostics } from "@/components/workspace/Diagnostics";
@@ -1161,6 +1162,9 @@ const Workspace = () => {
             </div>
           </div>
         </div>
+
+        {/* 悬浮AI对话框 */}
+        <FloatingAIChat />
       </div>
     </WorkspaceModeProvider>;
 };
