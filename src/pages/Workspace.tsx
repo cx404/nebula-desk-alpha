@@ -1102,7 +1102,7 @@ const Workspace = () => {
         {/* 主内容区域 - 向右移动并居中分布 */}
         <div className={`flex-1 flex flex-col transition-all duration-300 ${useFixedSidebar ? sidebarCollapsed ? 'ml-16' : 'ml-64' : 'ml-20'}`}>
             {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
-            <div className="backdrop-blur-xl border-b border-white/10 px-6 py-4 bg-purple-950">
+            <div className="backdrop-blur-xl border-b border-white/10 px-6 py-4 bg-slate-700">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                   {isEditingName ? <div className="flex items-center gap-2">
