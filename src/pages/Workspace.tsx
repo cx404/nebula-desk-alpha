@@ -20,6 +20,7 @@ import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace"
 import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
 import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvider";
+import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
@@ -36,7 +37,6 @@ const Workspace = () => {
   // 获取从项目创建页面传递的状态
   const creationState = location.state;
   const [selectedNav, setSelectedNav] = useState("workspace");
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [chatMessages, setChatMessages] = useState([{
     id: 1,
     type: "assistant",
@@ -176,6 +176,27 @@ const Workspace = () => {
   const handleCancelEditName = () => {
     setEditingName(currentWorkspace?.name || "");
     setIsEditingName(false);
+  };
+
+  // 悬浮导航栏处理函数
+  const handleNewWorkspace = () => {
+    navigate("/projects");
+  };
+
+  const handleSwitchWorkspace = () => {
+    toast.info("切换工作空间功能开发中...");
+  };
+
+  const handleSaveTemplate = () => {
+    if (!currentWorkspace) {
+      toast.error("没有可保存的工作空间");
+      return;
+    }
+    toast.success("工作空间已保存为模板");
+  };
+
+  const handleDeleteTemplate = () => {
+    toast.error("删除模板功能开发中...");
   };
 
   // 应用工作空间模板
@@ -653,11 +674,20 @@ const Workspace = () => {
   // 渲染不同导航项的内容看板
   const renderContent = () => {
     switch (selectedNav) {
-      case "compute":
+      case "workspace-management":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">算力管理</h2>
-              <p className="text-gray-400">管理和监控计算资源</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">工作空间管理</h2>
+              <p className="text-gray-400">管理您的工作空间配置和模板</p>
+            </div>
+            <WorkspaceTemplate onApplyTemplate={handleApplyTemplate} />
+          </div>;
+          
+      case "monitoring":
+        return <div className="space-y-6">
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-2 text-white">资源监控</h2>
+              <p className="text-gray-400">实时监控系统资源使用情况</p>
             </div>
             
             {/* GPU实例列表 */}
@@ -691,110 +721,113 @@ const Workspace = () => {
               <PerformanceChart data={performanceData} />
             </div>
           </div>;
-      case "environment":
-        return <Canvas />;
-      case "model":
+          
+      case "orders":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">模型部署</h2>
-              <p className="text-gray-400">部署和管理AI模型</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">订单管理</h2>
+              <p className="text-gray-400">查看您的订单和计费信息</p>
             </div>
-            <ModelDeployment onDeploy={handleModelDeploy} />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <BillingChart data={billingData} />
+              <APIUsageChart data={apiUsageData} />
+            </div>
           </div>;
-      case "dataset":
+      case "file-sync":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">数据集</h2>
-              <p className="text-muted-foreground">管理训练和测试数据集</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">文件同步</h2>
+              <p className="text-gray-400">管理工作空间文件和同步状态</p>
             </div>
             <Card className="glass-card p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">我的数据集</h3>
-                <Button variant="outline" size="sm">
-                  ➕ 上传数据集
-                </Button>
-              </div>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 bg-card/50 rounded-lg">
+              <h3 className="text-lg font-semibold mb-4 text-white">同步状态</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex items-center gap-3">
-                    <span className="text-lg">📊</span>
-                    <div>
-                      <p className="font-medium">CIFAR-10</p>
-                      <p className="text-xs text-muted-foreground">图像分类数据集</p>
-                    </div>
+                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-white">本地文件</span>
                   </div>
-                  <span className="text-sm text-muted-foreground">50MB</span>
+                  <span className="text-green-400 text-sm">已同步</span>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-card/50 rounded-lg">
+                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex items-center gap-3">
-                    <span className="text-lg">📝</span>
-                    <div>
-                      <p className="font-medium">Text Corpus</p>
-                      <p className="text-xs text-muted-foreground">自然语言处理数据</p>
-                    </div>
+                    <div className="w-3 h-3 bg-yellow-400 rounded-full animate-pulse"></div>
+                    <span className="text-white">远程仓库</span>
                   </div>
-                  <span className="text-sm text-muted-foreground">128MB</span>
+                  <span className="text-yellow-400 text-sm">同步中</span>
                 </div>
               </div>
             </Card>
           </div>;
-      case "tasks":
+          
+      case "task-queue":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">任务管理</h2>
-              <p className="text-muted-foreground">监控训练任务和作业状态</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">任务队列</h2>
+              <p className="text-gray-400">管理和监控后台任务</p>
             </div>
             <Card className="glass-card p-6">
-              <h3 className="text-lg font-semibold mb-4">运行中的任务</h3>
+              <h3 className="text-lg font-semibold mb-4 text-white">运行中的任务</h3>
               <div className="space-y-4">
-                <div className="p-4 bg-card/50 rounded-lg">
+                <div className="p-4 bg-white/5 rounded-lg border border-white/10">
                   <div className="flex justify-between items-start mb-2">
-                    <h4 className="font-medium">图像分类模型训练</h4>
+                    <h4 className="font-medium text-white">模型训练任务</h4>
                     <Badge variant="outline" className="bg-blue-500/10 text-blue-400 border-blue-500/20">
-                      训练中
+                      运行中
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground mb-2">ResNet50 在 CIFAR-10 数据集上的训练</p>
+                  <p className="text-sm text-gray-400 mb-2">ResNet50 在 CIFAR-10 数据集上的训练</p>
                   <div className="w-full bg-border/50 rounded-full h-2">
-                    <div className="bg-primary h-2 rounded-full" style={{
-                    width: '65%'
-                  }}></div>
+                    <div className="bg-primary h-2 rounded-full" style={{width: '65%'}}></div>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">Epoch 65/100</p>
+                  <p className="text-xs text-gray-400 mt-1">Epoch 65/100</p>
                 </div>
               </div>
             </Card>
           </div>;
-      case "model":
+          
+      case "diagnostics":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">模型部署</h2>
-              <p className="text-muted-foreground">部署和管理AI模型</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">系统诊断</h2>
+              <p className="text-gray-400">检查系统健康状态和性能</p>
             </div>
-            <Card className="glass-card p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold">已部署模型</h3>
-                <Button variant="outline" size="sm">
-                  🚀 部署新模型
-                </Button>
-              </div>
-              <div className="space-y-3">
-                <div className="p-4 bg-card/50 rounded-lg">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="glass-card p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">系统状态</h3>
+                <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="font-medium">GPT-3.5 微调模型</h4>
-                      <p className="text-sm text-muted-foreground">文本生成模型</p>
-                    </div>
-                    <div className="text-right">
-                      <Badge variant="outline" className="bg-green-500/10 text-green-400 border-green-500/20">
-                        在线
-                      </Badge>
-                      <p className="text-xs text-muted-foreground mt-1">QPS: 45</p>
-                    </div>
+                    <span className="text-gray-400">CPU使用率</span>
+                    <span className="text-green-400">23%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">内存使用率</span>
+                    <span className="text-yellow-400">67%</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">GPU使用率</span>
+                    <span className="text-red-400">89%</span>
                   </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+              <Card className="glass-card p-6">
+                <h3 className="text-lg font-semibold mb-4 text-white">连接测试</h3>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">API服务</span>
+                    <span className="text-green-400">正常</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">数据库</span>
+                    <span className="text-green-400">正常</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">存储服务</span>
+                    <span className="text-green-400">正常</span>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>;
       case "marketplace":
         return <ComponentMarketplace />;
@@ -1074,49 +1107,21 @@ const Workspace = () => {
       <div className="min-h-screen bg-background flex flex-col">
         {/* 工作空间工具栏 */}
         <WorkspaceToolbar />
+        
+        {/* 悬浮导航栏 */}
+        <FloatingNavigation 
+          selectedNav={selectedNav}
+          onNavSelect={setSelectedNav}
+          onNewWorkspace={handleNewWorkspace}
+          onSwitchWorkspace={handleSwitchWorkspace}
+          onSaveTemplate={handleSaveTemplate}
+          onDeleteTemplate={handleDeleteTemplate}
+        />
       
       <div className="flex flex-1">
-        {/* 侧边栏 */}
-        <div className={`${sidebarCollapsed ? 'w-16' : 'w-56'} bg-purple-950/20 backdrop-blur-xl border-r border-purple-500/20 flex flex-col transition-all duration-300`}>
-          <div className={`${sidebarCollapsed ? 'p-3' : 'p-4'} border-b border-purple-500/20 flex items-center justify-between`}>
-            {!sidebarCollapsed && <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                  <div className="w-4 h-4 bg-white rounded-sm"></div>
-                </div>
-                <Button variant="ghost" size="sm" onClick={() => navigate('/')} className="p-1 hover:bg-purple-500/20 rounded-lg" title="返回首页">
-                  <Home className="h-5 w-5 text-purple-100" />
-                </Button>
-              </div>}
-            <Button variant="ghost" size="sm" onClick={() => setSidebarCollapsed(!sidebarCollapsed)} className="text-purple-300 hover:text-white hover:bg-purple-500/20 p-1">
-              {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-            </Button>
-          </div>
-          
-          {/* User Menu */}
-          <div className={`${sidebarCollapsed ? 'p-2' : 'p-3'} border-b border-purple-500/20`}>
-            <UserMenu />
-          </div>
-          
-          <nav className={`flex-1 ${sidebarCollapsed ? 'p-2' : 'p-3'} space-y-4`}>
-            {getAvailableNavItems().map(group => <div key={group.title} className="space-y-1">
-                {!sidebarCollapsed && <h3 className="text-xs uppercase tracking-wider text-purple-400 font-medium px-2 mb-2">
-                    {group.title}
-                  </h3>}
-                <div className="space-y-1">
-                  {group.items.map(item => {
-                  const IconComponent = item.icon;
-                  return <Button key={item.id} variant="ghost" size={sidebarCollapsed ? "sm" : "default"} className={`w-full flex items-center ${sidebarCollapsed ? 'justify-center px-0' : 'gap-3 px-3'} py-2 rounded-lg transition-all duration-200 text-left justify-start ${selectedNav === item.id ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg' : 'text-purple-300 hover:text-white hover:bg-purple-500/10'}`} onClick={() => setSelectedNav(item.id)} title={sidebarCollapsed ? item.fullName : undefined}>
-                        <IconComponent className="h-4 w-4" />
-                        {!sidebarCollapsed && <span className="text-sm">{item.name}</span>}
-                      </Button>;
-                })}
-                </div>
-              </div>)}
-          </nav>
-        </div>
 
         {/* 主内容区域 */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col ml-0">
           {/* Header */}
           <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-3 py-3">
             <div className="flex items-center justify-between">
