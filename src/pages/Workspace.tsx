@@ -1157,77 +1157,7 @@ const Workspace = () => {
               </div>
               
               {/* 右侧区域 - 创建过程可视化或AI聊天 */}
-              <div className="w-96">
-                {isCreating ?
-              // 工作空间创建过程可视化
-              <Card className="h-full bg-gradient-to-br from-purple-900/30 to-blue-900/30 border-purple-500/30 backdrop-blur-xl">
-                    <div className="p-6 h-full flex flex-col py-[17px] px-[8px]">
-                      <div className="text-center mb-6">
-                        <div className="flex items-center justify-center gap-2 mb-4">
-                          <Sparkles className="w-8 h-8 text-purple-400 animate-pulse" />
-                          <h2 className="text-xl font-bold text-white">Cross AI</h2>
-                        </div>
-                        <p className="text-purple-200 text-sm">正在根据您的需求智能配置工作空间...</p>
-                      </div>
-
-                      {/* 进度条 */}
-                      <div className="mb-6">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm text-purple-200">历史对话</span>
-                          
-                        </div>
-                        
-                      </div>
-
-                      {/* 当前步骤 */}
-                      <div className="mb-6 p-4 bg-white/10 rounded-lg border border-purple-500/20">
-                        <div className="flex items-center gap-3">
-                          <div className="w-6 h-6 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center animate-pulse">
-                            <div className="w-2 h-2 bg-white rounded-full"></div>
-                          </div>
-                          <span className="text-white text-sm">{creationStep}</span>
-                        </div>
-                      </div>
-
-                      {/* AI对话记录 */}
-                      {creationState?.chatMessages && <div className="flex-1 overflow-y-auto mb-4">
-                          <h3 className="text-sm font-medium text-purple-200 mb-3">AI分析记录</h3>
-                          <div className="space-y-3">
-                            {creationState.chatMessages.slice(-3).map((message: any, index: number) => <div key={index} className={`flex items-start gap-3 ${message.type === 'user' ? 'flex-row-reverse' : ''}`}>
-                                <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${message.type === 'ai' ? 'bg-gradient-to-br from-blue-500 to-purple-600' : 'bg-gradient-to-br from-green-500 to-blue-500'}`}>
-                                  {message.type === 'ai' ? <Bot className="w-3 h-3 text-white" /> : <span className="text-white text-xs">我</span>}
-                                </div>
-                                <div className={`max-w-[80%] p-3 rounded-lg text-xs ${message.type === 'ai' ? 'bg-white/10 border border-white/20 text-white' : 'bg-white/15 border border-white/25 text-white'}`}>
-                                  <p>{message.content.length > 100 ? `${message.content.substring(0, 100)}...` : message.content}</p>
-                                </div>
-                              </div>)}
-                          </div>
-                        </div>}
-
-                      {/* 组件生成预览 */}
-                      {creationState?.suggestedComponents && <div className="mb-4">
-                          <h3 className="text-sm font-medium text-purple-200 mb-3">即将部署的组件</h3>
-                          <div className="grid grid-cols-3 gap-2">
-                            {creationState.suggestedComponents.map((comp: any, index: number) => <div key={index} className="p-2 bg-white/5 rounded-lg border border-purple-500/20 text-center">
-                                <div className="text-lg mb-1">{comp.icon}</div>
-                                <div className="text-xs text-purple-200 truncate">{comp.name}</div>
-                              </div>)}
-                          </div>
-                        </div>}
-
-                      {/* 完成状态 */}
-                      {creationComplete && <div className="text-center p-4 bg-green-500/20 rounded-lg border border-green-500/30">
-                          <div className="flex items-center justify-center gap-2 mb-2">
-                            <Check className="w-5 h-5 text-green-400" />
-                            <span className="text-green-300 font-medium">工作空间创建完成！</span>
-                          </div>
-                          <p className="text-green-200 text-xs">正在跳转到您的新工作空间...</p>
-                        </div>}
-                    </div>
-                  </Card> :
-              // 正常的AI聊天界面
-              <AIAgent onExecuteCommand={handleExecuteCommand} onUpdateCanvas={handleUpdateCanvas} />}
-              </div>
+              
             </div>
           </div>
         </div>
