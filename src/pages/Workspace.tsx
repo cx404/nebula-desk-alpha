@@ -23,6 +23,9 @@ import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvider";
 import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
 import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
+import { JobQueue } from "@/components/workspace/JobQueue";
+import { FileSync } from "@/components/workspace/FileSync";
+import { Diagnostics } from "@/components/workspace/Diagnostics";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
@@ -660,6 +663,12 @@ const Workspace = () => {
     switch (selectedNav) {
       case "workspace-management":
         return <WorkspaceManagement currentWorkspace={currentWorkspace} />;
+      case "file-sync":
+        return <FileSync />;
+      case "task-queue":
+        return <JobQueue />;
+      case "diagnostics":
+        return <Diagnostics />;
       case "monitoring":
         return <div className="space-y-6">
             <div className="mb-6">
