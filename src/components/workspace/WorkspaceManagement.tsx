@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { WorkspaceIconGrid } from "./WorkspaceIconGrid";
 import { 
   Activity, 
   Cpu, 
@@ -16,9 +17,10 @@ import {
 
 interface WorkspaceManagementProps {
   currentWorkspace: any;
+  onNavigate?: (nav: string) => void;
 }
 
-export const WorkspaceManagement = ({ currentWorkspace }: WorkspaceManagementProps) => {
+export const WorkspaceManagement = ({ currentWorkspace, onNavigate }: WorkspaceManagementProps) => {
   // 模拟工作空间状态数据
   const workspaceStatus = {
     isRunning: true,
@@ -184,6 +186,12 @@ export const WorkspaceManagement = ({ currentWorkspace }: WorkspaceManagementPro
             </div>
           </Card>
         </div>
+      </Card>
+
+      {/* 功能模块快速访问 */}
+      <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+        <h3 className="text-lg font-semibold text-white mb-4">功能模块</h3>
+        <WorkspaceIconGrid onIconClick={onNavigate || (() => {})} />
       </Card>
 
       {/* 快速操作 */}

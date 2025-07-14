@@ -22,6 +22,7 @@ import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
 import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvider";
 import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
+import { FixedSidebar } from "@/components/workspace/FixedSidebar";
 import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
 import { JobQueue } from "@/components/workspace/JobQueue";
 import { FileSync } from "@/components/workspace/FileSync";
@@ -29,7 +30,7 @@ import { Diagnostics } from "@/components/workspace/Diagnostics";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight, Menu } from "lucide-react";
 const Workspace = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -73,6 +74,10 @@ const Workspace = () => {
   const [creationProgress, setCreationProgress] = useState(0);
   const [creationStep, setCreationStep] = useState("");
   const [creationComplete, setCreationComplete] = useState(false);
+
+  // 导航栏状态
+  const [useFixedSidebar, setUseFixedSidebar] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // 初始化当前工作空间名称
   useEffect(() => {
@@ -661,15 +666,15 @@ const Workspace = () => {
   // 渲染不同导航项的内容看板
   const renderContent = () => {
     switch (selectedNav) {
-      case "workspace-management":
-        return <WorkspaceManagement currentWorkspace={currentWorkspace} />;
-      case "file-sync":
+      case "workspace":
+        return <WorkspaceManagement currentWorkspace={currentWorkspace} onNavigate={setSelectedNav} />;
+      case "filesync":
         return <FileSync />;
-      case "task-queue":
+      case "jobqueue":
         return <JobQueue />;
       case "diagnostics":
         return <Diagnostics />;
-      case "monitoring":
+      case "monitor":
         return <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2 text-white">资源监控</h2>
@@ -707,7 +712,7 @@ const Workspace = () => {
               <PerformanceChart data={performanceData} />
             </div>
           </div>;
-      case "orders":
+      case "billing":
         return <div className="space-y-6">
             <div className="mb-6">
               <h2 className="text-2xl font-bold mb-2 text-white">订单管理</h2>
@@ -1089,12 +1094,30 @@ const Workspace = () => {
     }
   };
   return <WorkspaceModeProvider>
-      <div className="min-h-screen bg-background flex flex-col">
-        {/* 悬浮导航栏 - 设置为默认折叠状态 */}
-        <FloatingNavigation selectedNav={selectedNav} onNavSelect={setSelectedNav} onNewWorkspace={handleNewWorkspace} onSwitchWorkspace={handleSwitchWorkspace} onSaveTemplate={handleSaveTemplate} onDeleteTemplate={handleDeleteTemplate} />
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 relative flex">
+        {/* 导航栏 - 根据模式选择 */}
+        {useFixedSidebar ? (
+          <FixedSidebar 
+            selectedNav={selectedNav} 
+            onNavSelect={setSelectedNav}
+            isCollapsed={sidebarCollapsed}
+            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+          />
+        ) : (
+          <FloatingNavigation 
+            selectedNav={selectedNav} 
+            onNavSelect={setSelectedNav} 
+            onNewWorkspace={handleNewWorkspace} 
+            onSwitchWorkspace={handleSwitchWorkspace} 
+            onSaveTemplate={handleSaveTemplate} 
+            onDeleteTemplate={handleDeleteTemplate} 
+          />
+        )}
       
-        {/* 主内容区域 - 移除左边距以避免被导航栏遮挡 */}
-        <div className="flex-1 flex flex-col">
+        {/* 主内容区域 - 动态调整左边距 */}
+        <div className={`flex-1 flex flex-col transition-all duration-300 ${
+          useFixedSidebar ? (sidebarCollapsed ? 'ml-0' : 'ml-0') : 'ml-0'
+        }`}>
           {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
           <div className="bg-purple-950/10 backdrop-blur-xl border-b border-purple-500/20 px-6 py-4">
             <div className="flex items-center justify-between">
@@ -1118,6 +1141,17 @@ const Workspace = () => {
               </div>
               
               <div className="flex items-center gap-4">
+                {/* 导航模式切换按钮 */}
+                <Button 
+                  onClick={() => setUseFixedSidebar(!useFixedSidebar)} 
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
+                >
+                  <Menu className="h-4 w-4 mr-2" />
+                  {useFixedSidebar ? '悬浮模式' : '固定模式'}
+                </Button>
+                
                 {/* 切换工作空间按钮 */}
                 <Button onClick={handleSwitchWorkspace} variant="outline" size="sm" className="bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/20">
                   <ArrowLeftRight className="h-4 w-4 mr-2" />
