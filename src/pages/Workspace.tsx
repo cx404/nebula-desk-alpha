@@ -1096,28 +1096,10 @@ const Workspace = () => {
   return <WorkspaceModeProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black relative flex">
         {/* 导航栏 - 根据模式选择 */}
-        {useFixedSidebar ? (
-          <FixedSidebar 
-            selectedNav={selectedNav} 
-            onNavSelect={setSelectedNav}
-            isCollapsed={sidebarCollapsed}
-            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
-          />
-        ) : (
-          <FloatingNavigation 
-            selectedNav={selectedNav} 
-            onNavSelect={setSelectedNav} 
-            onNewWorkspace={handleNewWorkspace} 
-            onSwitchWorkspace={handleSwitchWorkspace} 
-            onSaveTemplate={handleSaveTemplate} 
-            onDeleteTemplate={handleDeleteTemplate} 
-          />
-        )}
+        {useFixedSidebar ? <FixedSidebar selectedNav={selectedNav} onNavSelect={setSelectedNav} isCollapsed={sidebarCollapsed} onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)} /> : <FloatingNavigation selectedNav={selectedNav} onNavSelect={setSelectedNav} onNewWorkspace={handleNewWorkspace} onSwitchWorkspace={handleSwitchWorkspace} onSaveTemplate={handleSaveTemplate} onDeleteTemplate={handleDeleteTemplate} />}
       
         {/* 主内容区域 - 向右移动并居中分布 */}
-        <div className={`flex-1 flex flex-col transition-all duration-300 ${
-          useFixedSidebar ? (sidebarCollapsed ? 'ml-16' : 'ml-64') : 'ml-20'
-        }`}>
+        <div className={`flex-1 flex flex-col transition-all duration-300 ${useFixedSidebar ? sidebarCollapsed ? 'ml-16' : 'ml-64' : 'ml-20'}`}>
             {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
             <div className="bg-white/5 backdrop-blur-xl border-b border-white/10 px-6 py-4">
               <div className="flex items-center justify-between">
@@ -1147,12 +1129,7 @@ const Workspace = () => {
                   </div>
                   
                   {/* 导航模式切换按钮 */}
-                  <Button 
-                    onClick={() => setUseFixedSidebar(!useFixedSidebar)} 
-                    variant="outline" 
-                    size="sm" 
-                    className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20"
-                  >
+                  <Button onClick={() => setUseFixedSidebar(!useFixedSidebar)} variant="outline" size="sm" className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20">
                   <Menu className="h-4 w-4 mr-2" />
                   {useFixedSidebar ? '悬浮模式' : '固定模式'}
                 </Button>
@@ -1174,7 +1151,7 @@ const Workspace = () => {
 
             {/* Content Area */}
             <div className="flex-1 p-6 overflow-auto">
-            <div className="h-full flex gap-6">
+            <div className="h-full flex gap-6 mx-0 my-0 px-0 py-0">
               <div className="flex-1">
                 {renderContent()}
               </div>
