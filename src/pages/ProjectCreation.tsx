@@ -13,15 +13,19 @@ import { useToast } from "@/hooks/use-toast";
 import { Rocket, Settings, FileText, Bot, Send, Sparkles } from "lucide-react";
 const ProjectCreation = () => {
   const navigate = useNavigate();
-  const { createWorkspace } = useWorkspace();
-  const { toast } = useToast();
+  const {
+    createWorkspace
+  } = useWorkspace();
+  const {
+    toast
+  } = useToast();
   const [selectedMethod, setSelectedMethod] = useState<string>("");
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [customRequirements, setCustomRequirements] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  
+
   // AI Chat 相关状态
   interface ChatMessage {
     id: number;
@@ -30,16 +34,13 @@ const ProjectCreation = () => {
     timestamp: Date;
     suggestedComponents?: any[];
   }
-
   const [chatInput, setChatInput] = useState("");
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    {
-      id: 1,
-      type: "ai",
-      content: "你好！我是您的AI助手，可以帮助您创建完美的工作空间。请告诉我您想要构建什么样的项目？",
-      timestamp: new Date()
-    }
-  ]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([{
+    id: 1,
+    type: "ai",
+    content: "你好！我是您的AI助手，可以帮助您创建完美的工作空间。请告诉我您想要构建什么样的项目？",
+    timestamp: new Date()
+  }]);
   const [isAIThinking, setIsAIThinking] = useState(false);
   const templates = [{
     id: "react",
@@ -86,7 +87,7 @@ const ProjectCreation = () => {
   const generateComponentsFromRequirements = (requirements: string) => {
     const components = [];
     const req = requirements.toLowerCase();
-    
+
     // 基础开发环境
     if (req.includes("开发") || req.includes("编程") || req.includes("代码")) {
       components.push({
@@ -202,10 +203,8 @@ const ProjectCreation = () => {
         status: "idle"
       });
     }
-
     return components;
   };
-
   const handleCustomCreation = async () => {
     if (!customRequirements.trim()) {
       toast({
@@ -227,7 +226,7 @@ const ProjectCreation = () => {
     // 模拟AI分析和生成时间
     setTimeout(() => {
       const generatedComponents = generateComponentsFromRequirements(customRequirements);
-      
+
       // 创建新工作空间
       createWorkspace({
         name: projectName || "AI 生成工作空间",
@@ -235,7 +234,6 @@ const ProjectCreation = () => {
         type: "custom",
         components: generatedComponents
       });
-      
       setIsGenerating(false);
       toast({
         title: "项目生成完成！",
@@ -248,14 +246,12 @@ const ProjectCreation = () => {
   // AI聊天功能
   const handleSendMessage = async () => {
     if (!chatInput.trim()) return;
-
     const userMessage: ChatMessage = {
       id: Date.now(),
       type: "user",
       content: chatInput,
       timestamp: new Date()
     };
-
     setChatMessages(prev => [...prev, userMessage]);
     setChatInput("");
     setIsAIThinking(true);
@@ -263,7 +259,6 @@ const ProjectCreation = () => {
     // 模拟AI思考时间
     setTimeout(() => {
       const generatedComponents = generateComponentsFromRequirements(chatInput);
-      
       const aiResponse: ChatMessage = {
         id: Date.now() + 1,
         type: "ai",
@@ -271,12 +266,10 @@ const ProjectCreation = () => {
         timestamp: new Date(),
         suggestedComponents: generatedComponents
       };
-
       setChatMessages(prev => [...prev, aiResponse]);
       setIsAIThinking(false);
     }, 2000);
   };
-
   const handleAICreateWorkspace = (components: any[]) => {
     createWorkspace({
       name: "AI 推荐工作空间",
@@ -284,15 +277,12 @@ const ProjectCreation = () => {
       type: "ai-generated",
       components
     });
-    
     toast({
       title: "工作空间创建成功！",
       description: "AI已为您配置了最适合的组件"
     });
-    
     navigate("/workspace");
   };
-
   const handleCreateProject = async () => {
     if (selectedMethod === "blank") {
       // 空白创建
@@ -350,8 +340,7 @@ const ProjectCreation = () => {
     });
     navigate("/workspace");
   };
-  return (
-    <div className="min-h-screen relative overflow-hidden">
+  return <div className="min-h-screen relative overflow-hidden">
       {/* 星空渐变背景 */}
       <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500"></div>
       <div className="absolute inset-0 bg-gradient-to-tr from-indigo-900/50 via-purple-900/30 to-pink-900/50"></div>
@@ -359,26 +348,40 @@ const ProjectCreation = () => {
       {/* 星空效果装饰 */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-white rounded-full animate-pulse opacity-80"></div>
-        <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-white rounded-full animate-pulse opacity-60" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-pulse opacity-70" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 right-1/3 w-1 h-1 bg-white rounded-full animate-pulse opacity-50" style={{ animationDelay: '3s' }}></div>
-        <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-white rounded-full animate-pulse opacity-90" style={{ animationDelay: '0.5s' }}></div>
-        <div className="absolute top-3/4 left-1/2 w-1 h-1 bg-white rounded-full animate-pulse opacity-40" style={{ animationDelay: '2.5s' }}></div>
+        <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-white rounded-full animate-pulse opacity-60" style={{
+        animationDelay: '1s'
+      }}></div>
+        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-white rounded-full animate-pulse opacity-70" style={{
+        animationDelay: '2s'
+      }}></div>
+        <div className="absolute top-1/2 right-1/3 w-1 h-1 bg-white rounded-full animate-pulse opacity-50" style={{
+        animationDelay: '3s'
+      }}></div>
+        <div className="absolute bottom-1/3 right-1/2 w-2 h-2 bg-white rounded-full animate-pulse opacity-90" style={{
+        animationDelay: '0.5s'
+      }}></div>
+        <div className="absolute top-3/4 left-1/2 w-1 h-1 bg-white rounded-full animate-pulse opacity-40" style={{
+        animationDelay: '2.5s'
+      }}></div>
       </div>
       
       {/* 光晕效果 */}
       <div className="absolute top-20 left-20 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl animate-pulse"></div>
-      <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '3s' }}></div>
+      <div className="absolute bottom-20 right-20 w-80 h-80 bg-purple-400/20 rounded-full blur-3xl animate-pulse" style={{
+      animationDelay: '1.5s'
+    }}></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-400/10 rounded-full blur-3xl animate-pulse" style={{
+      animationDelay: '3s'
+    }}></div>
       
       {/* Header */}
       <header className="border-b border-white/20 bg-white/5 backdrop-blur-lg relative z-10">
         <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+            <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center mx-0 my-0 px-0">
               <div className="w-4 h-4 bg-white rounded"></div>
             </div>
-            <span className="text-xl font-semibold text-white">算力云桌面</span>
+            <span className="font-semibold text-2xl text-slate-50">Alaya NeW Cross</span>
           </div>
           <UserMenu />
         </div>
@@ -412,76 +415,43 @@ const ProjectCreation = () => {
             <div className="p-8">
               {/* 聊天消息区域 - 增大高度 */}
               <div className="h-[500px] overflow-y-auto mb-6 space-y-6 scrollbar-thin scrollbar-thumb-white/20">
-                {chatMessages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex items-start gap-3 animate-fade-in ${
-                      message.type === 'user' ? 'flex-row-reverse' : ''
-                    }`}
-                  >
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                      message.type === 'ai' 
-                        ? 'bg-gradient-to-br from-blue-500 to-purple-600' 
-                        : 'bg-gradient-to-br from-green-500 to-blue-500'
-                    }`}>
-                      {message.type === 'ai' ? (
-                        <Bot className="w-4 h-4 text-white" />
-                      ) : (
-                        <span className="text-white text-xs font-bold">我</span>
-                      )}
+                {chatMessages.map(message => <div key={message.id} className={`flex items-start gap-3 animate-fade-in ${message.type === 'user' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.type === 'ai' ? 'bg-gradient-to-br from-blue-500 to-purple-600' : 'bg-gradient-to-br from-green-500 to-blue-500'}`}>
+                      {message.type === 'ai' ? <Bot className="w-4 h-4 text-white" /> : <span className="text-white text-xs font-bold">我</span>}
                     </div>
-                     <div className={`max-w-[80%] p-5 rounded-2xl ${
-                       message.type === 'ai'
-                         ? 'bg-white/15 border border-white/30 text-white'
-                         : 'bg-white/20 border border-white/40 text-white'
-                     }`}>
+                     <div className={`max-w-[80%] p-5 rounded-2xl ${message.type === 'ai' ? 'bg-white/15 border border-white/30 text-white' : 'bg-white/20 border border-white/40 text-white'}`}>
                        <p className="text-base">{message.content}</p>
-                      {message.suggestedComponents && (
-                        <div className="mt-3 pt-3 border-t border-border/50">
-                          <Button
-                            onClick={() => handleAICreateWorkspace(message.suggestedComponents)}
-                            className="btn-premium text-sm"
-                            size="sm"
-                          >
+                      {message.suggestedComponents && <div className="mt-3 pt-3 border-t border-border/50">
+                          <Button onClick={() => handleAICreateWorkspace(message.suggestedComponents)} className="btn-premium text-sm" size="sm">
                             立即创建工作空间 ✨
                           </Button>
-                        </div>
-                      )}
+                        </div>}
                     </div>
-                  </div>
-                ))}
+                  </div>)}
                 
-                 {isAIThinking && (
-                   <div className="flex items-start gap-3 animate-fade-in">
+                 {isAIThinking && <div className="flex items-start gap-3 animate-fade-in">
                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
                        <Bot className="w-4 h-4 text-white" />
                      </div>
                      <div className="bg-white/15 border border-white/30 p-5 rounded-2xl">
                        <div className="flex items-center gap-2">
                          <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
-                         <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                         <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                         <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{
+                      animationDelay: '0.1s'
+                    }}></div>
+                         <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{
+                      animationDelay: '0.2s'
+                    }}></div>
                          <span className="text-base text-white ml-2">AI正在思考...</span>
                        </div>
                      </div>
-                   </div>
-                 )}
+                   </div>}
               </div>
 
               {/* 输入区域 */}
               <div className="flex gap-4">
-                <Input
-                  value={chatInput}
-                  onChange={(e) => setChatInput(e.target.value)}
-                  placeholder="描述您想要创建的项目，比如：我想做一个电商网站..."
-                  className="flex-1 border-white/20 focus:border-white/40 bg-white/10 text-white placeholder:text-white/60 text-lg py-4 px-6 rounded-xl"
-                  onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                />
-                <Button 
-                  onClick={handleSendMessage}
-                  disabled={!chatInput.trim() || isAIThinking}
-                  className="btn-premium px-8 py-4 text-lg rounded-xl"
-                >
+                <Input value={chatInput} onChange={e => setChatInput(e.target.value)} placeholder="描述您想要创建的项目，比如：我想做一个电商网站..." className="flex-1 border-white/20 focus:border-white/40 bg-white/10 text-white placeholder:text-white/60 text-lg py-4 px-6 rounded-xl" onKeyPress={e => e.key === 'Enter' && handleSendMessage()} />
+                <Button onClick={handleSendMessage} disabled={!chatInput.trim() || isAIThinking} className="btn-premium px-8 py-4 text-lg rounded-xl">
                   <Send className="w-5 h-5 mr-2" />
                   发送
                 </Button>
@@ -513,42 +483,34 @@ const ProjectCreation = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-lg border-border/50">
-                  {templates.map(template => (
-                    <DropdownMenuItem 
-                      key={template.id}
-                      onClick={() => {
-                        createWorkspace({
-                          name: `${template.name} 工作空间`,
-                          description: template.description,
-                          type: "template",
-                          components: []
-                        });
-                        navigate("/workspace");
-                      }}
-                    >
+                  {templates.map(template => <DropdownMenuItem key={template.id} onClick={() => {
+                  createWorkspace({
+                    name: `${template.name} 工作空间`,
+                    description: template.description,
+                    type: "template",
+                    components: []
+                  });
+                  navigate("/workspace");
+                }}>
                       <div>
                         <div className="font-medium">{template.name}</div>
                         <div className="text-xs text-muted-foreground">{template.description}</div>
                       </div>
-                    </DropdownMenuItem>
-                  ))}
+                    </DropdownMenuItem>)}
                 </DropdownMenuContent>
               </DropdownMenu>
             </Card>
 
             {/* 简化的空白创建 */}
-            <Card 
-              className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20"
-              onClick={() => {
-                createWorkspace({
-                  name: "空白工作空间",
-                  description: "从零开始创建的空白工作空间",
-                  type: "blank",
-                  components: []
-                });
-                navigate("/workspace");
-              }}
-            >
+            <Card className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20" onClick={() => {
+            createWorkspace({
+              name: "空白工作空间",
+              description: "从零开始创建的空白工作空间",
+              type: "blank",
+              components: []
+            });
+            navigate("/workspace");
+          }}>
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-6 h-6 bg-purple-400/30 rounded-lg flex items-center justify-center">
                   <FileText className="w-3 h-3 text-purple-300" />
@@ -563,7 +525,6 @@ const ProjectCreation = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
 export default ProjectCreation;
