@@ -83,11 +83,12 @@ export const FloatingAIChat = () => {
   };
 
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
-      {/* 展开的聊天界面 */}
+    <>
+      {/* 展开的聊天界面 - 右侧竖向对话栏 */}
       {isExpanded && (
-        <Card className="mb-4 w-96 bg-gradient-to-br from-purple-900/90 via-purple-800/90 to-purple-700/90 backdrop-blur-xl border border-purple-500/30 rounded-2xl shadow-2xl">
-          <div className="p-4">
+        <div className="fixed top-0 right-0 h-full w-96 z-40 p-4">
+          <Card className="h-full bg-gradient-to-b from-purple-900/20 via-purple-800/30 to-purple-700/20 backdrop-blur-xl border border-purple-500/20 rounded-2xl shadow-2xl">
+            <div className="h-full flex flex-col p-6">
             {/* 标题栏 */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
@@ -119,7 +120,7 @@ export const FloatingAIChat = () => {
             </div>
 
             {/* 消息列表 */}
-            <ScrollArea className="h-64 mb-4">
+            <ScrollArea className="flex-1 mb-4">
               <div className="space-y-3">
                 {messages.map((message) => (
                   <div
@@ -162,12 +163,13 @@ export const FloatingAIChat = () => {
                 <Send className="w-4 h-4" />
               </Button>
             </div>
-          </div>
-        </Card>
+            </div>
+          </Card>
+        </div>
       )}
 
-      {/* 悬浮长条 */}
-      <div className="flex items-center justify-center">
+      {/* 悬浮长条 - 底部居中 */}
+      <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-50">
         <Card className="bg-gradient-to-r from-purple-600 via-purple-700 to-purple-800 backdrop-blur-xl border border-purple-500/30 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
           <div className="flex items-center gap-3 px-6 py-3">
             <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-400 rounded-full flex items-center justify-center">
@@ -218,6 +220,6 @@ export const FloatingAIChat = () => {
           </div>
         </Card>
       </div>
-    </div>
+    </>
   );
 };
