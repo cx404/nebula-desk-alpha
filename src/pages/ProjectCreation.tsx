@@ -390,7 +390,7 @@ const ProjectCreation = () => {
       {/* 悬浮AI助手图标 */}
       <div className="fixed top-1/2 left-8 transform -translate-y-1/2 z-50 animate-pulse">
         
-        <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full border-2 border-white animate-ping"></div>
+        
       </div>
 
       <div className="container mx-auto px-6 py-8 relative z-10">
