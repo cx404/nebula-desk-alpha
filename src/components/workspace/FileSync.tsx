@@ -129,7 +129,7 @@ export const FileSync = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">文件同步</h1>
-          <p className="text-gray-400">Manage file synchronization between local and cloud storage</p>
+          <p className="text-gray-400">本地存储与云端存储文件同步操作</p>
         </div>
         <Button className="bg-blue-600 hover:bg-blue-700 text-white">
           + New Sync Job
