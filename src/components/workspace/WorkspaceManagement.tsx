@@ -40,88 +40,136 @@ export const WorkspaceManagement = ({
         </Button>
       </div>
 
-      {/* 工作空间概览卡片 */}
-      <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
+      {/* 工作空间卡片网格 */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* 当前工作空间卡片 */}
+        <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20 relative">
+          <div className="absolute top-3 right-3">
+            <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
+              当前空间
+            </Badge>
+          </div>
+          
+          <div className="flex items-center gap-3 mb-3">
             <div className={`w-3 h-3 rounded-full ${getStatusColor(workspaceStatus.isRunning)} animate-pulse`} />
-            <h3 className="text-xl font-semibold text-white">
-              {currentWorkspace?.name || "默认工作空间"}
+            <h3 className="text-lg font-semibold text-white">
+              {currentWorkspace?.name || "空白工作空间"}
             </h3>
-            <Badge className={`${workspaceStatus.isRunning ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-red-500/20 text-red-400 border-red-500/30'}`}>
+            <Badge className={`${workspaceStatus.isRunning ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-red-500/20 text-red-400 border-red-500/30'} text-xs`}>
               {workspaceStatus.isRunning ? '运行中' : '已停止'}
             </Badge>
           </div>
-          <div className="text-sm text-gray-400">
-            运行时间: {workspaceStatus.uptime}
-          </div>
-        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {/* CPU 使用率 */}
-          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-            <div className="flex items-center gap-3 mb-2">
-              <Cpu className="w-5 h-5 text-blue-400" />
-              <span className="text-sm text-gray-300">CPU</span>
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            {/* CPU 使用率 */}
+            <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+              <div className="flex items-center gap-2 mb-2">
+                <Cpu className="w-4 h-4 text-blue-400" />
+                <span className="text-xs text-gray-300">CPU</span>
+              </div>
+              <div className="text-lg font-bold text-white mb-1">
+                {workspaceStatus.cpuUsage}%
+              </div>
+              <div className="w-full bg-gray-700 rounded-full h-1.5">
+                <div className="bg-blue-500 h-1.5 rounded-full transition-all duration-300" style={{
+                width: `${workspaceStatus.cpuUsage}%`
+              }} />
+              </div>
             </div>
-            <div className="text-2xl font-bold text-white mb-1">
-              {workspaceStatus.cpuUsage}%
-            </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
-              <div className="bg-blue-500 h-2 rounded-full transition-all duration-300" style={{
-              width: `${workspaceStatus.cpuUsage}%`
-            }} />
-            </div>
-          </div>
 
-          {/* 内存使用率 */}
-          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-            <div className="flex items-center gap-3 mb-2">
-              <Zap className="w-5 h-5 text-purple-400" />
-              <span className="text-sm text-gray-300">内存</span>
-            </div>
-            <div className="text-2xl font-bold text-white mb-1">
-              {workspaceStatus.memoryUsage}%
-            </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
-              <div className="bg-purple-500 h-2 rounded-full transition-all duration-300" style={{
-              width: `${workspaceStatus.memoryUsage}%`
-            }} />
+            {/* 内存使用率 */}
+            <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="w-4 h-4 text-purple-400" />
+                <span className="text-xs text-gray-300">内存</span>
+              </div>
+              <div className="text-lg font-bold text-white mb-1">
+                {workspaceStatus.memoryUsage}%
+              </div>
+              <div className="w-full bg-gray-700 rounded-full h-1.5">
+                <div className="bg-purple-500 h-1.5 rounded-full transition-all duration-300" style={{
+                width: `${workspaceStatus.memoryUsage}%`
+              }} />
+              </div>
             </div>
           </div>
 
-          {/* 存储使用率 */}
-          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-            <div className="flex items-center gap-3 mb-2">
-              <HardDrive className="w-5 h-5 text-green-400" />
-              <span className="text-sm text-gray-300">存储</span>
+          {/* VSCode和SSH状态 */}
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              <span className="text-xs text-gray-300">VSCode</span>
+              <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">已连接</Badge>
             </div>
-            <div className="text-2xl font-bold text-white mb-1">
-              {workspaceStatus.storageUsage}%
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+              <span className="text-xs text-gray-300">SSH</span>
+              <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">活跃</Badge>
             </div>
-            <div className="w-full bg-gray-700 rounded-full h-2">
-              <div className="bg-green-500 h-2 rounded-full transition-all duration-300" style={{
-              width: `${workspaceStatus.storageUsage}%`
-            }} />
+          </div>
+        </Card>
+
+        {/* 其他工作空间卡片 */}
+        <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-3 h-3 rounded-full bg-gray-500" />
+            <h3 className="text-lg font-semibold text-white">
+              数据分析空间
+            </h3>
+            <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30 text-xs">
+              已停止
+            </Badge>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 mb-4">
+            {/* CPU 使用率 */}
+            <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+              <div className="flex items-center gap-2 mb-2">
+                <Cpu className="w-4 h-4 text-gray-400" />
+                <span className="text-xs text-gray-300">CPU</span>
+              </div>
+              <div className="text-lg font-bold text-gray-400 mb-1">
+                0%
+              </div>
+              <div className="w-full bg-gray-700 rounded-full h-1.5">
+                <div className="bg-gray-500 h-1.5 rounded-full" style={{width: '0%'}} />
+              </div>
+            </div>
+
+            {/* 内存使用率 */}
+            <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+              <div className="flex items-center gap-2 mb-2">
+                <Zap className="w-4 h-4 text-gray-400" />
+                <span className="text-xs text-gray-300">内存</span>
+              </div>
+              <div className="text-lg font-bold text-gray-400 mb-1">
+                0%
+              </div>
+              <div className="w-full bg-gray-700 rounded-full h-1.5">
+                <div className="bg-gray-500 h-1.5 rounded-full" style={{width: '0%'}} />
+              </div>
             </div>
           </div>
 
-          {/* 活跃用户 */}
-          <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-            <div className="flex items-center gap-3 mb-2">
-              <Users className="w-5 h-5 text-orange-400" />
-              <span className="text-sm text-gray-300">活跃用户</span>
+          {/* VSCode和SSH状态 */}
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-gray-500" />
+              <span className="text-xs text-gray-300">VSCode</span>
+              <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30 text-xs">未连接</Badge>
             </div>
-            <div className="text-2xl font-bold text-white">
-              {workspaceStatus.activeUsers}
-            </div>
-            <div className="text-xs text-gray-400">
-              当前在线
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-gray-500" />
+              <span className="text-xs text-gray-300">SSH</span>
+              <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30 text-xs">离线</Badge>
             </div>
           </div>
-        </div>
+        </Card>
+      </div>
 
-        {/* 任务状态 */}
+      {/* 详细统计信息 */}
+      <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+        <h3 className="text-lg font-semibold text-white mb-4">详细信息</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="bg-white/5 rounded-xl p-4 border border-white/10">
             <div className="flex items-center gap-3 mb-3">
