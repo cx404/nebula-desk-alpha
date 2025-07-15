@@ -25,6 +25,7 @@ import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
 import { FixedSidebar } from "@/components/workspace/FixedSidebar";
 import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
 import { FloatingAIChat } from "@/components/workspace/FloatingAIChat";
+import { AIWorkspaceNavigator } from "@/components/workspace/AIWorkspaceNavigator";
 import { JobQueue } from "@/components/workspace/JobQueue";
 import { FileSync } from "@/components/workspace/FileSync";
 import { Diagnostics } from "@/components/workspace/Diagnostics";
@@ -80,6 +81,10 @@ const Workspace = () => {
   const [useFixedSidebar, setUseFixedSidebar] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
+  // AI导航栏状态
+  const [showAINavigator, setShowAINavigator] = useState(false);
+  const [aiNavigatorCollapsed, setAINavigatorCollapsed] = useState(false);
+
   // 初始化当前工作空间名称
   useEffect(() => {
     if (currentWorkspace) {
@@ -92,6 +97,7 @@ const Workspace = () => {
     if (creationState?.creationMode) {
       setIsCreating(true);
       setSelectedNav("workspace");
+      setShowAINavigator(true);  // 显示AI导航栏
 
       // 模拟创建过程
       const steps = [{
@@ -1100,7 +1106,7 @@ const Workspace = () => {
         {useFixedSidebar ? <FixedSidebar selectedNav={selectedNav} onNavSelect={setSelectedNav} isCollapsed={sidebarCollapsed} onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)} /> : <FloatingNavigation selectedNav={selectedNav} onNavSelect={setSelectedNav} onNewWorkspace={handleNewWorkspace} onSwitchWorkspace={handleSwitchWorkspace} onSaveTemplate={handleSaveTemplate} onDeleteTemplate={handleDeleteTemplate} />}
       
         {/* 主内容区域 - 向右移动并居中分布 */}
-        <div className={`flex-1 flex flex-col transition-all duration-300 ${useFixedSidebar ? sidebarCollapsed ? 'ml-16' : 'ml-64' : 'ml-20'}`}>
+        <div className={`flex-1 flex flex-col transition-all duration-300 ${useFixedSidebar ? sidebarCollapsed ? 'ml-16' : 'ml-64' : 'ml-20'} ${showAINavigator ? aiNavigatorCollapsed ? 'mr-16' : 'mr-96' : 'mr-0'}`}>
             {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
             <div className="backdrop-blur-xl border-b border-white/10 px-6 py-4 bg-gray-800">
               <div className="flex items-center justify-between">
@@ -1129,8 +1135,19 @@ const Workspace = () => {
                     <User className="w-4 h-4 text-white" />
                   </div>
                   
-                  {/* 导航模式切换按钮 */}
-                  <Button onClick={() => setUseFixedSidebar(!useFixedSidebar)} variant="outline" size="sm" className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20">
+                {/* AI导航栏切换按钮 */}
+                <Button 
+                  onClick={() => setShowAINavigator(!showAINavigator)} 
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-pink-500/10 border-pink-500/30 text-pink-300 hover:bg-pink-500/20"
+                >
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  {showAINavigator ? '隐藏AI' : '显示AI'}
+                </Button>
+                
+                {/* 导航模式切换按钮 */}
+                <Button onClick={() => setUseFixedSidebar(!useFixedSidebar)} variant="outline" size="sm" className="bg-blue-500/10 border-blue-500/30 text-blue-300 hover:bg-blue-500/20">
                   <Menu className="h-4 w-4 mr-2" />
                   {useFixedSidebar ? '悬浮模式' : '固定模式'}
                 </Button>
@@ -1163,8 +1180,17 @@ const Workspace = () => {
           </div>
         </div>
 
-        {/* 悬浮AI对话框 */}
-        <FloatingAIChat />
+        {/* AI工作空间导航栏 */}
+        <AIWorkspaceNavigator
+          isVisible={showAINavigator}
+          isCollapsed={aiNavigatorCollapsed}
+          onToggleCollapse={() => setAINavigatorCollapsed(!aiNavigatorCollapsed)}
+          creationHistory={creationState?.chatHistory || []}
+          onClose={() => setShowAINavigator(false)}
+        />
+
+        {/* 悬浮AI对话框 - 只在AI导航栏不显示时显示 */}
+        {!showAINavigator && <FloatingAIChat />}
       </div>
     </WorkspaceModeProvider>;
 };

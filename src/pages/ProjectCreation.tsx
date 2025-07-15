@@ -276,6 +276,12 @@ const ProjectCreation = () => {
       state: {
         creationMode: true,
         chatMessages,
+        chatHistory: chatMessages.map(msg => ({
+          id: msg.id,
+          type: msg.type === 'ai' ? 'assistant' : msg.type,
+          content: msg.content,
+          timestamp: new Date()
+        })),
         suggestedComponents: components,
         workspaceConfig: {
           name: "AI 推荐工作空间",
