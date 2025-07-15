@@ -173,7 +173,7 @@ export const WorkspaceManagement = ({
 
       {/* 功能模块快速访问 */}
       <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
-        <h3 className="text-lg font-semibold text-white mb-4">功能模块</h3>
+        <h3 className="text-lg font-semibold text-white mb-4">常用组件</h3>
         <WorkspaceIconGrid onIconClick={onNavigate || (() => {})} />
       </Card>
 
