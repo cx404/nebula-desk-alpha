@@ -8,7 +8,8 @@ import {
   RefreshCw, 
   ListTodo, 
   Stethoscope,
-  Layers
+  Layers,
+  Download
 } from "lucide-react";
 
 interface WorkspaceIcon {
@@ -45,7 +46,8 @@ export const WorkspaceIconGrid = ({ onIconClick }: WorkspaceIconGridProps) => {
     { id: "marketplace", name: "组件市场", icon: Package, color: "text-pink-400" },
     { id: "filesync", name: "文件同步", icon: RefreshCw, color: "text-cyan-400" },
     { id: "jobqueue", name: "任务队列", icon: ListTodo, color: "text-yellow-400" },
-    { id: "diagnostics", name: "诊断", icon: Stethoscope, color: "text-red-400" }
+    { id: "diagnostics", name: "诊断", icon: Stethoscope, color: "text-red-400" },
+    { id: "import", name: "导入组件", icon: Download, color: "text-indigo-400" }
   ];
 
   const availableIcons = icons.filter(icon => 
