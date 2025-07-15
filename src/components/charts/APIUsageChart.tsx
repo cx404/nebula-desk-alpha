@@ -36,7 +36,7 @@ export const APIUsageChart = ({
   data
 }: APIUsageChartProps) => {
   return <Card className="glass-card p-6 px-0">
-      <h3 className="text-lg font-semibold mb-4 text-white">API使用统计</h3>
+      <h3 className="text-lg font-semibold mb-4 text-white mx-[19px]">API使用统计</h3>
       <ChartContainer config={chartConfig} className="h-[300px]">
         <LineChart data={data}>
           <XAxis dataKey="time" stroke="hsl(var(--muted-foreground))" />

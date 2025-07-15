@@ -44,7 +44,7 @@ export const BillingChart = ({
   data
 }: BillingChartProps) => {
   return <Card className="glass-card p-6 px-0">
-      <h3 className="text-lg font-semibold mb-4 text-white">费用趋势</h3>
+      <h3 className="text-lg font-semibold mb-4 text-white mx-[19px]">费用趋势</h3>
       <ChartContainer config={chartConfig} className="h-[300px]">
         <BarChart data={data}>
           <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" />
