@@ -163,9 +163,7 @@ export const FileSync = () => {
             <FolderIcon className="w-12 h-12 text-purple-400 mx-auto mb-4" />
             <p className="text-purple-300 text-lg font-medium mb-2">在此处拖拽文件</p>
             <p className="text-gray-400 text-sm mb-4">或点击进行浏览</p>
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-              Browse Files
-            </Button>
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white">浏览文件</Button>
           </div>
 
           {/* Storage Options */}
@@ -186,7 +184,7 @@ export const FileSync = () => {
             <RefreshCw className="w-6 h-6 text-blue-400" />
             <h2 className="text-xl font-semibold text-white">同步操作</h2>
           </div>
-          <p className="text-gray-400 text-sm mb-4">Monitor your file synchronization jobs</p>
+          <p className="text-gray-400 text-sm mb-4">监控您的文件同步任务</p>
 
           <div className="space-y-4">
             {syncOperations.map(operation => <Card key={operation.id} className="bg-white/5 backdrop-blur-xl rounded-xl p-4 border border-white/10">
