@@ -111,7 +111,7 @@ export const JobQueue = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">任务队列</h1>
-          <p className="text-gray-400">Monitor and manage your GPU training jobs</p>
+          <p className="text-gray-400">实时监控并管理您的任务运行情况</p>
         </div>
         <Button className="bg-green-600 hover:bg-green-700 text-white">
           + Submit Job
