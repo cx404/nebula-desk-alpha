@@ -156,15 +156,15 @@ export const FileSync = () => {
         <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
           <div className="flex items-center gap-3 mb-6">
             <Upload className="w-6 h-6 text-blue-400" />
-            <h2 className="text-xl font-semibold text-white">Quick Upload</h2>
+            <h2 className="text-xl font-semibold text-white">快速上传</h2>
           </div>
-          <p className="text-gray-400 text-sm mb-4">Drag files here or click to browse</p>
+          <p className="text-gray-400 text-sm mb-4">将文件拖拽到这里或点击进行浏览</p>
           
           {/* Upload Area */}
           <div className="border-2 border-dashed border-purple-300/30 rounded-xl p-8 text-center mb-6 hover:border-purple-300/50 transition-colors cursor-pointer">
             <FolderIcon className="w-12 h-12 text-purple-400 mx-auto mb-4" />
-            <p className="text-purple-300 text-lg font-medium mb-2">Drop files here</p>
-            <p className="text-gray-400 text-sm mb-4">or click to browse</p>
+            <p className="text-purple-300 text-lg font-medium mb-2">在此处拖拽文件</p>
+            <p className="text-gray-400 text-sm mb-4">或点击进行浏览</p>
             <Button className="bg-purple-600 hover:bg-purple-700 text-white">
               Browse Files
             </Button>
