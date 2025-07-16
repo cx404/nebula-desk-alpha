@@ -131,9 +131,7 @@ export const FileSync = () => {
           <h1 className="text-3xl font-bold text-white mb-2">文件同步</h1>
           <p className="text-gray-400">本地存储与云端存储文件同步操作</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-          + New Sync Job
-        </Button>
+        <Button className="bg-blue-600 hover:bg-blue-700 text-white">+ 添加同步任务</Button>
       </div>
 
       {/* Stats Cards */}
@@ -172,7 +170,7 @@ export const FileSync = () => {
 
           {/* Storage Options */}
           <div>
-            <h3 className="text-white font-medium mb-3">Storage Options</h3>
+            <h3 className="text-white font-medium mb-3">储存选项</h3>
             <div className="space-y-2">
               {storageOptions.map(option => <div key={option.id} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${selectedStorage === option.id ? 'bg-purple-500/20 border border-purple-400/30' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`} onClick={() => setSelectedStorage(option.id)}>
                   <div className={`w-3 h-3 rounded-full ${selectedStorage === option.id ? 'bg-purple-400' : 'bg-gray-400'}`}></div>
@@ -186,7 +184,7 @@ export const FileSync = () => {
         <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
           <div className="flex items-center gap-3 mb-6">
             <RefreshCw className="w-6 h-6 text-blue-400" />
-            <h2 className="text-xl font-semibold text-white">Sync Operations</h2>
+            <h2 className="text-xl font-semibold text-white">同步操作</h2>
           </div>
           <p className="text-gray-400 text-sm mb-4">Monitor your file synchronization jobs</p>
 
