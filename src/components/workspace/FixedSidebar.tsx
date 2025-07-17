@@ -34,7 +34,7 @@ export const FixedSidebar = ({
   const navigate = useNavigate();
 
   const handleHomeClick = () => {
-    navigate("/");
+    navigate("/workspace");
   };
 
   const navigationItems = [
