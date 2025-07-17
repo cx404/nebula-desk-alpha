@@ -136,9 +136,7 @@ export const WorkspaceManagement = ({
                 0%
               </div>
               <div className="w-full bg-gray-700 rounded-full h-1.5">
-                <div className="bg-gray-500 h-1.5 rounded-full" style={{
-                width: '0%'
-              }} />
+                <div className="bg-gray-500 h-1.5 rounded-full" style={{width: '0%'}} />
               </div>
             </div>
 
@@ -152,9 +150,7 @@ export const WorkspaceManagement = ({
                 0%
               </div>
               <div className="w-full bg-gray-700 rounded-full h-1.5">
-                <div className="bg-gray-500 h-1.5 rounded-full" style={{
-                width: '0%'
-              }} />
+                <div className="bg-gray-500 h-1.5 rounded-full" style={{width: '0%'}} />
               </div>
             </div>
           </div>
@@ -176,7 +172,56 @@ export const WorkspaceManagement = ({
       </div>
 
       {/* 详细统计信息 */}
-      
+      <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+        <h3 className="text-lg font-semibold text-white mb-4">详细信息</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <Card className="bg-white/5 rounded-xl p-4 border border-white/10">
+            <div className="flex items-center gap-3 mb-3">
+              <BarChart3 className="w-5 h-5 text-cyan-400" />
+              <h4 className="font-semibold text-white">任务状态</h4>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-300">总任务</span>
+                <span className="text-white font-medium">{workspaceStatus.totalTasks}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-300">已完成</span>
+                <span className="text-green-400 font-medium">{workspaceStatus.completedTasks}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-300">进行中</span>
+                <span className="text-yellow-400 font-medium">{workspaceStatus.totalTasks - workspaceStatus.completedTasks}</span>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="bg-white/5 rounded-xl p-4 border border-white/10">
+            <div className="flex items-center gap-3 mb-3">
+              <Activity className="w-5 h-5 text-pink-400" />
+              <h4 className="font-semibold text-white">活动信息</h4>
+            </div>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-300">最后活动</span>
+                <span className="text-white font-medium">{workspaceStatus.lastActivity}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-300">创建时间</span>
+                <span className="text-gray-400 font-medium">
+                  {currentWorkspace?.created_at ? new Date(currentWorkspace.created_at).toLocaleDateString() : '2024-01-15'}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-300">工作空间类型</span>
+                <Badge className="bg-purple-500/20 text-purple-400 border-purple-500/30">
+                  {currentWorkspace?.type || '通用'}
+                </Badge>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </Card>
 
       {/* 功能模块快速访问 */}
       <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
