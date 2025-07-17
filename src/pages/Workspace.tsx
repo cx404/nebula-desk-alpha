@@ -23,7 +23,7 @@ import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvider";
 import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
 import { FixedSidebar } from "@/components/workspace/FixedSidebar";
-import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
+
 import { FloatingAIChat } from "@/components/workspace/FloatingAIChat";
 import { AIWorkspaceNavigator } from "@/components/workspace/AIWorkspaceNavigator";
 import { JobQueue } from "@/components/workspace/JobQueue";
@@ -674,7 +674,7 @@ const Workspace = () => {
   const renderContent = () => {
     switch (selectedNav) {
       case "workspace":
-        return <WorkspaceManagement currentWorkspace={currentWorkspace} onNavigate={setSelectedNav} />;
+        return renderWorkspaceByType();
       case "filesync":
         return <FileSync />;
       case "jobqueue":
