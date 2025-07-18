@@ -115,7 +115,8 @@ export const ComponentMarketplace = () => {
     name: "",
     description: "",
     category: "",
-    features: ""
+    features: "",
+    uploadedFile: null as File | null
   });
   const [aiPrompt, setAiPrompt] = useState("");
   const [components, setComponents] = useState<Component[]>([
@@ -177,7 +178,7 @@ export const ComponentMarketplace = () => {
     };
 
     setComponents(prev => [...prev, component]);
-    setNewComponent({ name: "", description: "", category: "", features: "" });
+    setNewComponent({ name: "", description: "", category: "", features: "", uploadedFile: null });
     setIsCreateDialogOpen(false);
     toast.success("组件创建成功！");
   };
@@ -525,6 +526,39 @@ export const ComponentMarketplace = () => {
                   onChange={(e) => setNewComponent(prev => ({ ...prev, features: e.target.value }))}
                   className="bg-white/5 border-white/10 text-white"
                 />
+                
+                {/* 文件上传区域 */}
+                <div className="space-y-2">
+                  <label className="text-sm text-gray-400">上传组件文件</label>
+                  <div className="border-2 border-dashed border-white/20 rounded-lg p-4 text-center">
+                    <input
+                      type="file"
+                      accept=".tsx,.jsx,.ts,.js,.zip"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          setNewComponent(prev => ({ ...prev, uploadedFile: file }));
+                        }
+                      }}
+                      className="hidden"
+                      id="component-file-upload"
+                    />
+                    <label 
+                      htmlFor="component-file-upload" 
+                      className="cursor-pointer text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      📁 点击选择文件或拖拽文件到此处
+                    </label>
+                    <p className="text-xs text-gray-500 mt-1">
+                      支持 .tsx, .jsx, .ts, .js, .zip 文件
+                    </p>
+                    {newComponent.uploadedFile && (
+                      <p className="text-green-400 text-sm mt-2">
+                        已选择文件: {newComponent.uploadedFile.name}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
               <DialogFooter>
                 <Button variant="outline" onClick={() => setIsCreateDialogOpen(false)}>
