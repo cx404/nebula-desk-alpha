@@ -24,6 +24,7 @@ import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvi
 import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
 import { FixedSidebar } from "@/components/workspace/FixedSidebar";
 import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
+import { HomePage } from "@/components/workspace/HomePage";
 import { FloatingAIChat } from "@/components/workspace/FloatingAIChat";
 import { AIWorkspaceNavigator } from "@/components/workspace/AIWorkspaceNavigator";
 import { JobQueue } from "@/components/workspace/JobQueue";
@@ -673,6 +674,8 @@ const Workspace = () => {
   // 渲染不同导航项的内容看板
   const renderContent = () => {
     switch (selectedNav) {
+      case "home":
+        return <HomePage onNavigate={setSelectedNav} />;
       case "workspace":
         return <WorkspaceManagement currentWorkspace={currentWorkspace} onNavigate={setSelectedNav} />;
       case "filesync":

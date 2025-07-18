@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { WorkspaceIconGrid } from "./WorkspaceIconGrid";
-import { Activity, Cpu, HardDrive, Zap, Users, Calendar, Clock, Server, BarChart3, Settings, Plus, Shuffle } from "lucide-react";
+import { Activity, Cpu, HardDrive, Zap, Users, Calendar, Clock, Server, BarChart3, Settings, Plus, Shuffle, Home } from "lucide-react";
 interface WorkspaceManagementProps {
   currentWorkspace: any;
   onNavigate?: (nav: string) => void;
@@ -32,6 +32,19 @@ export const WorkspaceManagement = ({
     return "text-red-400";
   };
   return <div className="p-6 space-y-6 mx-0 px-0 py-0 my-0">
+      {/* 首页按钮 */}
+      <div className="flex justify-start mb-4">
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={() => onNavigate?.("home")}
+          className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20 flex items-center gap-2"
+        >
+          <Home className="w-4 h-4" />
+          首页
+        </Button>
+      </div>
+
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">工作空间管理</h2>
         <div className="flex flex-col gap-2">
