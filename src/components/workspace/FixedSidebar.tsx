@@ -105,11 +105,11 @@ export const FixedSidebar = ({
             {isCollapsed && (
               <TooltipContent side="right" className="glass-card text-foreground border-border/30">
                 首页
+                <Button>新建工作空间<Button/>
               </TooltipContent>
             )}
-            <Button>新建工作空间<Button/>
+            
           </Tooltip>
-          
         </div>
 
         {/* Navigation Items */}
