@@ -65,7 +65,7 @@ export const FixedSidebar = ({
                 className="magic-icon text-foreground/80 hover:text-foreground hover:bg-primary/10"
               >
                 <Home className="w-4 h-4" />
-                {!isCollapsed && <span className="ml-2 text-sm">首页</span>}
+                {!isCollapsed && <span className="ml-2 text-sm">LOGO</span>}
               </Button>
             </TooltipTrigger>
             {isCollapsed && (
