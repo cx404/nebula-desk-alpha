@@ -107,8 +107,9 @@ export const FixedSidebar = ({
                 首页
               </TooltipContent>
             )}
+            <Button>新建工作空间<Button/>
           </Tooltip>
-          <Button>新建工作空间<Button/>
+          
         </div>
 
         {/* Navigation Items */}
