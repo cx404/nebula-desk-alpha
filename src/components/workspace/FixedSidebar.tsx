@@ -86,6 +86,30 @@ export const FixedSidebar = ({
           </Button>
         </div>
 
+        {/* 首页按钮 */}
+        <div className="px-3 py-2 border-b border-border/20">
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size={isCollapsed ? "sm" : "default"}
+                onClick={() => onNavSelect("home")}
+                className={`magic-icon w-full ${isCollapsed ? 'px-2 justify-center' : 'justify-start'} transition-all duration-200 text-foreground/70 hover:text-foreground hover:bg-primary/10`}
+              >
+                <Home className={`w-5 h-5 ${isCollapsed ? '' : 'mr-3'} transition-all duration-200`} />
+                {!isCollapsed && (
+                  <span className="truncate text-sm font-medium">首页</span>
+                )}
+              </Button>
+            </TooltipTrigger>
+            {isCollapsed && (
+              <TooltipContent side="right" className="glass-card text-foreground border-border/30">
+                首页
+              </TooltipContent>
+            )}
+          </Tooltip>
+        </div>
+
         {/* Navigation Items */}
         <div className="px-3 py-2 space-y-2">
           {navigationItems.map((item) => {
