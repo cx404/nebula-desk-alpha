@@ -64,8 +64,7 @@ export const FixedSidebar = ({
                 onClick={handleHomeClick}
                 className="magic-icon text-foreground/80 hover:text-foreground hover:bg-primary/10"
               >
-                <Home className="w-4 h-4" />
-                {!isCollapsed && <span className="ml-2 text-sm">LOGO</span>}
+                {!isCollapsed && <span className="text-sm">LOGO</span>}
               </Button>
             </TooltipTrigger>
             {isCollapsed && (
