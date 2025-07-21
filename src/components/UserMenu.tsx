@@ -14,7 +14,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useNavigate } from "react-router-dom";
 
-export const UserMenu = () => {
+interface UserMenuProps {
+  onProfileClick?: () => void;
+}
+
+export const UserMenu = ({ onProfileClick }: UserMenuProps) => {
   const [user, setUser] = useState<SupabaseUser | null>(null);
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const navigate = useNavigate();
@@ -49,32 +53,18 @@ export const UserMenu = () => {
 
   if (user) {
     return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 rounded-full">
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={user.user_metadata?.avatar_url} />
-              <AvatarFallback className="bg-purple-500 text-white">
-                <User className="h-4 w-4" />
-              </AvatarFallback>
-            </Avatar>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuItem className="cursor-pointer">
-            <User className="mr-2 h-4 w-4" />
-            个人中心
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem 
-            onClick={handleLogout}
-            className="cursor-pointer text-red-600"
-          >
-            <LogIn className="mr-2 h-4 w-4" />
-            退出登录
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <Button 
+        variant="ghost" 
+        className="h-8 w-8 rounded-full"
+        onClick={onProfileClick}
+      >
+        <Avatar className="h-8 w-8">
+          <AvatarImage src={user.user_metadata?.avatar_url} />
+          <AvatarFallback className="bg-purple-500 text-white">
+            <User className="h-4 w-4" />
+          </AvatarFallback>
+        </Avatar>
+      </Button>
     );
   }
 
