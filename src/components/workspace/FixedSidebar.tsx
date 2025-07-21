@@ -41,9 +41,9 @@ export const FixedSidebar = ({
     { id: "workspace", name: "工作空间管理", icon: FolderOpen },
     { id: "monitor", name: "资源监控", icon: Activity },
     { id: "billing", name: "订单", icon: ShoppingCart },
-    { id: "docs", name: "文档", icon: FileText },
+    { id: "docs", name: "文档说明", icon: FileText },
     { id: "marketplace", name: "组件市场", icon: Package },
-    { id: "filesync", name: "文件同步", icon: RefreshCw },
+    { id: "filesync", name: "文件", icon: RefreshCw },
     { id: "jobqueue", name: "任务队列", icon: ListTodo },
     { id: "diagnostics", name: "诊断", icon: Stethoscope }
   ];

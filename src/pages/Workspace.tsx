@@ -736,7 +736,7 @@ const Workspace = () => {
       case "file-sync":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">文件同步</h2>
+              <h2 className="text-2xl font-bold mb-2 text-white">文件</h2>
               <p className="text-gray-400">管理工作空间文件和同步状态</p>
             </div>
             <Card className="glass-card p-6">
@@ -882,7 +882,7 @@ const Workspace = () => {
       case "docs":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">文档</h2>
+              <h2 className="text-2xl font-bold mb-2 text-white">文档说明</h2>
               <p className="text-gray-400">查看API文档和使用指南</p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

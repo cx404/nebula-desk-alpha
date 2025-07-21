@@ -87,12 +87,12 @@ export const FloatingNavigation = ({
     },
     {
       id: "docs",
-      name: "文档",
+      name: "文档说明",
       icon: FileText,
     },
     {
       id: "file-sync",
-      name: "文件同步",
+      name: "文件",
       icon: RefreshCw,
     },
     {

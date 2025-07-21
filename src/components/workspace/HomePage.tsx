@@ -27,7 +27,7 @@ export const HomePage = ({
     gradient: "from-purple-500 to-pink-500"
   }, {
     id: "docs",
-    name: "文档",
+    name: "文档说明",
     icon: FileText,
     description: "浏览项目文档和帮助信息",
     gradient: "from-orange-500 to-red-500"
@@ -39,7 +39,7 @@ export const HomePage = ({
     gradient: "from-indigo-500 to-purple-500"
   }, {
     id: "filesync",
-    name: "文件同步",
+    name: "文件",
     icon: RefreshCw,
     description: "同步和管理文件",
     gradient: "from-teal-500 to-cyan-500"

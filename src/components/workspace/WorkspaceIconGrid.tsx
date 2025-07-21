@@ -42,9 +42,9 @@ export const WorkspaceIconGrid = ({ onIconClick }: WorkspaceIconGridProps) => {
     { id: "workspace", name: "工作空间管理", icon: FolderOpen, color: "text-blue-400" },
     { id: "monitor", name: "资源监控", icon: Activity, color: "text-green-400" },
     { id: "billing", name: "订单", icon: ShoppingCart, color: "text-purple-400" },
-    { id: "docs", name: "文档", icon: FileText, color: "text-orange-400" },
+    { id: "docs", name: "文档说明", icon: FileText, color: "text-orange-400" },
     { id: "marketplace", name: "组件市场", icon: Package, color: "text-pink-400" },
-    { id: "filesync", name: "文件同步", icon: RefreshCw, color: "text-cyan-400" },
+    { id: "filesync", name: "文件", icon: RefreshCw, color: "text-cyan-400" },
     { id: "jobqueue", name: "任务队列", icon: ListTodo, color: "text-yellow-400" },
     { id: "diagnostics", name: "诊断", icon: Stethoscope, color: "text-red-400" },
     { id: "import", name: "导入组件", icon: Download, color: "text-indigo-400" }
