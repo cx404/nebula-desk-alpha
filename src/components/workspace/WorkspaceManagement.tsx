@@ -45,11 +45,23 @@ export const WorkspaceManagement = ({
       {/* 工作空间卡片网格 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* 当前工作空间卡片 */}
-        <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20 relative">
+        <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20 relative group hover:bg-white/15 transition-all duration-300 cursor-pointer">
           <div className="absolute top-3 right-3">
             <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
               当前空间
             </Badge>
+          </div>
+          
+          {/* 悬停蒙版 */}
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-end pr-6">
+            <div className="flex flex-col gap-2">
+              <Button variant="outline" size="sm" className="text-white border-white/30 hover:bg-white/20">
+                进入空间
+              </Button>
+              <Button variant="outline" size="sm" className="text-red-400 border-red-400/30 hover:bg-red-500/20">
+                删除空间
+              </Button>
+            </div>
           </div>
           
           <div className="flex items-center gap-3 mb-3">
@@ -112,7 +124,19 @@ export const WorkspaceManagement = ({
         </Card>
 
         {/* 其他工作空间卡片 */}
-        <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20">
+        <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/20 relative group hover:bg-white/15 transition-all duration-300 cursor-pointer">
+          {/* 悬停蒙版 */}
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-end pr-6">
+            <div className="flex flex-col gap-2">
+              <Button variant="outline" size="sm" className="text-white border-white/30 hover:bg-white/20">
+                进入空间
+              </Button>
+              <Button variant="outline" size="sm" className="text-red-400 border-red-400/30 hover:bg-red-500/20">
+                删除空间
+              </Button>
+            </div>
+          </div>
+          
           <div className="flex items-center gap-3 mb-3">
             <div className="w-3 h-3 rounded-full bg-gray-500" />
             <h3 className="text-lg font-semibold text-white">
