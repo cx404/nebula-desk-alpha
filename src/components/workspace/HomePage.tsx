@@ -67,9 +67,8 @@ export const HomePage = ({
       </div>
 
       {/* 功能模块 */}
-      <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-8 border border-white/20">
-        <h2 className="text-xl font-semibold text-white mb-6">组件</h2>
-        
+      <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+        <h3 className="text-lg font-semibold text-white mb-4">组件</h3>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {functionModules.map(module => {
           const Icon = module.icon;
