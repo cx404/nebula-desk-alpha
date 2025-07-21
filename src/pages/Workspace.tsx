@@ -30,7 +30,6 @@ import { AIWorkspaceNavigator } from "@/components/workspace/AIWorkspaceNavigato
 import { JobQueue } from "@/components/workspace/JobQueue";
 import { FileSync } from "@/components/workspace/FileSync";
 import { Diagnostics } from "@/components/workspace/Diagnostics";
-import { UserProfile } from "@/components/workspace/UserProfile";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
@@ -86,9 +85,6 @@ const Workspace = () => {
   // AI导航栏状态
   const [showAINavigator, setShowAINavigator] = useState(false);
   const [aiNavigatorCollapsed, setAINavigatorCollapsed] = useState(false);
-
-  // 用户信息页面状态
-  const [showUserProfile, setShowUserProfile] = useState(false);
 
   // 初始化当前工作空间名称
   useEffect(() => {
@@ -1137,8 +1133,10 @@ const Workspace = () => {
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  {/* 用户菜单 */}
-                  <UserMenu onProfileClick={() => setShowUserProfile(true)} />
+                  {/* 用户图标 */}
+                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                    <User className="w-4 h-4 text-white" />
+                  </div>
                   
                 {/* AI导航栏切换按钮 */}
                 <Button 
@@ -1196,12 +1194,6 @@ const Workspace = () => {
 
         {/* 悬浮AI对话框 - 只在AI导航栏不显示时显示 */}
         {!showAINavigator && <FloatingAIChat />}
-
-        {/* 用户信息页面 */}
-        <UserProfile 
-          isVisible={showUserProfile}
-          onClose={() => setShowUserProfile(false)}
-        />
       </div>
     </WorkspaceModeProvider>;
 };
