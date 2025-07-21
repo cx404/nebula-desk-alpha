@@ -183,26 +183,6 @@ export const WorkspaceManagement = ({
       </Card>
 
       {/* 快速操作 */}
-      <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
-        <h3 className="text-lg font-semibold text-white mb-4">快速操作</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <Button variant="outline" className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20">
-            <Server className="w-4 h-4 mr-2" />
-            重启工作空间
-          </Button>
-          <Button variant="outline" className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20">
-            <Calendar className="w-4 h-4 mr-2" />
-            查看日志
-          </Button>
-          <Button variant="outline" className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20">
-            <Clock className="w-4 h-4 mr-2" />
-            定时任务
-          </Button>
-          <Button variant="outline" className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20">
-            <Settings className="w-4 h-4 mr-2" />
-            高级设置
-          </Button>
-        </div>
-      </Card>
+      
     </div>;
 };
