@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserMenu } from "@/components/UserMenu";
 import { ResourceMonitorChart } from "@/components/charts/ResourceMonitorChart";
 import { ResourceMonitorWidget } from "@/components/charts/ResourceMonitorWidget";
+import { WeeklyResourceChart } from "@/components/charts/WeeklyResourceChart";
 import { BillingChart } from "@/components/charts/BillingChart";
 import { APIUsageChart } from "@/components/charts/APIUsageChart";
 import { PerformanceChart } from "@/components/charts/PerformanceChart";
@@ -58,6 +59,7 @@ const Workspace = () => {
 
   // 图表数据状态
   const [resourceData, setResourceData] = useState([]);
+  const [weeklyResourceData, setWeeklyResourceData] = useState([]);
   const [billingData, setBillingData] = useState([]);
   const [apiUsageData, setApiUsageData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
@@ -98,7 +100,7 @@ const Workspace = () => {
     if (creationState?.creationMode) {
       setIsCreating(true);
       setSelectedNav("workspace");
-      setShowAINavigator(true); // 显示AI导航栏
+      setShowAINavigator(true);  // 显示AI导航栏
 
       // 模拟创建过程
       const steps = [{
@@ -148,6 +150,7 @@ const Workspace = () => {
   useEffect(() => {
     const updateData = () => {
       setResourceData(mockDataService.generateResourceData());
+      setWeeklyResourceData(mockDataService.generateWeeklyResourceData());
       setBillingData(mockDataService.generateBillingData());
       setApiUsageData(mockDataService.generateAPIUsageData());
       setPerformanceData(mockDataService.generatePerformanceData());
@@ -695,7 +698,7 @@ const Workspace = () => {
             <Card className="glass-card p-6 mb-6">
               <h3 className="text-lg font-semibold mb-4 text-white">GPU 实例</h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10 my-0 mx-[300px]">
+                <div className="flex justify-between items-center p-4 bg-white/5 rounded-lg border border-white/10">
                   <div>
                     <p className="font-medium text-white">NVIDIA A100</p>
                     <p className="text-sm text-gray-400">80GB 显存</p>
@@ -715,6 +718,9 @@ const Workspace = () => {
                 </div>
               </div>
             </Card>
+
+            {/* 本周资源使用情况 */}
+            <WeeklyResourceChart data={weeklyResourceData} />
 
             {/* 资源监控图表 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -1139,7 +1145,12 @@ const Workspace = () => {
                   </div>
                   
                 {/* AI导航栏切换按钮 */}
-                <Button onClick={() => setShowAINavigator(!showAINavigator)} variant="outline" size="sm" className="bg-pink-500/10 border-pink-500/30 text-pink-300 hover:bg-pink-500/20">
+                <Button 
+                  onClick={() => setShowAINavigator(!showAINavigator)} 
+                  variant="outline" 
+                  size="sm" 
+                  className="bg-pink-500/10 border-pink-500/30 text-pink-300 hover:bg-pink-500/20"
+                >
                   <Sparkles className="h-4 w-4 mr-2" />
                   {showAINavigator ? '隐藏AI' : '显示AI'}
                 </Button>
@@ -1179,7 +1190,13 @@ const Workspace = () => {
         </div>
 
         {/* AI工作空间导航栏 */}
-        <AIWorkspaceNavigator isVisible={showAINavigator} isCollapsed={aiNavigatorCollapsed} onToggleCollapse={() => setAINavigatorCollapsed(!aiNavigatorCollapsed)} creationHistory={creationState?.chatHistory || []} onClose={() => setShowAINavigator(false)} />
+        <AIWorkspaceNavigator
+          isVisible={showAINavigator}
+          isCollapsed={aiNavigatorCollapsed}
+          onToggleCollapse={() => setAINavigatorCollapsed(!aiNavigatorCollapsed)}
+          creationHistory={creationState?.chatHistory || []}
+          onClose={() => setShowAINavigator(false)}
+        />
 
         {/* 悬浮AI对话框 - 只在AI导航栏不显示时显示 */}
         {!showAINavigator && <FloatingAIChat />}
