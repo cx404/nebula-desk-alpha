@@ -26,8 +26,8 @@ const chartConfig = {
   memory: {
     label: "内存使用率", 
     theme: {
-      light: "hsl(var(--secondary))",
-      dark: "hsl(var(--secondary))",
+      light: "hsl(220, 100%, 60%)",
+      dark: "hsl(220, 100%, 60%)",
     },
   },
   gpu: {
@@ -77,10 +77,10 @@ export const WeeklyResourceChart = ({ data }: WeeklyResourceChartProps) => {
           <Line
             type="monotone"
             dataKey="memory"
-            stroke="hsl(var(--secondary))"
+            stroke="hsl(220, 100%, 60%)"
             strokeWidth={2}
-            dot={{ fill: "hsl(var(--secondary))", strokeWidth: 2, r: 4 }}
-            activeDot={{ r: 6, stroke: "hsl(var(--secondary))", strokeWidth: 2 }}
+            dot={{ fill: "hsl(220, 100%, 60%)", strokeWidth: 2, r: 4 }}
+            activeDot={{ r: 6, stroke: "hsl(220, 100%, 60%)", strokeWidth: 2 }}
           />
           <Line
             type="monotone"
