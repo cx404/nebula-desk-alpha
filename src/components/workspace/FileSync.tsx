@@ -129,9 +129,9 @@ export const FileSync = () => {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-white mb-2">文件</h1>
-          <p className="text-gray-400">本地存储与云端存储文件同步操作</p>
+          <p className="text-gray-400">本地存储与云端存储文件同步操作,查看储存文件并支持快速上传</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white">+ 添加同步任务</Button>
+        
       </div>
 
       {/* Stats Cards */}
