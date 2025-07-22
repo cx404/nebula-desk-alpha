@@ -1020,65 +1020,165 @@ const Workspace = () => {
       case "billing":
         return <div className="space-y-6">
             <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2 text-white">计费中心</h2>
-              <p className="text-gray-400">管理账单、费用和支付方式</p>
+              <h2 className="text-2xl font-bold mb-2 text-white">订单管理</h2>
+              <p className="text-gray-400">管理账户余额、消费记录和支付方式</p>
             </div>
             
-            {/* 费用概览 */}
+            {/* 余额卡片 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
-                <div className="text-center">
-                  <h3 className="font-semibold text-white mb-2">本月费用</h3>
-                  <p className="text-3xl font-bold text-blue-400">¥1,234</p>
-                  <p className="text-sm text-gray-400 mt-1">比上月增长 12%</p>
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-orange-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-xl flex items-center justify-center">
+                    <CreditCard className="h-6 w-6 text-white" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm flex items-center gap-2">
+                      当前余额
+                      <div className="bg-yellow-500 text-black text-xs px-2 py-1 rounded">
+                        50%
+                      </div>
+                    </h3>
+                    <p className="text-3xl font-bold text-orange-400">¥1000.00</p>
+                    <p className="text-xs text-gray-400 mt-1">可用算力：8 GPU</p>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
-                <div className="text-center">
-                  <h3 className="font-semibold text-white mb-2">账户余额</h3>
-                  <p className="text-3xl font-bold text-green-400">¥856</p>
-                  <p className="text-sm text-gray-400 mt-1">可用 2.5 个月</p>
+              </Card>
+
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-green-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">↗</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm flex items-center gap-2">
+                      总充值
+                      <span className="text-green-400">↗</span>
+                    </h3>
+                    <p className="text-3xl font-bold text-green-400">¥2000.00</p>
+                    <p className="text-xs text-gray-400 mt-1">累计充值金额</p>
+                  </div>
                 </div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
-                <div className="text-center">
-                  <h3 className="font-semibold text-white mb-2">预计下月</h3>
-                  <p className="text-3xl font-bold text-purple-400">¥1,089</p>
-                  <p className="text-sm text-gray-400 mt-1">基于当前使用</p>
+              </Card>
+
+              <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-red-500/50 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center">
+                    <span className="text-lg">↘</span>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-white text-sm flex items-center gap-2">
+                      已消费
+                      <span className="text-red-400">↘</span>
+                    </h3>
+                    <p className="text-3xl font-bold text-red-400">¥1000.00</p>
+                    <p className="text-xs text-gray-400 mt-1">累计消费金额</p>
+                  </div>
                 </div>
-              </div>
+              </Card>
             </div>
 
-            {/* 费用趋势图表 */}
+            {/* 充值按钮 */}
+            <div className="flex justify-end mb-6">
+              <Button className="bg-orange-500 hover:bg-orange-600 text-white gap-2">
+                <span className="text-lg">+</span>
+                充值
+              </Button>
+            </div>
+
+            {/* 保持原有的费用趋势图表 */}
             <BillingChart data={billingData} />
 
-            {/* 账单列表 */}
+            {/* 消费记录和即将扣费 */}
             <Card className="glass-card p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-white">最近账单</h3>
-                <Button variant="outline" className="bg-white/5 border-white/20 text-white hover:bg-white/10">
-                  查看全部
-                </Button>
+              <div className="mb-6">
+                <div className="flex gap-1 border-b border-white/10">
+                  <button className="px-4 py-2 text-orange-400 border-b-2 border-orange-400 bg-orange-500/10 rounded-t-lg">
+                    消费记录
+                  </button>
+                  <button className="px-4 py-2 text-gray-400 hover:text-white transition-colors">
+                    即将扣费
+                  </button>
+                </div>
               </div>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                  <div>
-                    <p className="font-medium text-white">2024年1月账单</p>
-                    <p className="text-sm text-gray-400">GPU使用费 + 存储费</p>
+              
+              <div className="space-y-4">
+                {/* 充值记录 */}
+                <div className="flex items-center justify-between p-4 border border-white/10 rounded-lg bg-green-500/5">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-full bg-green-500/20 text-green-400">
+                      <span className="text-lg">↗</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-white">充值</div>
+                      <div className="text-sm text-gray-400">2024-01-13</div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-semibold text-white">¥1,156</p>
-                    <Badge className="bg-green-500/10 text-green-400 border-green-500/20">已支付</Badge>
+                  <div className="text-lg font-semibold text-green-400">
+                    +¥500.00
                   </div>
                 </div>
-                <div className="flex justify-between items-center p-3 bg-white/5 rounded-lg">
-                  <div>
-                    <p className="font-medium text-white">2023年12月账单</p>
-                    <p className="text-sm text-gray-400">GPU使用费 + 存储费</p>
+
+                {/* 消费记录 */}
+                <div className="flex items-center justify-between p-4 border border-white/10 rounded-lg bg-red-500/5">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-full bg-red-500/20 text-red-400">
+                      <span className="text-lg">↘</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-white">GPT-2模型训练</div>
+                      <div className="text-sm text-gray-400">2024-01-12</div>
+                      <div className="text-xs text-gray-500">消费类型：模型训练</div>
+                    </div>
                   </div>
-                  <div className="text-right">
-                    <p className="font-semibold text-white">¥1,089</p>
-                    <Badge className="bg-green-500/10 text-green-400 border-green-500/20">已支付</Badge>
+                  <div className="text-lg font-semibold text-red-400">
+                    ¥-89.50
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 border border-white/10 rounded-lg bg-red-500/5">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-full bg-red-500/20 text-red-400">
+                      <span className="text-lg">↘</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-white">BERT模型部署</div>
+                      <div className="text-sm text-gray-400">2024-01-13</div>
+                      <div className="text-xs text-gray-500">消费类型：模型部署</div>
+                    </div>
+                  </div>
+                  <div className="text-lg font-semibold text-red-400">
+                    ¥-45.20
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 border border-white/10 rounded-lg bg-green-500/5">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-full bg-green-500/20 text-green-400">
+                      <span className="text-lg">↗</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-white">充值</div>
+                      <div className="text-sm text-gray-400">2024-01-12</div>
+                    </div>
+                  </div>
+                  <div className="text-lg font-semibold text-green-400">
+                    +¥1000.00
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between p-4 border border-white/10 rounded-lg bg-red-500/5">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-full bg-red-500/20 text-red-400">
+                      <span className="text-lg">↘</span>
+                    </div>
+                    <div>
+                      <div className="font-medium text-white">数据预处理</div>
+                      <div className="text-sm text-gray-400">2024-01-11</div>
+                      <div className="text-xs text-gray-500">消费类型：数据处理</div>
+                    </div>
+                  </div>
+                  <div className="text-lg font-semibold text-red-400">
+                    ¥-12.10
                   </div>
                 </div>
               </div>
