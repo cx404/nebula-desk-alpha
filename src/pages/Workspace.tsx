@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserMenu } from "@/components/UserMenu";
 import { ResourceMonitorChart } from "@/components/charts/ResourceMonitorChart";
 import { ResourceMonitorWidget } from "@/components/charts/ResourceMonitorWidget";
+import { WeeklyResourceChart } from "@/components/charts/WeeklyResourceChart";
 import { BillingChart } from "@/components/charts/BillingChart";
 import { APIUsageChart } from "@/components/charts/APIUsageChart";
 import { PerformanceChart } from "@/components/charts/PerformanceChart";
@@ -58,6 +59,7 @@ const Workspace = () => {
 
   // 图表数据状态
   const [resourceData, setResourceData] = useState([]);
+  const [weeklyResourceData, setWeeklyResourceData] = useState([]);
   const [billingData, setBillingData] = useState([]);
   const [apiUsageData, setApiUsageData] = useState([]);
   const [performanceData, setPerformanceData] = useState([]);
@@ -148,6 +150,7 @@ const Workspace = () => {
   useEffect(() => {
     const updateData = () => {
       setResourceData(mockDataService.generateResourceData());
+      setWeeklyResourceData(mockDataService.generateWeeklyResourceData());
       setBillingData(mockDataService.generateBillingData());
       setApiUsageData(mockDataService.generateAPIUsageData());
       setPerformanceData(mockDataService.generatePerformanceData());
@@ -715,6 +718,9 @@ const Workspace = () => {
                 </div>
               </div>
             </Card>
+
+            {/* 本周资源使用情况 */}
+            <WeeklyResourceChart data={weeklyResourceData} />
 
             {/* 资源监控图表 */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

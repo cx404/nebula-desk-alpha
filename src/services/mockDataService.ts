@@ -92,4 +92,21 @@ export const mockDataService = {
       { name: "Claude-3", status: "stopped", replicas: 0, requests: 0 },
     ];
   },
+
+  // 生成本周资源使用情况数据
+  generateWeeklyResourceData: () => {
+    const data = [];
+    const daysOfWeek = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+    
+    daysOfWeek.forEach(day => {
+      data.push({
+        day,
+        cpu: Math.floor(Math.random() * 40) + 30, // 30-70%
+        memory: Math.floor(Math.random() * 30) + 50, // 50-80%
+        gpu: Math.floor(Math.random() * 50) + 20, // 20-70%
+      });
+    });
+    
+    return data;
+  },
 };
