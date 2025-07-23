@@ -41,7 +41,7 @@ import { Diagnostics } from "@/components/workspace/Diagnostics";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight, Menu, ArrowDownToLine, LogOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight, Menu, ArrowDownToLine, LogOut, FolderOpen, Activity } from "lucide-react";
 const Workspace = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1246,6 +1246,27 @@ const Workspace = () => {
                 </div>
                 
                 <div className="flex items-center gap-4">
+                  {/* 资源监控按钮 */}
+                  <Button 
+                    onClick={() => setSelectedNav("monitor")} 
+                    variant="outline" 
+                    size="sm" 
+                    className={`${selectedNav === "monitor" ? "bg-primary/20 border-primary/30 text-primary" : "bg-gray-500/10 border-gray-500/30 text-gray-300 hover:bg-gray-500/20"}`}
+                  >
+                    <Activity className="h-4 w-4 mr-2" />
+                    资源监控
+                  </Button>
+                  
+                  {/* 工作空间管理按钮 */}
+                  <Button 
+                    onClick={() => setSelectedNav("workspace")} 
+                    variant="outline" 
+                    size="sm" 
+                    className={`${selectedNav === "workspace" ? "bg-primary/20 border-primary/30 text-primary" : "bg-gray-500/10 border-gray-500/30 text-gray-300 hover:bg-gray-500/20"}`}
+                  >
+                    <FolderOpen className="h-4 w-4 mr-2" />
+                    工作空间管理
+                  </Button>
                   {/* 用户图标下拉菜单 */}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

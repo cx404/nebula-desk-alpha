@@ -38,8 +38,6 @@ export const FixedSidebar = ({
   };
 
   const navigationItems = [
-    { id: "workspace", name: "工作空间管理", icon: FolderOpen },
-    { id: "monitor", name: "资源监控", icon: Activity },
     { id: "billing", name: "订单", icon: ShoppingCart },
     { id: "docs", name: "文档说明", icon: FileText },
     { id: "marketplace", name: "组件市场", icon: Package },
