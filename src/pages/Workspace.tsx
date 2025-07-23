@@ -7,6 +7,13 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  DropdownMenu, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator, 
+  DropdownMenuTrigger 
+} from "@/components/ui/dropdown-menu";
 import { UserMenu } from "@/components/UserMenu";
 import { ResourceMonitorChart } from "@/components/charts/ResourceMonitorChart";
 import { ResourceMonitorWidget } from "@/components/charts/ResourceMonitorWidget";
@@ -34,7 +41,7 @@ import { Diagnostics } from "@/components/workspace/Diagnostics";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight, Menu } from "lucide-react";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight, Menu, Download, LogOut } from "lucide-react";
 const Workspace = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1239,10 +1246,37 @@ const Workspace = () => {
                 </div>
                 
                 <div className="flex items-center gap-4">
-                  {/* 用户图标 */}
-                  <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-white" />
-                  </div>
+                  {/* 用户图标下拉菜单 */}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center cursor-pointer hover:opacity-90 transition-opacity">
+                        <User className="w-4 h-4 text-white" />
+                      </div>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48">
+                      <DropdownMenuItem>
+                        <Settings className="w-4 h-4 mr-2" />
+                        设置
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <User className="w-4 h-4 mr-2" />
+                        账户信息
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <CreditCard className="w-4 h-4 mr-2" />
+                        费用
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <Download className="w-4 h-4 mr-2" />
+                        下载客户端
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="text-red-600">
+                        <LogOut className="w-4 h-4 mr-2" />
+                        退出登录
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                   
                 {/* AI导航栏切换按钮 */}
                 <Button 
