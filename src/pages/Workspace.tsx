@@ -41,7 +41,7 @@ import { Diagnostics } from "@/components/workspace/Diagnostics";
 import { useWorkspace } from "@/hooks/useWorkspace";
 import { toast } from "sonner";
 import { mockDataService } from "@/services/mockDataService";
-import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight, Menu, Download, LogOut } from "lucide-react";
+import { ChevronLeft, ChevronRight, BarChart3, Zap, ShoppingBag, Wrench, Users, FileText, User, Settings, CreditCard, Layout, Edit3, Check, X, Home, Bot, Sparkles, Send, ArrowLeftRight, Menu, ArrowDownToLine, LogOut } from "lucide-react";
 const Workspace = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1267,7 +1267,7 @@ const Workspace = () => {
                         费用
                       </DropdownMenuItem>
                       <DropdownMenuItem>
-                        <Download className="w-4 h-4 mr-2" />
+                        <ArrowDownToLine className="w-4 h-4 mr-2" />
                         下载客户端
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
