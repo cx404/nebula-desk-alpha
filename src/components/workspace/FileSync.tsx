@@ -170,10 +170,7 @@ export const FileSync = () => {
           <div>
             <h3 className="text-white font-medium mb-3">储存选项</h3>
             <div className="space-y-2">
-              {storageOptions.map(option => <div key={option.id} className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors ${selectedStorage === option.id ? 'bg-purple-500/20 border border-purple-400/30' : 'bg-white/5 border border-white/10 hover:bg-white/10'}`} onClick={() => setSelectedStorage(option.id)}>
-                  <div className={`w-3 h-3 rounded-full ${selectedStorage === option.id ? 'bg-purple-400' : 'bg-gray-400'}`}></div>
-                  <span className="text-white text-sm">{option.name}</span>
-                </div>)}
+              {storageOptions.map(option => {})}
             </div>
           </div>
         </Card>
