@@ -74,6 +74,19 @@ const officialComponents: Component[] = [
     rating: 4.7,
     tags: ["模型", "部署", "AI"],
     isInstalled: false
+  },
+  {
+    id: "vks-cluster",
+    name: "VKS弹性容器集群",
+    description: "弹性容器集群管理工具，支持容器编排和自动扩缩容",
+    icon: <Settings className="w-6 h-6" />,
+    category: "开发工具",
+    type: "official",
+    features: ["容器编排", "自动扩缩容", "负载均衡", "集群监控"],
+    downloads: 10350,
+    rating: 4.6,
+    tags: ["容器", "集群", "Kubernetes"],
+    isInstalled: false
   }
 ];
 
