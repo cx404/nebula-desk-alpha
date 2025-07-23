@@ -7,13 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { UserMenu } from "@/components/UserMenu";
 import { ResourceMonitorChart } from "@/components/charts/ResourceMonitorChart";
 import { ResourceMonitorWidget } from "@/components/charts/ResourceMonitorWidget";
@@ -107,7 +101,7 @@ const Workspace = () => {
     if (creationState?.creationMode) {
       setIsCreating(true);
       setSelectedNav("workspace");
-      setShowAINavigator(true);  // 显示AI导航栏
+      setShowAINavigator(true); // 显示AI导航栏
 
       // 模拟创建过程
       const steps = [{
@@ -1247,23 +1241,13 @@ const Workspace = () => {
                 
                 <div className="flex items-center gap-4">
                   {/* 资源监控按钮 */}
-                  <Button 
-                    onClick={() => setSelectedNav("monitor")} 
-                    variant="outline" 
-                    size="sm" 
-                    className={`${selectedNav === "monitor" ? "bg-primary/20 border-primary/30 text-primary" : "bg-gray-500/10 border-gray-500/30 text-gray-300 hover:bg-gray-500/20"}`}
-                  >
+                  <Button onClick={() => setSelectedNav("monitor")} variant="outline" size="sm" className={`${selectedNav === "monitor" ? "bg-primary/20 border-primary/30 text-primary" : "bg-gray-500/10 border-gray-500/30 text-gray-300 hover:bg-gray-500/20"}`}>
                     <Activity className="h-4 w-4 mr-2" />
                     资源监控
                   </Button>
                   
                   {/* 工作空间管理按钮 */}
-                  <Button 
-                    onClick={() => setSelectedNav("workspace")} 
-                    variant="outline" 
-                    size="sm" 
-                    className={`${selectedNav === "workspace" ? "bg-primary/20 border-primary/30 text-primary" : "bg-gray-500/10 border-gray-500/30 text-gray-300 hover:bg-gray-500/20"}`}
-                  >
+                  <Button onClick={() => setSelectedNav("workspace")} variant="outline" size="sm" className={`${selectedNav === "workspace" ? "bg-primary/20 border-primary/30 text-primary" : "bg-gray-500/10 border-gray-500/30 text-gray-300 hover:bg-gray-500/20"}`}>
                     <FolderOpen className="h-4 w-4 mr-2" />
                     工作空间管理
                   </Button>
@@ -1300,12 +1284,7 @@ const Workspace = () => {
                   </DropdownMenu>
                   
                 {/* AI导航栏切换按钮 */}
-                <Button 
-                  onClick={() => setShowAINavigator(!showAINavigator)} 
-                  variant="outline" 
-                  size="sm" 
-                  className="bg-pink-500/10 border-pink-500/30 text-pink-300 hover:bg-pink-500/20"
-                >
+                <Button onClick={() => setShowAINavigator(!showAINavigator)} variant="outline" size="sm" className="bg-pink-500/10 border-pink-500/30 text-pink-300 hover:bg-pink-500/20">
                   <Sparkles className="h-4 w-4 mr-2" />
                   {showAINavigator ? '隐藏AI' : '显示AI'}
                 </Button>
@@ -1317,16 +1296,10 @@ const Workspace = () => {
                 </Button>
                 
                 {/* 切换工作空间按钮 */}
-                <Button onClick={handleSwitchWorkspace} variant="outline" size="sm" className="bg-purple-500/10 border-purple-500/30 text-purple-300 hover:bg-purple-500/20">
-                  <ArrowLeftRight className="h-4 w-4 mr-2" />
-                  切换空间
-                </Button>
+                
                 
                 {/* 工作空间运行状态 */}
-                <Badge className="bg-emerald-500/10 text-emerald-400 border-emerald-500/20">
-                  <div className="w-2 h-2 bg-emerald-400 rounded-full mr-2 animate-pulse"></div>
-                  运行中
-                </Badge>
+                
                 </div>
               </div>
             </div>
@@ -1345,13 +1318,7 @@ const Workspace = () => {
         </div>
 
         {/* AI工作空间导航栏 */}
-        <AIWorkspaceNavigator
-          isVisible={showAINavigator}
-          isCollapsed={aiNavigatorCollapsed}
-          onToggleCollapse={() => setAINavigatorCollapsed(!aiNavigatorCollapsed)}
-          creationHistory={creationState?.chatHistory || []}
-          onClose={() => setShowAINavigator(false)}
-        />
+        <AIWorkspaceNavigator isVisible={showAINavigator} isCollapsed={aiNavigatorCollapsed} onToggleCollapse={() => setAINavigatorCollapsed(!aiNavigatorCollapsed)} creationHistory={creationState?.chatHistory || []} onClose={() => setShowAINavigator(false)} />
 
         {/* 悬浮AI对话框 - 只在AI导航栏不显示时显示 */}
         {!showAINavigator && <FloatingAIChat />}
