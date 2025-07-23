@@ -170,7 +170,16 @@ export const FileSync = () => {
           <div>
             <h3 className="text-white font-medium mb-3">储存选项</h3>
             <div className="space-y-2">
-              {storageOptions.map(option => {})}
+              {storageOptions.map(option => (
+                <div key={option.id} className="p-3 bg-white/5 rounded-lg border border-white/10">
+                  <div className="flex items-center justify-between">
+                    <span className="text-white text-sm">{option.name}</span>
+                    <Badge variant="outline" className="text-xs">
+                      {option.selected ? "已选择" : "可用"}
+                    </Badge>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </Card>

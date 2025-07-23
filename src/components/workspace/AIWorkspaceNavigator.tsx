@@ -92,7 +92,7 @@ export const AIWorkspaceNavigator = ({
     }
   ]);
 
-  const [activeTab, setActiveTab] = useState<"process" | "chat">("process");
+  // 移除标签页功能，只使用对话历史界面
 
   useEffect(() => {
     // 模拟创建过程
@@ -113,6 +113,7 @@ export const AIWorkspaceNavigator = ({
           : step
       ));
       
+      addProgressMessage("components", "组件生成", 90, "运行中");
       addSystemMessage("✨ 正在生成Jupyter Notebook组件...");
     }, 1000));
 
@@ -125,6 +126,8 @@ export const AIWorkspaceNavigator = ({
           : step
       ));
       
+      addProgressMessage("components", "组件生成", 100, "已完成");
+      addProgressMessage("optimize", "性能优化", 30, "运行中");
       addSystemMessage("🔧 组件生成完成！开始性能优化...");
     }, 3000));
 
@@ -135,6 +138,7 @@ export const AIWorkspaceNavigator = ({
           : step
       ));
       
+      addProgressMessage("optimize", "性能优化", 80, "运行中");
       addSystemMessage("⚡ 正在优化GPU资源分配...");
     }, 5000));
 
@@ -147,6 +151,8 @@ export const AIWorkspaceNavigator = ({
           : step
       ));
       
+      addProgressMessage("optimize", "性能优化", 100, "已完成");
+      addProgressMessage("deploy", "部署完成", 50, "运行中");
       addSystemMessage("🚀 开始部署工作空间...");
     }, 7000));
 
@@ -157,6 +163,7 @@ export const AIWorkspaceNavigator = ({
           : step
       ));
       
+      addProgressMessage("deploy", "部署完成", 100, "已完成");
       addSystemMessage("🎉 工作空间创建完成！所有组件已就绪，可以开始工作了！");
       setIsCreating(false);
       toast.success("AI工作空间创建成功！");
@@ -165,14 +172,22 @@ export const AIWorkspaceNavigator = ({
     return () => intervals.forEach(clearTimeout);
   };
 
-  const addSystemMessage = (content: string) => {
+  const addSystemMessage = (content: string, step?: string, progress?: number) => {
     const newMessage: Message = {
       id: Date.now(),
       type: "system",
       content,
-      timestamp: new Date()
+      timestamp: new Date(),
+      step,
+      progress
     };
     setMessages(prev => [...prev, newMessage]);
+  };
+
+  const addProgressMessage = (stepId: string, stepName: string, progress: number, status: string) => {
+    const progressBar = `${'█'.repeat(Math.floor(progress / 10))}${'░'.repeat(10 - Math.floor(progress / 10))}`;
+    const content = `🔄 ${stepName}\n进度: ${progress}% ${progressBar}\n状态: ${status}`;
+    addSystemMessage(content, stepId, progress);
   };
 
   const handleSendMessage = () => {
@@ -270,148 +285,68 @@ export const AIWorkspaceNavigator = ({
 
           {!isCollapsed && (
             <>
-              {/* 标签页 */}
-              <div className="flex border-b border-purple-500/20">
-                <Button
-                  variant={activeTab === "process" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setActiveTab("process")}
-                  className={`flex-1 rounded-none ${
-                    activeTab === "process" 
-                      ? "bg-purple-500/30 text-white border-b-2 border-purple-400" 
-                      : "text-purple-300 hover:text-white hover:bg-purple-700/30"
-                  }`}
-                >
-                  <Cog className="w-4 h-4 mr-2" />
-                  创建过程
-                </Button>
-                <Button
-                  variant={activeTab === "chat" ? "default" : "ghost"}
-                  size="sm"
-                  onClick={() => setActiveTab("chat")}
-                  className={`flex-1 rounded-none ${
-                    activeTab === "chat" 
-                      ? "bg-purple-500/30 text-white border-b-2 border-purple-400" 
-                      : "text-purple-300 hover:text-white hover:bg-purple-700/30"
-                  }`}
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  对话历史
-                </Button>
-              </div>
-
-              {/* 内容区域 */}
+              {/* 对话历史界面 */}
               <div className="flex-1 flex flex-col overflow-hidden">
-                {activeTab === "process" ? (
-                  <>
-                    {/* 创建步骤 */}
-                    <ScrollArea className="flex-1 p-4">
-                      <div className="space-y-4">
-                        <div className="mb-4">
-                          <h4 className="text-white font-medium mb-2">创建进度</h4>
-                          <div className="space-y-3">
-                            {creationSteps.map((step, index) => (
-                              <div key={step.id} className="flex items-start gap-3">
-                                <div className="flex flex-col items-center">
-                                  {getStatusIcon(step.status)}
-                                  {index < creationSteps.length - 1 && (
-                                    <div className={`w-0.5 h-8 mt-2 ${
-                                      step.status === "completed" ? "bg-green-400/30" : "bg-gray-600"
-                                    }`} />
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center justify-between mb-1">
-                                    <h5 className="text-white text-sm font-medium">{step.name}</h5>
-                                    {step.duration && step.status === "completed" && (
-                                      <Badge variant="outline" className="text-xs bg-green-500/10 text-green-400 border-green-500/20">
-                                        {step.duration}s
-                                      </Badge>
-                                    )}
-                                  </div>
-                                  <p className="text-purple-200 text-xs mb-2">{step.description}</p>
-                                  <div className="w-full bg-gray-700 rounded-full h-1.5">
-                                    <div 
-                                      className={`h-1.5 rounded-full transition-all duration-500 ${
-                                        step.status === "completed" ? "bg-green-400" :
-                                        step.status === "running" ? "bg-blue-400" :
-                                        step.status === "error" ? "bg-red-400" : "bg-gray-600"
-                                      }`}
-                                      style={{ width: `${step.progress}%` }}
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
+                {/* 消息列表 */}
+                <ScrollArea className="flex-1 p-4">
+                  <div className="space-y-3">
+                    {messages.map((message) => (
+                      <div
+                        key={message.id}
+                        className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
+                      >
+                        <div className="flex items-start gap-2 max-w-[85%]">
+                          {message.type !== "user" && (
+                            <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
+                              message.type === "system" ? "bg-gradient-to-br from-purple-500 to-pink-500" :
+                              "bg-gradient-to-br from-blue-500 to-cyan-500"
+                            }`}>
+                              {message.type === "system" ? (
+                                <Sparkles className="w-3 h-3 text-white" />
+                              ) : (
+                                <Bot className="w-3 h-3 text-white" />
+                              )}
+                            </div>
+                          )}
+                          <div
+                            className={`p-3 rounded-lg text-sm ${
+                              message.type === "user"
+                                ? "bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
+                                : message.type === "system"
+                                ? "bg-purple-500/20 text-purple-100 border border-purple-400/30"
+                                : "bg-white/10 backdrop-blur-sm text-white border border-white/20"
+                            }`}
+                          >
+                            <div className="whitespace-pre-line">{message.content}</div>
+                            <div className="text-xs opacity-70 mt-1">
+                              {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </ScrollArea>
-                  </>
-                ) : (
-                  <>
-                    {/* 消息列表 */}
-                    <ScrollArea className="flex-1 p-4">
-                      <div className="space-y-3">
-                        {messages.map((message) => (
-                          <div
-                            key={message.id}
-                            className={`flex ${message.type === "user" ? "justify-end" : "justify-start"}`}
-                          >
-                            <div className="flex items-start gap-2 max-w-[85%]">
-                              {message.type !== "user" && (
-                                <div className={`w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 ${
-                                  message.type === "system" ? "bg-gradient-to-br from-purple-500 to-pink-500" :
-                                  "bg-gradient-to-br from-blue-500 to-cyan-500"
-                                }`}>
-                                  {message.type === "system" ? (
-                                    <Sparkles className="w-3 h-3 text-white" />
-                                  ) : (
-                                    <Bot className="w-3 h-3 text-white" />
-                                  )}
-                                </div>
-                              )}
-                              <div
-                                className={`p-3 rounded-lg text-sm ${
-                                  message.type === "user"
-                                    ? "bg-gradient-to-br from-blue-500 to-cyan-500 text-white"
-                                    : message.type === "system"
-                                    ? "bg-purple-500/20 text-purple-100 border border-purple-400/30"
-                                    : "bg-white/10 backdrop-blur-sm text-white border border-white/20"
-                                }`}
-                              >
-                                <div className="whitespace-pre-line">{message.content}</div>
-                                <div className="text-xs opacity-70 mt-1">
-                                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </ScrollArea>
+                    ))}
+                  </div>
+                </ScrollArea>
 
-                    {/* 输入区域 */}
-                    <div className="p-4 border-t border-purple-500/20">
-                      <div className="flex gap-2">
-                        <Input
-                          value={inputValue}
-                          onChange={(e) => setInputValue(e.target.value)}
-                          onKeyPress={handleKeyPress}
-                          placeholder="与AI助手对话..."
-                          className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-purple-400"
-                        />
-                        <Button
-                          onClick={handleSendMessage}
-                          size="sm"
-                          className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
-                        >
-                          <Send className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </>
-                )}
+                {/* 输入区域 */}
+                <div className="p-4 border-t border-purple-500/20">
+                  <div className="flex gap-2">
+                    <Input
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      placeholder="与AI助手对话..."
+                      className="flex-1 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-purple-400"
+                    />
+                    <Button
+                      onClick={handleSendMessage}
+                      size="sm"
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
+                    >
+                      <Send className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </>
           )}
