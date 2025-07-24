@@ -66,6 +66,12 @@ export const HomePage = ({
     icon: Stethoscope,
     description: "系统诊断和故障排除",
     gradient: "from-rose-500 to-pink-500"
+  }, {
+    id: "jupyter",
+    name: "Jupyter",
+    icon: Package,
+    description: "Jupyter云上开发环境",
+    gradient: "from-amber-500 to-yellow-500"
   }];
   const handleModuleClick = (moduleId: string) => {
     onNavigate?.(moduleId);

@@ -20,6 +20,7 @@ import { ModelDeployment } from "@/components/workspace/ModelDeployment";
 import { AIAgent } from "@/components/workspace/AIAgent";
 import { ComponentMarketplace } from "@/components/marketplace/ComponentMarketplace";
 import { ComponentWorkspace } from "@/components/marketplace/ComponentWorkspace";
+import { JupyterConfig } from "@/components/workspace/JupyterConfig";
 import { WorkspaceTemplate } from "@/components/workspace/WorkspaceTemplate";
 import { WorkspaceToolbar } from "@/components/workspace/WorkspaceToolbar";
 import { WorkspaceModeProvider } from "@/components/workspace/WorkspaceModeProvider";
@@ -706,6 +707,8 @@ const Workspace = () => {
         return <JobQueue />;
       case "diagnostics":
         return <Diagnostics />;
+      case "jupyter":
+        return <JupyterConfig />;
       case "monitor":
         return <div className="space-y-6">
             <div className="mb-6">
