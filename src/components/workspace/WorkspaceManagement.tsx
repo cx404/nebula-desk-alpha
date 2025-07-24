@@ -36,8 +36,13 @@ export const WorkspaceManagement = ({
         <h2 className="text-2xl font-bold text-white">工作空间管理</h2>
         <div className="flex flex-col gap-2">
           
-          <Button variant="outline" size="sm" className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20 flex items-center justify-center h-10 w-10 p-0">
-            <Shuffle className="w-4 h-4" />
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-purple-200 border-purple-300/30 hover:bg-purple-500/20 flex items-center justify-center h-10 w-10 p-0"
+            onClick={() => onNavigate?.('home')}
+          >
+            <Plus className="w-4 h-4" />
           </Button>
         </div>
       </div>
