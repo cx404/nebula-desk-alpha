@@ -1,11 +1,22 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FolderOpen, Activity, ShoppingCart, Package, FileText, RefreshCw, ListTodo, Stethoscope } from "lucide-react";
+
+interface InstalledComponent {
+  id: string;
+  name: string;
+  icon: string;
+  description: string;
+  category: string;
+}
+
 interface HomePageProps {
   onNavigate?: (nav: string) => void;
+  installedComponents?: InstalledComponent[];
 }
 export const HomePage = ({
-  onNavigate
+  onNavigate,
+  installedComponents = []
 }: HomePageProps) => {
   const functionModules = [{
     id: "workspace",
@@ -95,5 +106,36 @@ export const HomePage = ({
         })}
         </div>
       </Card>
+
+      {/* 已安装的组件 */}
+      {installedComponents.length > 0 && (
+        <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+          <h3 className="text-lg font-semibold text-white mb-4">已安装的组件</h3>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+            {installedComponents.map(component => (
+              <div key={component.id} className="group cursor-pointer">
+                <Card className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300 hover:bg-white/10 hover:scale-105 hover:shadow-xl hover:shadow-green-500/20">
+                  <div className="flex flex-col items-center text-center space-y-4">
+                    {/* 图标容器 */}
+                    <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <span className="text-2xl">{component.icon}</span>
+                    </div>
+                    
+                    {/* 组件名称 */}
+                    <h3 className="text-base font-semibold text-white group-hover:text-green-200 transition-colors duration-300">
+                      {component.name}
+                    </h3>
+                    
+                    {/* 描述 */}
+                    <p className="text-xs text-gray-400 group-hover:text-gray-300 transition-colors duration-300 line-clamp-2">
+                      {component.description}
+                    </p>
+                  </div>
+                </Card>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
     </div>;
 };

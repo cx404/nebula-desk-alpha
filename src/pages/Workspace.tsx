@@ -57,6 +57,7 @@ const Workspace = () => {
   }]);
   const [newMessage, setNewMessage] = useState("");
   const [workspaceComponents, setWorkspaceComponents] = useState<any[]>([]);
+  const [installedComponents, setInstalledComponents] = useState<any[]>([]);
 
   // 图表数据状态
   const [resourceData, setResourceData] = useState([]);
@@ -88,6 +89,23 @@ const Workspace = () => {
   // AI导航栏状态
   const [showAINavigator, setShowAINavigator] = useState(false);
   const [aiNavigatorCollapsed, setAINavigatorCollapsed] = useState(false);
+
+  // 处理组件安装
+  const handleComponentInstall = (component: any) => {
+    const installedComponent = {
+      id: component.id,
+      name: component.name,
+      icon: typeof component.icon === 'string' ? component.icon : '🔧',
+      description: component.description,
+      category: component.category
+    };
+    setInstalledComponents(prev => [...prev.filter(c => c.id !== component.id), installedComponent]);
+  };
+
+  // 处理组件卸载
+  const handleComponentUninstall = (componentId: string) => {
+    setInstalledComponents(prev => prev.filter(c => c.id !== componentId));
+  };
 
   // 初始化当前工作空间名称
   useEffect(() => {
@@ -679,7 +697,7 @@ const Workspace = () => {
   const renderContent = () => {
     switch (selectedNav) {
       case "home":
-        return <HomePage onNavigate={setSelectedNav} />;
+        return <HomePage onNavigate={setSelectedNav} installedComponents={installedComponents} />;
       case "workspace":
         return <WorkspaceManagement currentWorkspace={currentWorkspace} onNavigate={setSelectedNav} />;
       case "filesync":
@@ -837,7 +855,7 @@ const Workspace = () => {
             </div>
           </div>;
       case "marketplace":
-        return <ComponentMarketplace />;
+        return <ComponentMarketplace onComponentInstall={handleComponentInstall} onComponentUninstall={handleComponentUninstall} />;
       case "workspace":
         return renderWorkspaceByType();
       case "template":

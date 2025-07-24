@@ -27,6 +27,11 @@ interface Component {
   groupId?: string;
 }
 
+interface ComponentMarketplaceProps {
+  onComponentInstall?: (component: Component) => void;
+  onComponentUninstall?: (componentId: string) => void;
+}
+
 interface ComponentGroup {
   id: string;
   name: string;
@@ -119,7 +124,7 @@ const communityComponents: Component[] = [
   }
 ];
 
-export const ComponentMarketplace = () => {
+export const ComponentMarketplace = ({ onComponentInstall, onComponentUninstall }: ComponentMarketplaceProps = {}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -159,6 +164,9 @@ export const ComponentMarketplace = () => {
       comp.id === componentId ? { ...comp, isInstalled: true } : comp
     ));
     const component = components.find(c => c.id === componentId);
+    if (component && onComponentInstall) {
+      onComponentInstall({ ...component, isInstalled: true });
+    }
     toast.success(`${component?.name} 安装成功！`);
   };
 
@@ -167,6 +175,9 @@ export const ComponentMarketplace = () => {
       comp.id === componentId ? { ...comp, isInstalled: false } : comp
     ));
     const component = components.find(c => c.id === componentId);
+    if (onComponentUninstall) {
+      onComponentUninstall(componentId);
+    }
     toast.success(`${component?.name} 已卸载`);
   };
 
