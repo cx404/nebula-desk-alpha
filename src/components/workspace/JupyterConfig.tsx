@@ -50,6 +50,21 @@ export const JupyterConfig = ({ onBack }: JupyterConfigProps) => {
 
       {/* 配置卡片 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+        {/* 新建配置卡片 */}
+        <Card className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border-2 border-dashed border-white/30 hover:border-white/50 transition-all duration-300 cursor-pointer group">
+          <div className="flex flex-col items-center justify-center h-full min-h-[300px] space-y-4">
+            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-all duration-300">
+              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <div className="text-center">
+              <h3 className="text-lg font-semibold text-white mb-2">新建资源配置</h3>
+              <p className="text-sm text-gray-400">创建自定义的Jupyter环境配置</p>
+            </div>
+          </div>
+        </Card>
+        
         {configurations.map((config) => (
           <Card key={config.id} className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20 hover:border-white/30 transition-all duration-300">
             <div className="space-y-4">
