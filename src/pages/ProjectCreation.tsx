@@ -420,9 +420,9 @@ const ProjectCreation = () => {
 
           {/* AI 聊天窗口 - 缩小 */}
           <Card className="glass-card border-2 border-white/30 shadow-2xl hover:border-white/50 transition-all duration-300 backdrop-blur-xl bg-purple-900">
-            <div className="p-6 px-[20px] py-[18px]">
-              {/* 聊天消息区域 - 减小高度 */}
-              <div className="h-[350px] overflow-y-auto mb-4 space-y-4 scrollbar-thin scrollbar-thumb-white/20">
+            <div className="p-4 px-[16px] py-[14px]">
+              {/* 聊天消息区域 - 缩小高度 */}
+              <div className="h-[250px] overflow-y-auto mb-3 space-y-3 scrollbar-thin scrollbar-thumb-white/20">
                 {chatMessages.map(message => <div key={message.id} className={`flex items-start gap-3 animate-fade-in ${message.type === 'user' ? 'flex-row-reverse' : ''}`}>
                     <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${message.type === 'ai' ? 'bg-gradient-to-br from-blue-500 to-purple-600' : 'bg-gradient-to-br from-green-500 to-blue-500'}`}>
                       {message.type === 'ai' ? <Bot className="w-4 h-4 text-white" /> : <span className="text-white text-xs font-bold">我</span>}
@@ -457,15 +457,146 @@ const ProjectCreation = () => {
               </div>
 
               {/* 输入区域 */}
-              <div className="flex gap-4">
-                <Input value={chatInput} onChange={e => setChatInput(e.target.value)} placeholder="描述您想要创建的项目，比如：我想做一个电商网站..." onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1 border-white/20 focus:border-white/40 bg-white/10 text-white placeholder:text-white/60 text-lg px-6 rounded-xl py-0" />
-                <Button onClick={handleSendMessage} disabled={!chatInput.trim() || isAIThinking} className="btn-premium px-8 py-4 text-lg rounded-xl">
-                  <Send className="w-5 h-5 mr-2" />
+              <div className="flex gap-3">
+                <Input value={chatInput} onChange={e => setChatInput(e.target.value)} placeholder="描述您想要创建的项目，比如：我想做一个电商网站..." onKeyPress={e => e.key === 'Enter' && handleSendMessage()} className="flex-1 border-white/20 focus:border-white/40 bg-white/10 text-white placeholder:text-white/60 text-base px-4 rounded-lg py-0" />
+                <Button onClick={handleSendMessage} disabled={!chatInput.trim() || isAIThinking} className="btn-premium px-6 py-3 text-base rounded-lg">
+                  <Send className="w-4 h-4 mr-2" />
                   发送
                 </Button>
               </div>
             </div>
           </Card>
+        </div>
+
+        {/* 我的工作空间 */}
+        <div className="max-w-7xl mx-auto mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+              <Rocket className="w-4 h-4 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-white">我的工作空间</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* 最近打开的工作空间 */}
+            <Card className="glass-card border border-white/20 bg-white/5 backdrop-blur-xl">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">最近打开</h3>
+                <div className="space-y-3">
+                  {[
+                    { name: "React 电商项目", lastOpened: "2小时前", type: "React + TypeScript" },
+                    { name: "Python 数据分析", lastOpened: "1天前", type: "Python + Jupyter" },
+                    { name: "AI 模型训练", lastOpened: "3天前", type: "PyTorch + CUDA" }
+                  ].map((workspace, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                      <div>
+                        <div className="font-medium text-white">{workspace.name}</div>
+                        <div className="text-sm text-white/60">{workspace.type}</div>
+                      </div>
+                      <div className="text-xs text-white/50">{workspace.lastOpened}</div>
+                    </div>
+                  ))}
+                </div>
+                <Button variant="outline" className="w-full mt-4 border-white/20 text-white hover:bg-white/10">
+                  查看全部工作空间
+                </Button>
+              </div>
+            </Card>
+
+            {/* 所有工作空间 */}
+            <Card className="glass-card border border-white/20 bg-white/5 backdrop-blur-xl">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">所有工作空间</h3>
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  {[
+                    { name: "Web开发", count: 5, icon: "🌐" },
+                    { name: "AI/ML", count: 3, icon: "🤖" },
+                    { name: "数据分析", count: 2, icon: "📊" },
+                    { name: "其他", count: 1, icon: "📁" }
+                  ].map((category, index) => (
+                    <div key={index} className="p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer text-center">
+                      <div className="text-2xl mb-1">{category.icon}</div>
+                      <div className="font-medium text-white text-sm">{category.name}</div>
+                      <div className="text-xs text-white/60">{category.count} 个项目</div>
+                    </div>
+                  ))}
+                </div>
+                <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
+                  管理工作空间
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </div>
+
+        {/* 社区模块 */}
+        <div className="max-w-7xl mx-auto mb-8">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-white">社区</h2>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* 工作空间模板 */}
+            <Card className="glass-card border border-white/20 bg-white/5 backdrop-blur-xl">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">工作空间模板</h3>
+                <div className="grid grid-cols-1 gap-3 mb-4">
+                  {[
+                    { name: "全栈开发模板", downloads: "1.2k", rating: "4.8", author: "开发团队" },
+                    { name: "机器学习模板", downloads: "890", rating: "4.9", author: "AI社区" },
+                    { name: "数据科学模板", downloads: "756", rating: "4.7", author: "数据团队" }
+                  ].map((template, index) => (
+                    <div key={index} className="p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="font-medium text-white">{template.name}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-yellow-400">⭐ {template.rating}</span>
+                          <span className="text-xs text-white/60">{template.downloads}</span>
+                        </div>
+                      </div>
+                      <div className="text-xs text-white/60">by {template.author}</div>
+                    </div>
+                  ))}
+                </div>
+                <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
+                  浏览更多模板
+                </Button>
+              </div>
+            </Card>
+
+            {/* 用户上传的工作空间 */}
+            <Card className="glass-card border border-white/20 bg-white/5 backdrop-blur-xl">
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-white mb-4">社区分享</h3>
+                <div className="grid grid-cols-1 gap-3 mb-4">
+                  {[
+                    { name: "个人博客系统", author: "张三", likes: "45", category: "Web开发" },
+                    { name: "图像识别项目", author: "李四", likes: "32", category: "AI/ML" },
+                    { name: "销售数据分析", author: "王五", likes: "28", category: "数据分析" }
+                  ].map((project, index) => (
+                    <div key={index} className="p-3 rounded-lg bg-white/5 hover:bg-white/10 transition-colors cursor-pointer">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="font-medium text-white">{project.name}</div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs text-red-400">❤️ {project.likes}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-white/60">by {project.author}</div>
+                        <Badge variant="secondary" className="text-xs">{project.category}</Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
+                  分享我的工作空间
+                </Button>
+              </div>
+            </Card>
+          </div>
         </div>
 
         {/* 传统创建方式 - 缩小占比，更低调 */}
