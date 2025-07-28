@@ -95,13 +95,13 @@ export const FixedSidebar = ({
               >
                 <Home className={`w-5 h-5 ${isCollapsed ? '' : 'mr-3'} transition-all duration-200`} />
                 {!isCollapsed && (
-                  <span className="truncate text-sm font-medium">首页</span>
+                  <span className="truncate text-sm font-medium">工作空间</span>
                 )}
               </Button>
             </TooltipTrigger>
             {isCollapsed && (
               <TooltipContent side="right" className="glass-card text-foreground border-border/30">
-                首页
+                工作空间
               </TooltipContent>
             )}
           </Tooltip>
