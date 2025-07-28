@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FolderOpen, Activity, ShoppingCart, Package, FileText, RefreshCw, ListTodo, Stethoscope } from "lucide-react";
-
 interface InstalledComponent {
   id: string;
   name: string;
@@ -9,7 +8,6 @@ interface InstalledComponent {
   description: string;
   category: string;
 }
-
 interface HomePageProps {
   onNavigate?: (nav: string) => void;
   installedComponents?: InstalledComponent[];
@@ -79,8 +77,8 @@ export const HomePage = ({
   return <div className="p-6 space-y-6">
       {/* 页面标题 */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-white mb-2">首页</h1>
-        <p className="text-gray-400">欢迎使用工作空间管理系统</p>
+        <h1 className="text-3xl font-bold text-white mb-2">工作空间</h1>
+        <p className="text-gray-400">欢迎来到个人工作空间，开始定制你的专属工作空间吧</p>
       </div>
 
       {/* 功能模块 */}
@@ -114,12 +112,10 @@ export const HomePage = ({
       </Card>
 
       {/* 已安装的组件 */}
-      {installedComponents.length > 0 && (
-        <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
+      {installedComponents.length > 0 && <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
           <h3 className="text-lg font-semibold text-white mb-4">已安装的组件</h3>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-            {installedComponents.map(component => (
-              <div key={component.id} className="group cursor-pointer">
+            {installedComponents.map(component => <div key={component.id} className="group cursor-pointer">
                 <Card className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-white/30 transition-all duration-300 hover:bg-white/10 hover:scale-105 hover:shadow-xl hover:shadow-green-500/20">
                   <div className="flex flex-col items-center text-center space-y-4">
                     {/* 图标容器 */}
@@ -138,10 +134,8 @@ export const HomePage = ({
                     </p>
                   </div>
                 </Card>
-              </div>
-            ))}
+              </div>)}
           </div>
-        </Card>
-      )}
+        </Card>}
     </div>;
 };
