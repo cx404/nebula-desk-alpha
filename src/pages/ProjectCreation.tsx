@@ -468,6 +468,71 @@ const ProjectCreation = () => {
           </Card>
         </div>
 
+        {/* 传统创建方式 - 缩小占比，更低调 */}
+        <div className="max-w-2xl mx-auto opacity-70 hover:opacity-90 transition-opacity duration-300 mb-12">
+          <div className="text-center mb-4">
+            <p className="text-xs text-white/60">或者选择传统创建方式</p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-3">
+            {/* 简化的模板创建 */}
+            <Card className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20">
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-6 h-6 bg-blue-400/30 rounded-lg flex items-center justify-center">
+                  <Rocket className="w-3 h-3 text-blue-300" />
+                </div>
+                <h3 className="text-sm font-medium text-white">模板创建</h3>
+              </div>
+              <p className="text-xs text-white/60 mb-2">从预设模板快速创建</p>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="mt-3 w-full">
+                    选择模板
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-lg border-border/50">
+                  {templates.map(template => <DropdownMenuItem key={template.id} onClick={() => {
+                  createWorkspace({
+                    name: `${template.name} 工作空间`,
+                    description: template.description,
+                    type: "template",
+                    components: []
+                  });
+                  navigate("/workspace");
+                }}>
+                      <div>
+                        <div className="font-medium">{template.name}</div>
+                        <div className="text-xs text-muted-foreground">{template.description}</div>
+                      </div>
+                    </DropdownMenuItem>)}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </Card>
+
+            {/* 简化的空白创建 */}
+            <Card className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20" onClick={() => {
+            createWorkspace({
+              name: "空白工作空间",
+              description: "从零开始创建的空白工作空间",
+              type: "blank",
+              components: []
+            });
+            navigate("/workspace");
+          }}>
+              <div className="flex items-center gap-2 mb-1">
+                <div className="w-6 h-6 bg-purple-400/30 rounded-lg flex items-center justify-center">
+                  <FileText className="w-3 h-3 text-purple-300" />
+                </div>
+                <h3 className="text-sm font-medium text-white">空白创建</h3>
+              </div>
+              <p className="text-xs text-white/60 mb-2">从零开始创建全新项目</p>
+              <Button variant="outline" size="sm" className="w-full border-white/20 mx-0 my-[12px] text-sm text-neutral-50 bg-slate-950 hover:bg-slate-800">
+                立即创建
+              </Button>
+            </Card>
+          </div>
+        </div>
+
         {/* 我的工作空间 */}
         <div className="max-w-7xl mx-auto mb-8">
           <div className="flex items-center gap-3 mb-6">
@@ -599,70 +664,6 @@ const ProjectCreation = () => {
           </div>
         </div>
 
-        {/* 传统创建方式 - 缩小占比，更低调 */}
-        <div className="max-w-2xl mx-auto opacity-70 hover:opacity-90 transition-opacity duration-300">
-          <div className="text-center mb-4">
-            <p className="text-xs text-white/60">或者选择传统创建方式</p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-3">
-            {/* 简化的模板创建 */}
-            <Card className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20">
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-6 h-6 bg-blue-400/30 rounded-lg flex items-center justify-center">
-                  <Rocket className="w-3 h-3 text-blue-300" />
-                </div>
-                <h3 className="text-sm font-medium text-white">模板创建</h3>
-              </div>
-              <p className="text-xs text-white/60 mb-2">从预设模板快速创建</p>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="mt-3 w-full">
-                    选择模板
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 bg-card/95 backdrop-blur-lg border-border/50">
-                  {templates.map(template => <DropdownMenuItem key={template.id} onClick={() => {
-                  createWorkspace({
-                    name: `${template.name} 工作空间`,
-                    description: template.description,
-                    type: "template",
-                    components: []
-                  });
-                  navigate("/workspace");
-                }}>
-                      <div>
-                        <div className="font-medium">{template.name}</div>
-                        <div className="text-xs text-muted-foreground">{template.description}</div>
-                      </div>
-                    </DropdownMenuItem>)}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </Card>
-
-            {/* 简化的空白创建 */}
-            <Card className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20" onClick={() => {
-            createWorkspace({
-              name: "空白工作空间",
-              description: "从零开始创建的空白工作空间",
-              type: "blank",
-              components: []
-            });
-            navigate("/workspace");
-          }}>
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-6 h-6 bg-purple-400/30 rounded-lg flex items-center justify-center">
-                  <FileText className="w-3 h-3 text-purple-300" />
-                </div>
-                <h3 className="text-sm font-medium text-white">空白创建</h3>
-              </div>
-              <p className="text-xs text-white/60 mb-2">从零开始创建全新项目</p>
-              <Button variant="outline" size="sm" className="w-full border-white/20 mx-0 my-[12px] text-sm text-neutral-50 bg-slate-950 hover:bg-slate-800">
-                立即创建
-              </Button>
-            </Card>
-          </div>
-        </div>
       </div>
     </div>;
 };
