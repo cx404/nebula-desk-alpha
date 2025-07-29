@@ -193,6 +193,16 @@ export const ComponentMarketplace = ({ onComponentInstall, onComponentUninstall 
     if (component && onComponentInstall) {
       onComponentInstall({ ...component, isInstalled: true });
     }
+    
+    // 将已安装组件添加到工作空间
+    const installedComponents = JSON.parse(localStorage.getItem('installedComponents') || '[]');
+    if (!installedComponents.find((comp: any) => comp.id === componentId)) {
+      installedComponents.push({ ...component, isInstalled: true });
+      localStorage.setItem('installedComponents', JSON.stringify(installedComponents));
+      // 触发工作空间更新
+      window.dispatchEvent(new Event('installedComponentsChanged'));
+    }
+    
     toast.success(`${component?.name} 安装成功！`);
   };
 
@@ -204,6 +214,14 @@ export const ComponentMarketplace = ({ onComponentInstall, onComponentUninstall 
     if (onComponentUninstall) {
       onComponentUninstall(componentId);
     }
+    
+    // 从工作空间移除已卸载的组件
+    const installedComponents = JSON.parse(localStorage.getItem('installedComponents') || '[]');
+    const updatedComponents = installedComponents.filter((comp: any) => comp.id !== componentId);
+    localStorage.setItem('installedComponents', JSON.stringify(updatedComponents));
+    // 触发工作空间更新
+    window.dispatchEvent(new Event('installedComponentsChanged'));
+    
     toast.success(`${component?.name} 已卸载`);
   };
 

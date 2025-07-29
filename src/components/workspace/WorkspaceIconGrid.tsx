@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   FolderOpen, 
   Activity, 
@@ -9,7 +9,10 @@ import {
   ListTodo, 
   Stethoscope,
   Layers,
-  Download
+  Download,
+  Terminal,
+  Brain,
+  Cpu
 } from "lucide-react";
 
 interface WorkspaceIcon {
@@ -37,6 +40,7 @@ export const WorkspaceIconGrid = ({ onIconClick }: WorkspaceIconGridProps) => {
   const [gridLayout, setGridLayout] = useState<(string | null)[][]>(
     Array(4).fill(null).map(() => Array(4).fill(null))
   );
+  const [installedComponents, setInstalledComponents] = useState<WorkspaceIcon[]>([]);
 
   const icons: WorkspaceIcon[] = [
     { id: "workspace", name: "工作空间管理", icon: FolderOpen, color: "text-blue-400" },
@@ -50,7 +54,75 @@ export const WorkspaceIconGrid = ({ onIconClick }: WorkspaceIconGridProps) => {
     { id: "import", name: "导入组件", icon: Download, color: "text-indigo-400" }
   ];
 
-  const availableIcons = icons.filter(icon => 
+  // 从localStorage加载已安装的组件
+  useEffect(() => {
+    const loadInstalledComponents = () => {
+      const stored = localStorage.getItem('installedComponents');
+      if (stored) {
+        try {
+          const components = JSON.parse(stored);
+          const workspaceIcons = components.map((comp: any) => {
+            let iconComponent = Package;
+            let color = "text-gray-400";
+            
+            // 根据组件ID匹配对应的图标
+            switch (comp.id) {
+              case "dev-machine":
+                iconComponent = Terminal;
+                color = "text-blue-400";
+                break;
+              case "training-task":
+                iconComponent = Brain;
+                color = "text-purple-400";
+                break;
+              case "model-inference":
+                iconComponent = Cpu;
+                color = "text-green-400";
+                break;
+              case "jupyter":
+                iconComponent = FileText;
+                color = "text-orange-400";
+                break;
+              default:
+                iconComponent = Package;
+                color = "text-gray-400";
+            }
+            
+            return {
+              id: comp.id,
+              name: comp.name,
+              icon: iconComponent,
+              color: color
+            };
+          });
+          setInstalledComponents(workspaceIcons);
+        } catch (error) {
+          console.error('Error loading installed components:', error);
+        }
+      }
+    };
+
+    loadInstalledComponents();
+    
+    // 监听localStorage变化
+    const handleStorageChange = () => {
+      loadInstalledComponents();
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    // 监听自定义事件用于同一窗口内的更新
+    window.addEventListener('installedComponentsChanged', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('installedComponentsChanged', handleStorageChange);
+    };
+  }, []);
+
+  // 合并原有图标和已安装的组件
+  const allIcons = [...icons, ...installedComponents];
+  
+  const availableIcons = allIcons.filter(icon => 
     !customGroups.some(group => 
       group.components.some(comp => comp.id === icon.id)
     )
@@ -73,8 +145,8 @@ export const WorkspaceIconGrid = ({ onIconClick }: WorkspaceIconGridProps) => {
       return;
     }
 
-    const draggedIcon = icons.find(icon => icon.id === draggedItem);
-    const targetIcon = icons.find(icon => icon.id === targetId);
+    const draggedIcon = allIcons.find(icon => icon.id === draggedItem);
+    const targetIcon = allIcons.find(icon => icon.id === targetId);
 
     if (draggedIcon && targetIcon) {
       const newGroup: CustomGroup = {
