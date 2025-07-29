@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
-import { Terminal, FileText, Settings, Rocket, Folder, Edit3 } from "lucide-react";
+import { Terminal, FileText, Settings, Rocket, Folder, Edit3, Brain, Cpu } from "lucide-react";
 
 interface Component {
   id: string;
@@ -42,16 +42,42 @@ interface ComponentGroup {
 
 const officialComponents: Component[] = [
   {
-    id: "terminal",
-    name: "Terminal",
-    description: "全功能终端，支持命令行操作和脚本执行",
+    id: "dev-machine",
+    name: "开发机",
+    description: "云端开发环境，支持完整开发工作流和远程协作",
     icon: <Terminal className="w-6 h-6" />,
     category: "开发工具",
     type: "official",
-    features: ["命令行界面", "脚本执行", "多窗口支持", "历史记录"],
+    features: ["云端开发", "远程协作", "环境隔离", "资源弹性"],
     downloads: 15420,
     rating: 4.8,
-    tags: ["终端", "命令行", "开发"],
+    tags: ["开发机", "云端", "协作"],
+    isInstalled: false
+  },
+  {
+    id: "training-task",
+    name: "训练任务",
+    description: "机器学习模型训练任务管理，支持分布式训练和任务调度",
+    icon: <Brain className="w-6 h-6" />,
+    category: "AI工具",
+    type: "official",
+    features: ["分布式训练", "任务调度", "资源管理", "训练监控"],
+    downloads: 8950,
+    rating: 4.7,
+    tags: ["训练", "机器学习", "分布式"],
+    isInstalled: false
+  },
+  {
+    id: "model-inference",
+    name: "模型推理",
+    description: "高效模型推理服务，支持批量推理和实时API服务",
+    icon: <Cpu className="w-6 h-6" />,
+    category: "AI工具",
+    type: "official",
+    features: ["实时推理", "批量处理", "API服务", "性能优化"],
+    downloads: 7630,
+    rating: 4.8,
+    tags: ["推理", "API", "服务"],
     isInstalled: false
   },
   {
