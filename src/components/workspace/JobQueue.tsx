@@ -2,8 +2,19 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Play, Clock, CheckCircle, DollarSign, Zap, MoreHorizontal, X } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Play, Clock, CheckCircle, DollarSign, Zap, MoreHorizontal, X, Plus, ChevronDown } from "lucide-react";
+import { useState } from "react";
 export const JobQueue = () => {
+  const [selectedWorkspace, setSelectedWorkspace] = useState("all");
+  
+  const workspaces = [
+    { value: "all", label: "全部工作空间" },
+    { value: "workspace-1", label: "机器学习工作空间" },
+    { value: "workspace-2", label: "深度学习工作空间" },
+    { value: "workspace-3", label: "数据分析工作空间" }
+  ];
+
   const stats = [{
     label: "Running",
     value: "1",
@@ -113,7 +124,28 @@ export const JobQueue = () => {
           <h1 className="text-3xl font-bold text-white mb-2">任务队列</h1>
           <p className="text-gray-400">实时监控并管理您的任务运行情况</p>
         </div>
-        
+        <div className="flex items-center gap-3">
+          <Select value={selectedWorkspace} onValueChange={setSelectedWorkspace}>
+            <SelectTrigger className="w-48 bg-white/10 border-white/20 text-white">
+              <SelectValue placeholder="选择工作空间" />
+            </SelectTrigger>
+            <SelectContent className="bg-gray-900/95 backdrop-blur-xl border-white/20">
+              {workspaces.map((workspace) => (
+                <SelectItem 
+                  key={workspace.value} 
+                  value={workspace.value}
+                  className="text-white hover:bg-white/10 focus:bg-white/10"
+                >
+                  {workspace.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Plus className="w-4 h-4 mr-2" />
+            创建任务
+          </Button>
+        </div>
       </div>
 
       {/* Stats Cards */}
