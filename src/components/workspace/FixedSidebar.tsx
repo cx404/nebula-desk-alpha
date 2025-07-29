@@ -48,30 +48,11 @@ export const FixedSidebar = ({
 
   return (
     <TooltipProvider>
-      <div className={`sidebar-glass fixed left-0 top-0 h-full transition-all duration-300 z-40 ${
+      <div className={`sidebar-glass fixed left-0 top-16 h-[calc(100vh-4rem)] transition-all duration-300 z-40 ${
         isCollapsed ? 'w-16' : 'w-64'
       }`}>
-        {/* Header with Home and Toggle */}
-        <div className="flex items-center justify-between p-3 border-b border-border/20">
-          {/* Home Button */}
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleHomeClick}
-                className="magic-icon text-foreground/80 hover:text-foreground hover:bg-primary/10"
-              >
-                {!isCollapsed && <span className="text-sm">LOGO</span>}
-              </Button>
-            </TooltipTrigger>
-            {isCollapsed && (
-              <TooltipContent side="right" className="glass-card text-foreground border-border/30">
-                返回首页
-              </TooltipContent>
-            )}
-          </Tooltip>
-
+        {/* Header with Toggle */}
+        <div className="flex items-center justify-end p-3 border-b border-border/20">
           {/* Toggle Button */}
           <Button
             variant="ghost"

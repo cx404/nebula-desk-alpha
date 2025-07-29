@@ -30,6 +30,7 @@ import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement"
 import { HomePage } from "@/components/workspace/HomePage";
 import { FloatingAIChat } from "@/components/workspace/FloatingAIChat";
 import { AIWorkspaceNavigator } from "@/components/workspace/AIWorkspaceNavigator";
+import { TopNavBar } from "@/components/workspace/TopNavBar";
 import { JobQueue } from "@/components/workspace/JobQueue";
 import { FileSync } from "@/components/workspace/FileSync";
 import { Diagnostics } from "@/components/workspace/Diagnostics";
@@ -1233,11 +1234,14 @@ const Workspace = () => {
   };
   return <WorkspaceModeProvider>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black relative flex">
+        {/* 顶部导航栏 */}
+        <TopNavBar />
+        
         {/* 导航栏 - 根据模式选择 */}
         {useFixedSidebar ? <FixedSidebar selectedNav={selectedNav} onNavSelect={setSelectedNav} isCollapsed={sidebarCollapsed} onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)} /> : <FloatingNavigation selectedNav={selectedNav} onNavSelect={setSelectedNav} onNewWorkspace={handleNewWorkspace} onSwitchWorkspace={handleSwitchWorkspace} onSaveTemplate={handleSaveTemplate} onDeleteTemplate={handleDeleteTemplate} />}
       
-        {/* 主内容区域 - 向右移动并居中分布 */}
-        <div className={`flex-1 flex flex-col transition-all duration-300 ${useFixedSidebar ? sidebarCollapsed ? 'ml-16' : 'ml-64' : 'ml-20'} ${showAINavigator ? aiNavigatorCollapsed ? 'mr-16' : 'mr-96' : 'mr-0'}`}>
+        {/* 主内容区域 - 向右移动并居中分布，添加顶部边距 */}
+        <div className={`flex-1 flex flex-col transition-all duration-300 pt-16 ${useFixedSidebar ? sidebarCollapsed ? 'ml-16' : 'ml-64' : 'ml-20'} ${showAINavigator ? aiNavigatorCollapsed ? 'mr-16' : 'mr-96' : 'mr-0'}`}>
             {/* 顶部导航栏 - 只保留工作空间名称和切换、运行状态 */}
             <div className="backdrop-blur-xl border-b border-white/10 px-6 py-4 bg-gray-800">
               <div className="flex items-center justify-between">
