@@ -28,7 +28,6 @@ import { FloatingNavigation } from "@/components/workspace/FloatingNavigation";
 import { FixedSidebar } from "@/components/workspace/FixedSidebar";
 import { WorkspaceManagement } from "@/components/workspace/WorkspaceManagement";
 import { HomePage } from "@/components/workspace/HomePage";
-import { WorkspaceIconGrid } from "@/components/workspace/WorkspaceIconGrid";
 import { FloatingAIChat } from "@/components/workspace/FloatingAIChat";
 import { AIWorkspaceNavigator } from "@/components/workspace/AIWorkspaceNavigator";
 import { TopNavBar } from "@/components/workspace/TopNavBar";
@@ -692,12 +691,6 @@ const Workspace = () => {
             <div className="space-y-6">
               <ComponentWorkspace initialComponents={workspaceComponents} />
             </div>
-
-            {/* 组件模块 */}
-            <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
-              <h3 className="text-lg font-semibold text-white mb-4">组件</h3>
-              <WorkspaceIconGrid onIconClick={setSelectedNav} />
-            </Card>
           </div>;
     }
   };
@@ -707,7 +700,7 @@ const Workspace = () => {
     switch (selectedNav) {
       case "home":
         return <HomePage onNavigate={setSelectedNav} installedComponents={installedComponents} />;
-      case "management":
+      case "workspace":
         return <WorkspaceManagement currentWorkspace={currentWorkspace} onNavigate={setSelectedNav} />;
       case "filesync":
         return <FileSync />;
