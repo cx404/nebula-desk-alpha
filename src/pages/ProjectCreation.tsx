@@ -510,15 +510,7 @@ const ProjectCreation = () => {
             </Card>
 
             {/* 简化的空白创建 */}
-            <Card className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20" onClick={() => {
-            createWorkspace({
-              name: "空白工作空间",
-              description: "从零开始创建的空白工作空间",
-              type: "blank",
-              components: []
-            });
-            navigate("/workspace");
-          }}>
+            <Card className="p-3 cursor-pointer hover:scale-105 transition-all duration-300 bg-white/5 border-white/20">
               <div className="flex items-center gap-2 mb-1">
                 <div className="w-6 h-6 bg-purple-400/30 rounded-lg flex items-center justify-center">
                   <FileText className="w-3 h-3 text-purple-300" />
@@ -526,7 +518,20 @@ const ProjectCreation = () => {
                 <h3 className="text-sm font-medium text-white">空白创建</h3>
               </div>
               <p className="text-xs text-white/60 mb-2">从零开始创建全新项目</p>
-              <Button variant="outline" size="sm" className="w-full border-white/20 mx-0 my-[12px] text-sm text-neutral-50 bg-slate-950 hover:bg-slate-800">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="w-full border-white/20 mx-0 my-[12px] text-sm text-neutral-50 bg-slate-950 hover:bg-slate-800"
+                onClick={() => {
+                  createWorkspace({
+                    name: "空白工作空间",
+                    description: "从零开始创建的空白工作空间",
+                    type: "blank",
+                    components: []
+                  });
+                  navigate("/workspace");
+                }}
+              >
                 立即创建
               </Button>
             </Card>
