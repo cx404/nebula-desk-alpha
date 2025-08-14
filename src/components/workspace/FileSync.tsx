@@ -99,15 +99,15 @@ export const FileSync = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "completed":
-        return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Completed</Badge>;
+        return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">已完成</Badge>;
       case "in-progress":
-        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">In Progress</Badge>;
+        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">进行中</Badge>;
       case "pending":
-        return <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">Pending</Badge>;
+        return <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">等待中</Badge>;
       case "error":
-        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Error</Badge>;
+        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">错误</Badge>;
       default:
-        return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">Unknown</Badge>;
+        return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">未知</Badge>;
     }
   };
   const getStatusIcon = (status: string) => {
