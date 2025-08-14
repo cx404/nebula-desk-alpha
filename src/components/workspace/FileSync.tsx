@@ -216,19 +216,19 @@ export const FileSync = () => {
 
                 <div className="grid grid-cols-4 gap-4 text-xs">
                   <div>
-                    <div className="text-gray-400 mb-1">Size</div>
+                    <div className="text-gray-400 mb-1">大小</div>
                     <p className="text-white font-medium">{operation.size}</p>
                   </div>
                   <div>
-                    <div className="text-gray-400 mb-1">Speed</div>
+                    <div className="text-gray-400 mb-1">速度</div>
                     <p className="text-white font-medium">{operation.speed}</p>
                   </div>
                   <div>
-                    <div className="text-gray-400 mb-1">Time Left</div>
+                    <div className="text-gray-400 mb-1">剩余时间</div>
                     <p className="text-white font-medium">{operation.timeLeft}</p>
                   </div>
                   <div>
-                    <div className="text-gray-400 mb-1">Started</div>
+                    <div className="text-gray-400 mb-1">开始时间</div>
                     <p className="text-white font-medium">{operation.started}</p>
                   </div>
                 </div>
