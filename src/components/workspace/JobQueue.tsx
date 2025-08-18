@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Play, Clock, CheckCircle, DollarSign, Zap, MoreHorizontal, X, Plus, ChevronDown } from "lucide-react";
+import { Play, Clock, CheckCircle, DollarSign, Zap, MoreHorizontal, X, Plus, ChevronDown, Pause, Square, Edit, Trash2 } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 export const JobQueue = () => {
   const [selectedWorkspace, setSelectedWorkspace] = useState("all");
@@ -51,7 +52,8 @@ export const JobQueue = () => {
     eta: "剩余45分钟",
     cost: "$23.50",
     gpuUsage: "94%",
-    started: "3小时前开始"
+    started: "3小时前开始",
+    workspace: "机器学习工作空间"
   }, {
     id: "2",
     name: "图像分类训练",
@@ -63,7 +65,8 @@ export const JobQueue = () => {
     eta: "约3小时20分钟",
     cost: "$0.00",
     gpuUsage: "0%",
-    started: "15分钟前排队"
+    started: "15分钟前排队",
+    workspace: "深度学习工作空间"
   }, {
     id: "3",
     name: "神经风格迁移",
@@ -75,7 +78,8 @@ export const JobQueue = () => {
     eta: "已完成",
     cost: "$8.95",
     gpuUsage: "87%",
-    started: "4小时前开始"
+    started: "4小时前开始",
+    workspace: "机器学习工作空间"
   }, {
     id: "4",
     name: "大模型推理",
@@ -87,8 +91,14 @@ export const JobQueue = () => {
     eta: "失败 - 内存溢出",
     cost: "$2.40",
     gpuUsage: "65%",
-    started: "1小时前开始"
+    started: "1小时前开始",
+    workspace: "数据分析工作空间"
   }];
+
+  const handleTaskAction = (jobId: string, action: string) => {
+    console.log(`执行${action}操作，任务ID: ${jobId}`);
+    // 这里可以添加实际的任务操作逻辑
+  };
   const getStatusColor = (status: string) => {
     switch (status) {
       case "running":
@@ -179,14 +189,65 @@ export const JobQueue = () => {
                   <div>
                     <h3 className="text-white font-semibold">{job.name}</h3>
                     <p className="text-gray-400 text-sm">{job.type} • {job.gpu}</p>
+                    <Badge variant="secondary" className="mt-1 bg-blue-500/20 text-blue-400 border-blue-500/30 text-xs">
+                      {job.workspace}
+                    </Badge>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
                   {getStatusBadge(job.status)}
-                  <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </Button>
-                  {job.status === 'queued' && <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white">
+                        <MoreHorizontal className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="bg-gray-900/95 backdrop-blur-xl border-white/20 w-48">
+                      {job.status === 'running' && (
+                        <DropdownMenuItem 
+                          onClick={() => handleTaskAction(job.id, '暂停')}
+                          className="text-orange-400 hover:bg-white/10 focus:bg-white/10"
+                        >
+                          <Pause className="w-4 h-4 mr-2" />
+                          暂停任务
+                        </DropdownMenuItem>
+                      )}
+                      {(job.status === 'queued' || job.status === 'failed') && (
+                        <DropdownMenuItem 
+                          onClick={() => handleTaskAction(job.id, '启动')}
+                          className="text-green-400 hover:bg-white/10 focus:bg-white/10"
+                        >
+                          <Play className="w-4 h-4 mr-2" />
+                          启动任务
+                        </DropdownMenuItem>
+                      )}
+                      {job.status !== 'completed' && (
+                        <DropdownMenuItem 
+                          onClick={() => handleTaskAction(job.id, '停止')}
+                          className="text-red-400 hover:bg-white/10 focus:bg-white/10"
+                        >
+                          <Square className="w-4 h-4 mr-2" />
+                          停止任务
+                        </DropdownMenuItem>
+                      )}
+                      <DropdownMenuSeparator className="bg-white/20" />
+                      <DropdownMenuItem 
+                        onClick={() => handleTaskAction(job.id, '编辑')}
+                        className="text-blue-400 hover:bg-white/10 focus:bg-white/10"
+                      >
+                        <Edit className="w-4 h-4 mr-2" />
+                        编辑任务
+                      </DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onClick={() => handleTaskAction(job.id, '删除')}
+                        className="text-red-400 hover:bg-white/10 focus:bg-white/10"
+                      >
+                        <Trash2 className="w-4 h-4 mr-2" />
+                        删除任务
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                  {job.status === 'queued' && <Button variant="ghost" size="sm" className="text-red-400 hover:text-red-300" onClick={() => handleTaskAction(job.id, '取消排队')}>
                       <X className="w-4 h-4" />
                     </Button>}
                 </div>
