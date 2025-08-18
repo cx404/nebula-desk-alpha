@@ -16,25 +16,25 @@ export const JobQueue = () => {
   ];
 
   const stats = [{
-    label: "Running",
+    label: "运行中",
     value: "1",
     icon: Play,
     color: "text-green-400",
     bgColor: "bg-green-500/20"
   }, {
-    label: "Queued",
+    label: "排队中",
     value: "1",
     icon: Clock,
     color: "text-orange-400",
     bgColor: "bg-orange-500/20"
   }, {
-    label: "Completed",
+    label: "已完成",
     value: "23",
     icon: CheckCircle,
     color: "text-blue-400",
     bgColor: "bg-blue-500/20"
   }, {
-    label: "Total Cost",
+    label: "总费用",
     value: "$34.85",
     icon: DollarSign,
     color: "text-purple-400",
@@ -42,52 +42,52 @@ export const JobQueue = () => {
   }];
   const jobs = [{
     id: "1",
-    name: "BERT Fine-tuning on IMDB",
-    type: "ML-Training-v3",
+    name: "BERT在IMDB数据集上微调",
+    type: "机器学习训练-v3",
     gpu: "Tesla V100",
     status: "running",
     progress: 78,
-    runtime: "2h 45m",
-    eta: "45m remaining",
+    runtime: "2小时45分钟",
+    eta: "剩余45分钟",
     cost: "$23.50",
     gpuUsage: "94%",
-    started: "3 hours ago"
+    started: "3小时前开始"
   }, {
     id: "2",
-    name: "Image Classification Training",
-    type: "Computer-Vision-Dev",
+    name: "图像分类训练",
+    type: "计算机视觉开发",
     gpu: "RTX 4090",
     status: "queued",
     progress: 0,
-    runtime: "0m",
-    eta: "~3h 20m",
+    runtime: "0分钟",
+    eta: "约3小时20分钟",
     cost: "$0.00",
     gpuUsage: "0%",
-    started: "Queued 15m ago"
+    started: "15分钟前排队"
   }, {
     id: "3",
-    name: "Neural Style Transfer",
-    type: "Creative-AI",
+    name: "神经风格迁移",
+    type: "创意AI",
     gpu: "RTX 3080",
     status: "completed",
     progress: 100,
-    runtime: "1h 22m",
-    eta: "Completed",
+    runtime: "1小时22分钟",
+    eta: "已完成",
     cost: "$8.95",
     gpuUsage: "87%",
-    started: "4 hours ago"
+    started: "4小时前开始"
   }, {
     id: "4",
-    name: "Large Model Inference",
-    type: "Inference-Server",
+    name: "大模型推理",
+    type: "推理服务器",
     gpu: "Tesla A100",
     status: "failed",
     progress: 45,
-    runtime: "13m",
-    eta: "Failed - OOM",
+    runtime: "13分钟",
+    eta: "失败 - 内存溢出",
     cost: "$2.40",
     gpuUsage: "65%",
-    started: "1 hour ago"
+    started: "1小时前开始"
   }];
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -106,15 +106,15 @@ export const JobQueue = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "running":
-        return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">Running</Badge>;
+        return <Badge className="bg-green-500/20 text-green-400 border-green-500/30">运行中</Badge>;
       case "queued":
-        return <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">Queued</Badge>;
+        return <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30">排队中</Badge>;
       case "completed":
-        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">Completed</Badge>;
+        return <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30">已完成</Badge>;
       case "failed":
-        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">Failed</Badge>;
+        return <Badge className="bg-red-500/20 text-red-400 border-red-500/30">失败</Badge>;
       default:
-        return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">Unknown</Badge>;
+        return <Badge className="bg-gray-500/20 text-gray-400 border-gray-500/30">未知</Badge>;
     }
   };
   return <div className="space-y-6">
@@ -167,8 +167,8 @@ export const JobQueue = () => {
       <Card className="bg-white/10 backdrop-blur-xl rounded-2xl p-6 border border-white/20">
         <div className="flex items-center gap-3 mb-6">
           <Zap className="w-6 h-6 text-blue-400" />
-          <h2 className="text-xl font-semibold text-white">Active Jobs</h2>
-          <span className="text-gray-400 text-sm">Real-time monitoring of your training and inference jobs</span>
+          <h2 className="text-xl font-semibold text-white">活跃任务</h2>
+          <span className="text-gray-400 text-sm">实时监控您的训练和推理任务</span>
         </div>
 
         <div className="space-y-4">
@@ -194,7 +194,7 @@ export const JobQueue = () => {
 
               {job.status === 'running' && <div className="mb-4">
                   <div className="flex justify-between text-sm text-gray-400 mb-2">
-                    <span>Progress</span>
+                    <span>进度</span>
                     <span>{job.progress}%</span>
                   </div>
                   <Progress value={job.progress} className="h-2" />
@@ -204,37 +204,37 @@ export const JobQueue = () => {
                 <div>
                   <div className="flex items-center gap-1 text-gray-400 mb-1">
                     <Clock className="w-4 h-4" />
-                    <span>Runtime</span>
+                    <span>运行时间</span>
                   </div>
                   <p className="text-white font-medium">{job.runtime}</p>
                 </div>
                 <div>
-                  <div className="text-gray-400 mb-1">ETA</div>
+                  <div className="text-gray-400 mb-1">预计完成时间</div>
                   <p className="text-white font-medium">{job.eta}</p>
                 </div>
                 <div>
                   <div className="flex items-center gap-1 text-gray-400 mb-1">
                     <DollarSign className="w-4 h-4" />
-                    <span>Cost</span>
+                    <span>费用</span>
                   </div>
                   <p className="text-white font-medium">{job.cost}</p>
                 </div>
                 <div>
                   <div className="flex items-center gap-1 text-gray-400 mb-1">
                     <Zap className="w-4 h-4" />
-                    <span>GPU Usage</span>
+                    <span>GPU使用率</span>
                   </div>
                   <p className="text-white font-medium">{job.gpuUsage}</p>
                 </div>
                 <div>
-                  <div className="text-gray-400 mb-1">Started</div>
+                  <div className="text-gray-400 mb-1">开始时间</div>
                   <p className="text-white font-medium">{job.started}</p>
                 </div>
               </div>
 
               {job.status === 'failed' && <div className="mt-4 flex justify-end">
                   <Button variant="outline" size="sm" className="text-blue-400 border-blue-400/30 hover:bg-blue-400/10">
-                    Retry
+                    重试
                   </Button>
                 </div>}
             </Card>)}
